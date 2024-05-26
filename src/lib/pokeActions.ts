@@ -1,5 +1,16 @@
-// C:\Users\pavel.kuplensky\pokeprojectv2\pages\api\PokemonActions.ts
+// C:\Users\Pavel\poke-api-2\src\lib\pokeActions.ts
 import { useState, useEffect } from 'react';
+
+// export function pokeFilter(params:any) {
+//     TODO: filter Shit
+// }
+
+// export function pokeSort(params:any) {
+//     TODO: sort Shit
+//   return data
+// }
+
+
 
 export const usePokemonActions = () => {
   const [pokemons, setPokemons] = useState([]);
@@ -75,7 +86,7 @@ export const usePokemonActions = () => {
     }
   
     try {
-      const response = await fetch(`/api/pokemon/${id}`);
+      const response = await fetch(`/api/pokemons/${id}`);
       if (!response.ok) {
         throw new Error('Не удалось получить информацию о покемоне');
       }

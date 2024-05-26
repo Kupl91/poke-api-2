@@ -1,4 +1,4 @@
-// C:\Users\Pavel\poke-api-2\src\app\api\crud\pokemons\route.ts
+// C:\Users\Pavel\poke-api-2\src\app\api\pokemons\route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from "@prisma/client";
 

@@ -5,8 +5,19 @@ import FilterAndSort from '@/components/ui/FilterAndSort';
 import Pagination from '@/components/ui/Pagination';
 import PokemonList from '@/components/ui/PokemonList';
 import PokemonForm from '@/components/ui/PokemonForm';
-import { usePokemonActions } from '../api/PokemonActions/route';
+import { usePokemonActions } from '@/lib/pokeActions';
 import { Button, buttonVariants } from '@/components/ui/button';
+
+// Serever action
+// async function getPokemons() {
+//   const res = await fetch("http://localhost:3000/api/pokemons")
+//   return res.json()
+// }
+
+// // const PokemonsPage = async () => {
+
+// //   const allPokemons = await getPokemons();
+
 
 const PokemonsPage = () => {
   const {

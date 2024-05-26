@@ -8,8 +8,7 @@ const prisma = new PrismaClient();
 export async function GET() {
     try {
         const pokemons = await prisma.pokemon.findMany();
-        console.log(pokemons);
-        return NextResponse.json(pokemons); // используем NextResponse для корректной работы с next/server
+        return NextResponse.json(pokemons);
     } catch (error) {
         console.error('Ошибка получения покемонов:', error);
         return new Response(JSON.stringify({ message: error.message }), { status: 500 });
@@ -18,6 +17,10 @@ export async function GET() {
 
 export async function POST(req: NextApiRequest, res: NextApiResponse) {
   try {
+    if (!req.body) {
+      return res.status(400).json({ message: "Неверные данные" });
+    }
+
     const { name, weight, height, species, experience, abilities = [] } = req.body;
 
     if (!name || !species || isNaN(weight) || isNaN(height) || isNaN(experience)) {
@@ -56,7 +59,7 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
 
 export async function DELETE(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const { id } = req.query;
+    const { id } = req.params;
     await prisma.$transaction([
       prisma.pokemonAbility.deleteMany({
         where: { pokemonId: Number(id) },
