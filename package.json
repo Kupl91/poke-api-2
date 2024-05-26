@@ -1,4 +1,8 @@
 {
+  "prisma": {
+    "schema": "prisma/schema.prisma"
+  },
+  "type": "module",
   "name": "poke-api-2",
   "version": "0.1.0",
   "private": true,
@@ -13,8 +17,10 @@
     "@radix-ui/react-slot": "^1.0.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "dotenv": "^16.4.5",
     "lucide-react": "^0.379.0",
     "next": "14.2.3",
+    "node-fetch": "^3.3.2",
     "prisma": "^5.14.0",
     "react": "^18",
     "react-dom": "^18",

@@ -13,6 +13,11 @@ datasource db {
   url = env("POSTGRES_PRISMA_URL") // uses connection pooling
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
+model User {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
 model Pokemon {
   id             Int             @id @default(autoincrement())
   name           String          @unique
@@ -21,4 +26,20 @@ model Pokemon {
   species        String 
   experience     Int   
   creationTime   DateTime        @default(now())
+  abilities      PokemonAbility[]
+}
+
+model Ability {
+  id       Int             @id @default(autoincrement())
+  name     String          @unique
+  pokemons PokemonAbility[]
+}
+
+model PokemonAbility {
+  pokemonId Int
+  abilityId Int
+  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
+  ability   Ability @relation(fields: [abilityId], references: [id])
+
+ @@id([pokemonId, abilityId])
 }
