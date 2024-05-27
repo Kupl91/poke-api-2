@@ -1,4 +1,4 @@
-// C:\Users\pavel.kuplensky\Documents\GitHub\poke-api-2\src\lib\pokeActions.ts
+// C:\Users\Pavel\poke-api-2\src\lib\pokeActions.ts
 import { useState, useEffect } from 'react';
 
 export const usePokemonActions = () => {
@@ -69,30 +69,29 @@ export const usePokemonActions = () => {
 
   const handleDetailsClick = async (id) => {
     if (selectedDetail && selectedDetail.id === id) {
-      setSelectedDetail(null);
-      return;
+        setSelectedDetail(null);
+        return;
     }
-  
+
     try {
-      const response = await fetch(`/api/pokemon/${id}`);
-      
-      if (!response.ok){
-        throw new Error('Не удалось получить информацию о покемоне');
-      }
-      
-      const pokemonData = await response.json();
-    
-      setSelectedDetail ({ 
-         id: pokemonData.id,
-         experience: pokemonData.experience,
-         height: pokemonData.height,
-         weight: pokemonData.weight,
-       });
-  
-    } catch(error) {
+        const response = await fetch(`/api/pokemon/get/${id}`);
+        if (!response.ok) {
+            setSelectedDetail(null);
+            alert('Покемон с таким ID не найден');
+            return;
+        }
+
+        const pokemonData = await response.json();
+        setSelectedDetail({
+            id: pokemonData.id,
+            experience: pokemonData.experience,
+            height: pokemonData.height,
+            weight: pokemonData.weight,
+        });
+    } catch (error) {
         console.error('Ошибка при загрузке данных', error);
     }
-  };
+};
 
   const handleDeleteClick = async (id) => {
     try {
