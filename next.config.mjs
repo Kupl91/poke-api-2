@@ -1,13 +1,14 @@
+// C:\Users\pavel.kuplensky\Documents\GitHub\poke-api-2\next.config.mjs
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    async rewrites() {
-      return [
+  async rewrites() {
+    return [
         {
-          source: '/api/pokemons',
-          destination: '/src/app/api/crud/pokemons/route.ts'
+          source: '/api/pokemon/:path*',
+          destination: '/src/app/api/pokemon/:path*'
         }
-      ]
-    }
-  };
-  
-  export default nextConfig;
+    ];
+  },
+};
+
+export default nextConfig;

@@ -1,4 +1,4 @@
-// C:\Users\Pavel\poke-api-2\src\components\ui\PokemonList.tsx
+// poke-api-2\src\components\ui\PokemonList.tsx
 import React from 'react';
 // import function from server-pokeActions.ts
 

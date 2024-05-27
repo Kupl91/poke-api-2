@@ -8,17 +8,6 @@ import PokemonForm from '@/components/ui/PokemonForm';
 import { usePokemonActions } from '@/lib/pokeActions';
 import { Button, buttonVariants } from '@/components/ui/button';
 
-// Serever action
-// async function getPokemons() {
-//   const res = await fetch("http://localhost:3000/api/pokemons")
-//   return res.json()
-// }
-
-// // const PokemonsPage = async () => {
-
-// //   const allPokemons = await getPokemons();
-
-
 const PokemonsPage = () => {
   const {
     pokemons,
@@ -46,7 +35,7 @@ const PokemonsPage = () => {
   } = usePokemonActions();
 
   return (
-    <div className='bg-black-500'>
+    <div>
       
       <FilterAndSort 
         handleSortChange={handleSortChange} 

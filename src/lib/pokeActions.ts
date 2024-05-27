@@ -1,16 +1,5 @@
-// C:\Users\Pavel\poke-api-2\src\lib\pokeActions.ts
+// C:\Users\pavel.kuplensky\Documents\GitHub\poke-api-2\src\lib\pokeActions.ts
 import { useState, useEffect } from 'react';
-
-// export function pokeFilter(params:any) {
-//     TODO: filter Shit
-// }
-
-// export function pokeSort(params:any) {
-//     TODO: sort Shit
-//   return data
-// }
-
-
 
 export const usePokemonActions = () => {
   const [pokemons, setPokemons] = useState([]);
@@ -80,25 +69,28 @@ export const usePokemonActions = () => {
 
   const handleDetailsClick = async (id) => {
     if (selectedDetail && selectedDetail.id === id) {
-      // Если уже открыты детали этого покемона, скрываем их
       setSelectedDetail(null);
       return;
     }
   
     try {
-      const response = await fetch(`/api/pokemons/${id}`);
-      if (!response.ok) {
+      const response = await fetch(`/api/pokemon/${id}`);
+      
+      if (!response.ok){
         throw new Error('Не удалось получить информацию о покемоне');
       }
+      
       const pokemonData = await response.json();
-      setSelectedDetail({
-        id: pokemonData.id,
-        experience: pokemonData.experience,
-        height: pokemonData.height,
-        weight: pokemonData.weight
-      });
-    } catch (error) {
-       console.error("Ошибка при загрузке данных:", error); 
+    
+      setSelectedDetail ({ 
+         id: pokemonData.id,
+         experience: pokemonData.experience,
+         height: pokemonData.height,
+         weight: pokemonData.weight,
+       });
+  
+    } catch(error) {
+        console.error('Ошибка при загрузке данных', error);
     }
   };
 

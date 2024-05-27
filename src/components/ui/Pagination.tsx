@@ -1,4 +1,4 @@
-// C:\Users\Pavel\poke-api-2\src\components\ui\Pagination.tsx
+// poke-api-2\src\components\ui\Pagination.tsx
 import React from 'react';
 
 interface PaginationProps {

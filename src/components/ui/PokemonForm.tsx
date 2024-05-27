@@ -1,4 +1,4 @@
-// C:\Users\Pavel\poke-api-2\src\components\ui\PokemonForm.tsx
+// poke-api-2\src\components\ui\PokemonForm.tsx
 import React from 'react';
 
 interface PokemonFormProps {
