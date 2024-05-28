@@ -74,7 +74,7 @@ export const usePokemonActions = () => {
     }
 
     try {
-        const response = await fetch(`/api/pokemon/get/${id}`);
+      const response = await fetch(`/api/pokemon/get?id=${id}`);
         if (!response.ok) {
             setSelectedDetail(null);
             alert('Покемон с таким ID не найден');
