@@ -1,4 +1,4 @@
-// poke-api-2\src\components\ui\FilterAndSort.tsx
+// C:\Users\pavel.kuplensky\Documents\GitHub\poke-api-2\src\components\FilterAndSort.tsx
 import React from 'react';
 
 interface FilterAndSortProps {

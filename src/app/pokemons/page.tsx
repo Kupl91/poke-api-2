@@ -1,10 +1,10 @@
 // C:\Users\Pavel\poke-api-2\src\app\pokemons\page.tsx
 "use client"
 import React, { useEffect, useState } from 'react';
-import FilterAndSort from '@/components/ui/FilterAndSort';
-import Pagination from '@/components/ui/Pagination';
-import PokemonList from '@/components/ui/PokemonList';
-import PokemonForm from '@/components/ui/PokemonForm';
+import FilterAndSort from '@/components/FilterAndSort';
+import Pagination from '@/components/Pagination';
+import PokemonList from '@/components/PokemonList';
+import PokemonForm from '@/components/PokemonForm';
 import { usePokemonActions } from '@/lib/pokeActions';
 import { Button, buttonVariants } from '@/components/ui/button';
 
