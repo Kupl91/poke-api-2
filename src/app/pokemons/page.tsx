@@ -5,10 +5,12 @@ import FilterAndSort from '@/components/FilterAndSort';
 import Pagination from '@/components/Pagination';
 import PokemonList from '@/components/PokemonList';
 import PokemonForm from '@/components/PokemonForm';
-import { usePokemonActions } from '@/lib/pokeActions';
+import { usePokemonActions } from '@/lib/PokemonUtils/pokeActions';
+import { usePokemonPagination } from '@/lib/PokemonUtils/pokePagination';
 import { Button, buttonVariants } from '@/components/ui/button';
 
 const PokemonsPage = () => {
+  const { currentPage, itemsPerPage, nextPage, previousPage } = usePokemonPagination();
   const {
     pokemons,
     selectedDetail,
@@ -28,10 +30,6 @@ const PokemonsPage = () => {
     handleInputChange,
     showForm, 
     handleCreateClick,
-    currentPage,
-    itemsPerPage,
-    previousPage,
-    nextPage, 
   } = usePokemonActions();
 
   return (

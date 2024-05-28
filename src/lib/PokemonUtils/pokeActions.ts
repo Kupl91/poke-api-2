@@ -1,4 +1,4 @@
-// C:\Users\Pavel\poke-api-2\src\lib\pokeActions.ts
+// C:\Users\Pavel\poke-api-2\src\lib\PokemonUtils\pokeActions.ts
 import { useState, useEffect } from 'react';
 
 export const usePokemonActions = () => {
@@ -17,21 +17,13 @@ export const usePokemonActions = () => {
   const [filterValue, setFilterValue] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [updateFormOpen, setUpdateFormOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  
 
   useEffect(() => {
     fetchPokemons();
   }, []);
 
-  const nextPage = () => {
-    setCurrentPage((prev) => prev + 1);
-  };
-
-  const previousPage = () => {
-    setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev));
-  };
-
+  
   const handleSortChange = (event) => {
     setSortType(event.target.value);
   };
@@ -176,7 +168,6 @@ export const usePokemonActions = () => {
   };
 
   const handleCreateClick = () => {
-    // Если форма уже показана, скрываем её
     setShowForm((prevShowForm) => !prevShowForm);
   };
 
@@ -189,14 +180,12 @@ export const usePokemonActions = () => {
   
   const handleUpdateClick = (id: number) => {
     if (updatingPokemon && updatingPokemon.id === id) {
-      // Если форма обновления уже открыта для этого покемона, закройте ее
       setUpdatingPokemon(null);
-      setUpdateFormOpen(false); // Закрываем форму обновления
+      setUpdateFormOpen(false); 
     } else {
-      // Иначе откройте форму обновления для этого покемона
       const pokemonToUpdate = pokemons.find((pokemon) => pokemon.id === id);
       setUpdatingPokemon(pokemonToUpdate ? {...pokemonToUpdate} : null);
-      setUpdateFormOpen(true); // Открываем форму обновления
+      setUpdateFormOpen(true); 
     }
   };
   
@@ -220,9 +209,5 @@ export const usePokemonActions = () => {
     handleCreateClick,
     handleInputChange,
     handleUpdateClick,
-    currentPage,
-    itemsPerPage,
-    previousPage,
-    nextPage,
   };
 };
