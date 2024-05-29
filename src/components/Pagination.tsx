@@ -1,6 +1,13 @@
-// poke-api-2\src\components\ui\Pagination.tsx
 import React from 'react';
-import { Button, buttonVariants } from './ui/button';
+import {
+  Pagination as PaginationUI,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 interface PaginationProps {
   currentPage: number;
@@ -10,12 +17,35 @@ interface PaginationProps {
 }
 
 const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, nextPage, previousPage }) => {
+  const handleChange = (pageNumber) => {
+    if (pageNumber > currentPage) {
+      nextPage();
+    } else if (pageNumber < currentPage) {
+      previousPage();
+    }
+  };
+
   return (
-    <div>
-      <Button variant="outline" onClick={previousPage} style={{ marginRight: '10px' }}>Предыдущая</Button>
-      <Button variant="outline" onClick={nextPage}>Следующая</Button>
-      <div>Страница {currentPage} из {totalPages}</div>
-    </div>
+    <PaginationUI>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious onClick={previousPage} />
+        </PaginationItem>
+        {[...Array(totalPages)].map((_, index) => (
+          <PaginationItem key={index}>
+            <PaginationLink isActive={index + 1 === currentPage} onClick={() => handleChange(index + 1)}>
+              {index + 1}
+            </PaginationLink>
+          </PaginationItem>
+        ))}
+        <PaginationItem>
+          <PaginationEllipsis />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationNext onClick={nextPage} />
+        </PaginationItem>
+      </PaginationContent>
+    </PaginationUI>
   );
 };
 
