@@ -7,6 +7,7 @@ import PokemonList from '@/components/PokemonList';
 import PokemonForm from '@/components/PokemonForm';
 import { usePokemonActions } from '@/lib/PokemonUtils/pokeActions';
 import { usePokemonPagination } from '@/lib/PokemonUtils/pokePagination';
+import { usePokemonFilterAndSort } from '@/lib/PokemonUtils/pokeFilterAndSort';
 import { Button, buttonVariants } from '@/components/ui/button';
 
 const PokemonsPage = () => {
@@ -21,20 +22,25 @@ const PokemonsPage = () => {
     handleDeleteClick,
     handleSubmitClick,
     handleUpdateSubmit,
-    handleUpdateClick,
-    handleSortChange,
-    handleFilterTypeChange,
-    handleFilterValueChange,
-    sortedAndFilteredPokemons,
     handleUpdateInputChange,
-    handleInputChange,
     showForm, 
     handleCreateClick,
+    handleInputChange,
+    handleUpdateClick,
   } = usePokemonActions();
+
+  const {
+    sortType, 
+    filterType, 
+    filterValue, 
+    handleSortChange, 
+    handleFilterTypeChange, 
+    handleFilterValueChange, 
+    sortedAndFilteredPokemons 
+  } = usePokemonFilterAndSort(pokemons);
 
   return (
     <div>
-      
       <FilterAndSort 
         handleSortChange={handleSortChange} 
         handleFilterTypeChange={handleFilterTypeChange}

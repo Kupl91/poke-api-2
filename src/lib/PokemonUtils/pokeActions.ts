@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 
 export const usePokemonActions = () => {
   const [pokemons, setPokemons] = useState([]);
-  const [sortType, setSortType] = useState('id');
   const [selectedDetail, setSelectedDetail] = useState(null);
   const [newPokemon, setNewPokemon] = useState({
     name: '',
@@ -13,38 +12,12 @@ export const usePokemonActions = () => {
     experience: 0,
   });
   const [updatingPokemon, setUpdatingPokemon] = useState(null);
-  const [filterType, setFilterType] = useState('name');
-  const [filterValue, setFilterValue] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [updateFormOpen, setUpdateFormOpen] = useState(false);
-  
 
   useEffect(() => {
     fetchPokemons();
   }, []);
-
-  
-  const handleSortChange = (event) => {
-    setSortType(event.target.value);
-  };
-
-  const handleFilterTypeChange = (event) => {
-    setFilterType(event.target.value);
-  };
-
-  const handleFilterValueChange = (event) => {
-    setFilterValue(event.target.value.toLowerCase());
-  };
-
-  const sortedAndFilteredPokemons = pokemons
-    .filter((pokemon) => pokemon[filterType]?.toString().toLowerCase().includes(filterValue))
-    .sort((a, b) => {
-      if (sortType === 'name') {
-        return a.name.localeCompare(b.name);
-      } else {
-        return a[sortType] - b[sortType];
-      }
-    });
 
   const fetchPokemons = async () => {
     try {
@@ -200,10 +173,6 @@ export const usePokemonActions = () => {
     handleDeleteClick,
     handleSubmitClick,
     handleUpdateSubmit,
-    handleSortChange,
-    handleFilterTypeChange,
-    handleFilterValueChange,
-    sortedAndFilteredPokemons,
     handleUpdateInputChange,
     showForm, 
     handleCreateClick,
