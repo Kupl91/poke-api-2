@@ -6,8 +6,8 @@ import {
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+  PaginationPrevious
+} from './ui/pagination';
 
 interface PaginationProps {
   currentPage: number;
@@ -16,37 +16,53 @@ interface PaginationProps {
   previousPage: () => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, nextPage, previousPage }) => {
-  const handleChange = (pageNumber) => {
-    if (pageNumber > currentPage) {
-      nextPage();
-    } else if (pageNumber < currentPage) {
-      previousPage();
-    }
+const CustomPagination: React.FC<PaginationProps> = ({ currentPage, totalPages, nextPage, previousPage }) => {
+  const handleChange = (pageNumber: number) => {
+    // Логика изменения страницы здесь.
   };
 
   return (
     <PaginationUI>
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious onClick={previousPage} />
+          <button onClick={previousPage}>
+            <a href="#">
+              <PaginationPrevious />
+            </a>
+          </button>
         </PaginationItem>
         {[...Array(totalPages)].map((_, index) => (
-          <PaginationItem key={index}>
-            <PaginationLink isActive={index + 1 === currentPage} onClick={() => handleChange(index + 1)}>
-              {index + 1}
-            </PaginationLink>
-          </PaginationItem>
-        ))}
-        <PaginationItem>
-          <PaginationEllipsis />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationNext onClick={nextPage} />
-        </PaginationItem>
+          (index + 1 === currentPage) ? (
+            <div key={index}>
+              <p><strong>{index + 1}</strong></p>
+            </div>
+          ) : (
+            // Добавь более специфическую логику для обработчика кликов.
+            <div key={index} onClick={() => handleChange(index + 1)}>{index + 1}</div>
+          ))
+        )}
+        {totalPages > (currentPage + 5) && (
+          <>
+            <PaginationEllipsis />
+            <PaginationItem>
+              <button onClick={() => handleChange(totalPages)}>
+                <a href="#">
+                  <PaginationNext />
+                </a>
+              </button>
+            </PaginationItem>
+          </>
+        )}
       </PaginationContent>
+      <PaginationItem>
+        <button onClick={nextPage}>
+          <a href="#">
+            <PaginationNext />
+          </a>
+        </button>
+      </PaginationItem>
     </PaginationUI>
   );
 };
 
-export default Pagination;
+export default CustomPagination;

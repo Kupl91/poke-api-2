@@ -57,7 +57,7 @@ const PokemonsPage = () => {
         currentPage={currentPage}
         itemsPerPage={itemsPerPage}
       />
-      <Pagination 
+      <Pagination
         currentPage={currentPage}
         totalPages={Math.ceil(sortedAndFilteredPokemons.length / itemsPerPage)}
         nextPage={nextPage}
