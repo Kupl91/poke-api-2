@@ -1,5 +1,6 @@
 // C:\Users\Pavel\poke-api-2\src\lib\PokemonUtils\pokeActions.ts
 import { useState, useEffect } from 'react';
+import { toast } from '@/components/ui/use-toast';
 
 export const usePokemonActions = () => {
   const [pokemons, setPokemons] = useState([]);
@@ -77,25 +78,19 @@ export const usePokemonActions = () => {
     try {
       const response = await fetch('/api/pokemon/create', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: newPokemon.name,
-          weight: newPokemon.weight,
-          height: newPokemon.height,
-          species: newPokemon.species,
-          experience: newPokemon.experience, 
-        }),
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(newPokemon),
       });
+  
       if (response.ok) {
         const pokemon = await response.json();
         setPokemons([...pokemons, pokemon]);
-      } else {
-        throw new Error('Не удалось создать покемона');
-      }
+        toast.success('Покемон успешно создан!');
+      } else throw new Error('Не удалось создать покемона');
+      
     } catch (error) {
       console.error("Ошибка при создании покемона:", error.message);
+      toast.error("Ошибка при создании покемона");
     }
   };
 
