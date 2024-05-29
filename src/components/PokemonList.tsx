@@ -1,6 +1,7 @@
 // poke-api-2\src\components\ui\PokemonList.tsx
 import React from 'react';
 import { Button, buttonVariants } from './ui/button';
+import { Input } from './ui/input';
 
 interface Pokemon {
   id: number;
@@ -41,12 +42,12 @@ const PokemonList = ({ pokemons, handleDeleteClick, handleDetailsClick, handleUp
             }
             <Button variant="outline" onClick={() => handleUpdateClick(pokemon.id)} style={{ marginRight: '10px' }}>Обновить</Button>
             {updatingPokemon && updatingPokemon.id === pokemon.id && (
-              <div>
-                <input type="text" name="name" value={updatingPokemon.name} onChange={handleUpdateInputChange} placeholder="Имя" />
-                <input type="number" name="weight" value={updatingPokemon.weight} onChange={handleUpdateInputChange} placeholder="Вес" />
-                <input type="number" name="height" value={updatingPokemon.height} onChange={handleUpdateInputChange} placeholder="Высота" />
-                <input type="text" name="species" value={updatingPokemon.species} onChange={handleUpdateInputChange} placeholder="Вид" />
-                <input type="number" name="experience" value={updatingPokemon.experience} onChange={handleUpdateInputChange} placeholder="Опыт" />
+              <div className="flex space-x-4">
+                <Input type="text" name="name" value={updatingPokemon.name} onChange={handleUpdateInputChange} placeholder="Имя" />
+                <Input type="number" name="weight" value={updatingPokemon.weight} onChange={handleUpdateInputChange} placeholder="Вес" />
+                <Input type="number" name="height" value={updatingPokemon.height} onChange={handleUpdateInputChange} placeholder="Высота" />
+                <Input type="text" name="species" value={updatingPokemon.species} onChange={handleUpdateInputChange} placeholder="Вид" />
+                <Input type="number" name="experience" value={updatingPokemon.experience} onChange={handleUpdateInputChange} placeholder="Опыт" />
                 <Button variant="outline" onClick={handleUpdateSubmit}>Отправить</Button>
               </div>
             )}

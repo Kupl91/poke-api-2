@@ -1,6 +1,7 @@
 // poke-api-2\src\components\ui\PokemonForm.tsx
 import React from 'react';
 import { Button, buttonVariants } from './ui/button';
+import { Input } from './ui/input';
 
 interface PokemonFormProps {
   handleSubmitClick: () => void;
@@ -21,12 +22,12 @@ const PokemonForm: React.FC<PokemonFormProps> = ({ handleSubmitClick, handleInpu
     <div>
       <Button variant="outline" onClick={handleCreateClick}>Создай</Button>
       {showForm && (
-        <div>
-          <input type="text" name="name" onChange={handleInputChange} placeholder="Имя" value={newPokemon.name} />
-          <input type="number" name="weight" onChange={handleInputChange} placeholder="Вес" value={newPokemon.weight} />
-          <input type="number" name="height" onChange={handleInputChange} placeholder="Высота" value={newPokemon.height} />
-          <input type="text" name="species" onChange={handleInputChange} placeholder="Вид" value={newPokemon.species} />
-          <input type="number" name="experience" onChange={handleInputChange} placeholder="Опыт" value={newPokemon.experience} />
+        <div className="flex space-x-4">
+          <Input type="text" name="name" onChange={handleInputChange} placeholder="Имя" value={newPokemon.name} />
+          <Input type="number" name="weight" onChange={handleInputChange} placeholder="Вес" value={newPokemon.weight} />
+          <Input type="number" name="height" onChange={handleInputChange} placeholder="Высота" value={newPokemon.height} />
+          <Input type="text" name="species" onChange={handleInputChange} placeholder="Вид" value={newPokemon.species} />
+          <Input type="number" name="experience" onChange={handleInputChange} placeholder="Опыт" value={newPokemon.experience} />
           <Button variant="outline" onClick={handleSubmitClick}>Отправить</Button>
         </div>
       )}
