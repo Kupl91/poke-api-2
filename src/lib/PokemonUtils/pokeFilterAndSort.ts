@@ -6,12 +6,12 @@ export const usePokemonFilterAndSort = (pokemons) => {
   const [filterType, setFilterType] = useState('name');
   const [filterValue, setFilterValue] = useState('');
 
-  const handleSortChange = (event) => {
-    setSortType(event.target.value);
+  const handleSortChange = (value) => {
+    setSortType(value);
   };
 
-  const handleFilterTypeChange = (event) => {
-    setFilterType(event.target.value);
+  const handleFilterTypeChange = (value) => {
+    setFilterType(value);
   };
 
   const handleFilterValueChange = (event) => {
