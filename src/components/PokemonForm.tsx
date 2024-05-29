@@ -1,5 +1,6 @@
 // poke-api-2\src\components\ui\PokemonForm.tsx
 import React from 'react';
+import { Button, buttonVariants } from './ui/button';
 
 interface PokemonFormProps {
   handleSubmitClick: () => void;
@@ -18,7 +19,7 @@ interface PokemonFormProps {
 const PokemonForm: React.FC<PokemonFormProps> = ({ handleSubmitClick, handleInputChange, handleCreateClick, showForm, newPokemon }) => {
   return (
     <div>
-      <button onClick={handleCreateClick} style={{ padding: '5px 10px', backgroundColor: '#0070f3', color: '#fff', textDecoration: 'none', borderRadius: '5px' }}>Создай</button>
+      <Button variant="outline" onClick={handleCreateClick}>Создай</Button>
       {showForm && (
         <div>
           <input type="text" name="name" onChange={handleInputChange} placeholder="Имя" value={newPokemon.name} />
@@ -26,7 +27,7 @@ const PokemonForm: React.FC<PokemonFormProps> = ({ handleSubmitClick, handleInpu
           <input type="number" name="height" onChange={handleInputChange} placeholder="Высота" value={newPokemon.height} />
           <input type="text" name="species" onChange={handleInputChange} placeholder="Вид" value={newPokemon.species} />
           <input type="number" name="experience" onChange={handleInputChange} placeholder="Опыт" value={newPokemon.experience} />
-          <button onClick={handleSubmitClick}>Отправить</button>
+          <Button variant="outline" onClick={handleSubmitClick}>Отправить</Button>
         </div>
       )}
     </div>

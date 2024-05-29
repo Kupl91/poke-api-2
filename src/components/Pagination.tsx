@@ -1,5 +1,6 @@
 // poke-api-2\src\components\ui\Pagination.tsx
 import React from 'react';
+import { Button, buttonVariants } from './ui/button';
 
 interface PaginationProps {
   currentPage: number;
@@ -11,8 +12,8 @@ interface PaginationProps {
 const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, nextPage, previousPage }) => {
   return (
     <div>
-      <button onClick={previousPage} style={{ padding: '5px 10px', backgroundColor: '#0070f3', color: '#fff', textDecoration: 'none', borderRadius: '5px' }}>Предыдущая</button>
-      <button onClick={nextPage} style={{ padding: '5px 10px', backgroundColor: '#0070f3', color: '#fff', textDecoration: 'none', borderRadius: '5px' }}>Следующая</button>
+      <Button variant="outline" onClick={previousPage} style={{ marginRight: '10px' }}>Предыдущая</Button>
+      <Button variant="outline" onClick={nextPage}>Следующая</Button>
       <div>Страница {currentPage} из {totalPages}</div>
     </div>
   );

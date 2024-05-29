@@ -1,6 +1,6 @@
 // poke-api-2\src\components\ui\PokemonList.tsx
 import React from 'react';
-// import function from server-pokeActions.ts
+import { Button, buttonVariants } from './ui/button';
 
 interface Pokemon {
   id: number;
@@ -33,13 +33,13 @@ const PokemonList = ({ pokemons, handleDeleteClick, handleDetailsClick, handleUp
         .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
         .map((pokemon) => (
           <div key={pokemon.id} style={{ marginBottom:'10px', display: 'flex', alignItems: 'center' }}>
-            <button onClick={() => handleDeleteClick(pokemon.id)} style={{ marginRight: '10px', padding: '5px 10px', backgroundColor: '#0070f3', color: '#fff', textDecoration: 'none', borderRadius: '5px' }}>Удалить</button>
+            <Button variant="destructive" onClick={() => handleDeleteClick(pokemon.id)} style={{ marginRight: '10px' }}>Удалить</Button>
             <h2 style={{ marginRight: '10px' }}>{pokemon.name}</h2>
-            <button onClick={() => handleDetailsClick(pokemon.id)} style={{ marginRight: '10px', padding: '5px 10px', backgroundColor: '#0070f3', color: '#fff', textDecoration: 'none', borderRadius: '5px' }}>Детали</button>
+            <Button variant="outline" onClick={() => handleDetailsClick(pokemon.id)} style={{ marginRight: '10px' }}>Детали</Button>
             {selectedDetail && selectedDetail.id === pokemon.id && 
               (<div>{`ID: ${selectedDetail.id}, Опыт: ${selectedDetail.experience}, Высота: ${selectedDetail.height}, Вес: ${selectedDetail.weight}`}</div>)
             }
-            <button onClick={() => handleUpdateClick(pokemon.id)} style={{ marginRight: '10px', padding: '5px 10px', backgroundColor: '#0070f3', color: '#fff', textDecoration: 'none', borderRadius: '5px' }}>Обновить</button>
+            <Button variant="outline" onClick={() => handleUpdateClick(pokemon.id)} style={{ marginRight: '10px' }}>Обновить</Button>
             {updatingPokemon && updatingPokemon.id === pokemon.id && (
               <div>
                 <input type="text" name="name" value={updatingPokemon.name} onChange={handleUpdateInputChange} placeholder="Имя" />
@@ -47,7 +47,7 @@ const PokemonList = ({ pokemons, handleDeleteClick, handleDetailsClick, handleUp
                 <input type="number" name="height" value={updatingPokemon.height} onChange={handleUpdateInputChange} placeholder="Высота" />
                 <input type="text" name="species" value={updatingPokemon.species} onChange={handleUpdateInputChange} placeholder="Вид" />
                 <input type="number" name="experience" value={updatingPokemon.experience} onChange={handleUpdateInputChange} placeholder="Опыт" />
-                <button onClick={handleUpdateSubmit}>Отправить</button>
+                <Button variant="outline" onClick={handleUpdateSubmit}>Отправить</Button>
               </div>
             )}
           </div>
