@@ -3,6 +3,16 @@ import React from 'react';
 import { Button, buttonVariants } from './ui/button';
 import { Input } from './ui/input';
 import { Toaster } from '@/components/ui/toaster';
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
 
 interface PokemonFormProps {
   handleSubmitClick: () => void;
@@ -17,21 +27,40 @@ interface PokemonFormProps {
     experience: number;
   };
 }
-
-const PokemonForm: React.FC<PokemonFormProps> = ({ handleSubmitClick, handleInputChange, handleCreateClick, showForm, newPokemon }) => {
+const PokemonForm: React.FC<PokemonFormProps> = ({handleSubmitClick, handleInputChange, handleCreateClick, showForm, newPokemon}) => {
   return (
     <div>
-      <Button variant="outline" onClick={handleCreateClick}>Создай</Button>
-      {showForm && (
-        <div className="flex space-x-4">
-          <Input type="text" name="name" onChange={handleInputChange} placeholder="Имя" value={newPokemon.name} />
-          <Input type="number" name="weight" onChange={handleInputChange} placeholder="Вес" value={newPokemon.weight} />
-          <Input type="number" name="height" onChange={handleInputChange} placeholder="Высота" value={newPokemon.height} />
-          <Input type="text" name="species" onChange={handleInputChange} placeholder="Вид" value={newPokemon.species} />
-          <Input type="number" name="experience" onChange={handleInputChange} placeholder="Опыт" value={newPokemon.experience} />
-          <Button variant="outline" onClick={handleSubmitClick}>Отправить</Button>
-        </div>
-      )}
+      <Drawer>
+        <DrawerTrigger asChild>
+          <Button variant="outline" onClick={handleCreateClick}>Создай</Button>
+        </DrawerTrigger>
+        {showForm && (
+          <DrawerContent>
+            <DrawerClose />
+            <DrawerHeader>Создание Покемона</DrawerHeader>
+            <div className="flex flex-col space-y-4 p-4">
+              {["name", "weight", "height", "species", "experience"].map((field) => (
+                <Input
+                  key={field}
+                  type={field === "weight" || field === "height" || field === "experience" ? "number" : "text"}
+                  name={field}
+                  onChange={handleInputChange}
+                  placeholder={
+                    field.charAt(0).toUpperCase() + field.slice(1)
+                      .replace("name", 'Имя')
+                      .replace("species", 'Вид')
+                      .replace("weight", 'Вес')
+                      .replace("height", 'Высота')
+                      .replace("experience", 'Опыт')
+                   }
+                  value={newPokemon[field]}
+                />
+              ))}
+              <Button variant="outline" onClick={handleSubmitClick}>Отправить</Button>
+            </div>
+          </DrawerContent>
+        )}
+      </Drawer>
       <Toaster />
     </div>
   );
