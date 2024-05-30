@@ -52,21 +52,17 @@ const PokemonList = ({
             {selectedDetail && selectedDetail.id === pokemon.id && (
             <div>{`ID: ${selectedDetail.id}, Опыт: ${selectedDetail.experience}, Высота: ${selectedDetail.height}, Вес: ${selectedDetail.weight}`}</div>
           )}
-
-          <Drawer open={updatingPokemon && updatingPokemon.id === pokemon.id} onOpenChange={(open) => !open && setUpdatingPokemon(null)}>
+          <Drawer> 
             <DrawerTrigger asChild>
               <Button variant="outline" onClick={() => handleUpdateClick(pokemon.id)} style={{ marginRight: '10px' }}>Обновить</Button>
             </DrawerTrigger>
-
             <DrawerContent>
               <DrawerClose />
               <DrawerHeader>Обновление Покемона</DrawerHeader>
-
               {updatingPokemon && (
                 <>
                   <Input type="text" name="name" value={updatingPokemon.name || ''} onChange={handleUpdateInputChange} placeholder="Имя" />
                   <Input type="number" name="weight" value={updatingPokemon.weight || ''} onChange={handleUpdateInputChange} placeholder="Вес" />
-                  <Input type="number" name='height' value={updatingPokemon.height || ''} onChange={handleUpdateInputChange} placeholder='Высота' />
                   <Input type="number" name='height' value={updatingPokemon.height || ''} onChange={handleUpdateInputChange} placeholder='Высота' />
                   <Input type="text" name="species" value={updatingPokemon.species || ''} onChange={handleUpdateInputChange} placeholder="Вид" />
                   <Input type="number" name="experience" value={updatingPokemon.experience || ''} onChange={handleUpdateInputChange} placeholder="Опыт" />
