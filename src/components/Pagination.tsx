@@ -25,10 +25,8 @@ const CustomPagination: React.FC<PaginationProps> = ({ currentPage, totalPages, 
     <PaginationUI>
       <PaginationContent>
         <PaginationItem>
-          <button onClick={previousPage}>
-            <a href="#">
-              <PaginationPrevious />
-            </a>
+        <button onClick={previousPage}>
+            <PaginationPrevious />
           </button>
         </PaginationItem>
         {[...Array(totalPages)].map((_, index) => (
@@ -46,9 +44,7 @@ const CustomPagination: React.FC<PaginationProps> = ({ currentPage, totalPages, 
             <PaginationEllipsis />
             <PaginationItem>
               <button onClick={() => handleChange(totalPages)}>
-                <a href="#">
                   <PaginationNext />
-                </a>
               </button>
             </PaginationItem>
           </>
@@ -56,9 +52,7 @@ const CustomPagination: React.FC<PaginationProps> = ({ currentPage, totalPages, 
       </PaginationContent>
       <PaginationItem>
         <button onClick={nextPage}>
-          <a href="#">
             <PaginationNext />
-          </a>
         </button>
       </PaginationItem>
     </PaginationUI>
