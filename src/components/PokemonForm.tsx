@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button, buttonVariants } from './ui/button';
 import { Input } from './ui/input';
+import { Toaster } from '@/components/ui/toaster';
 
 interface PokemonFormProps {
   handleSubmitClick: () => void;
@@ -31,6 +32,7 @@ const PokemonForm: React.FC<PokemonFormProps> = ({ handleSubmitClick, handleInpu
           <Button variant="outline" onClick={handleSubmitClick}>Отправить</Button>
         </div>
       )}
+      <Toaster />
     </div>
   );
 };

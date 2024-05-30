@@ -74,26 +74,42 @@ export const usePokemonActions = () => {
     }
   };
 
-  const handleSubmitClick = async () => {
-    try {
-      const response = await fetch('/api/pokemon/create', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(newPokemon),
-      });
-  
-      if (response.ok) {
-        const pokemon = await response.json();
-        setPokemons([...pokemons, pokemon]);
-        toast.success('Покемон успешно создан!');
-      } else throw new Error('Не удалось создать покемона');
-      
-    } catch (error) {
-      console.error("Ошибка при создании покемона:", error.message);
-      toast.error("Ошибка при создании покемона");
-    }
-  };
 
+const handleSubmitClick = async () => {
+  try {
+    const response = await fetch('/api/pokemon/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: newPokemon.name,
+        weight: newPokemon.weight,
+        height: newPokemon.height,
+        species: newPokemon.species,
+        experience: newPokemon.experience,
+      }),
+    });
+    if (response.ok) {
+      const pokemon = await response.json();
+      setPokemons([...pokemons, pokemon]);
+      toast({
+        title: "Успех!",
+        description: 'Покемон успешно заведен!',
+        variant: "default",
+      });
+    } else {
+      throw new Error('Не удалось создать покемона');
+    }
+  } catch (error) {
+    console.error("Ошибка при создании покемона:", error.message);
+    toast({
+       title:"Ошибка!", 
+       description:'Такой покемон уже существует.',
+       variant:"destructive",
+     });
+  }
+};
   const handleUpdateSubmit = async () => {
     if (!updatingPokemon) {
       console.error("Нет покемона для обновления");
