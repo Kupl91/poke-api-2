@@ -3,6 +3,13 @@ import React from 'react';
 import { Button, buttonVariants } from './ui/button';
 import { Input } from './ui/input';
 import { Drawer, DrawerTrigger, DrawerContent, DrawerClose, DrawerHeader } from "@/components/ui/drawer";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem
+} from './ui/dropdown-menu';
+
 
 interface Pokemon {
   id: number;
@@ -48,10 +55,21 @@ const PokemonList = ({
           <div key={pokemon.id} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
             <Button variant="destructive" onClick={() => handleDeleteClick(pokemon.id)} style={{ marginRight: '10px' }}>Удалить</Button>
             <h2 style={{ marginRight: '10px' }}>{pokemon.name}</h2>
-            <Button variant="outline" onClick={() => handleDetailsClick(pokemon.id)} style={{ marginRight: '10px' }}>Детали</Button>
-            {selectedDetail && selectedDetail.id === pokemon.id && (
-            <div>{`ID: ${selectedDetail.id}, Опыт: ${selectedDetail.experience}, Высота: ${selectedDetail.height}, Вес: ${selectedDetail.weight}`}</div>
-          )}
+            <DropdownMenu>
+  <DropdownMenuTrigger asChild>
+  <Button variant="outline" onClick={() => handleDetailsClick(pokemon.id)} style={{ marginRight: '10px' }}>Детали</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent className="p-36 bg-white shadow-md">
+    {selectedDetail && selectedDetail.id === pokemon.id && (
+      <>
+        <div>ID: {selectedDetail.id}</div>
+        <div>Опыт: {selectedDetail.experience}</div>
+        <div>Высота: {selectedDetail.height}</div>
+        <div>Вес: {selectedDetail.weight}</div>
+      </>
+    )}
+  </DropdownMenuContent>
+</DropdownMenu>
           <Drawer> 
             <DrawerTrigger asChild>
               <Button variant="outline" onClick={() => handleUpdateClick(pokemon.id)} style={{ marginRight: '10px' }}>Обновить</Button>
