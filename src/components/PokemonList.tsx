@@ -55,7 +55,7 @@ const PokemonList: React.FC<PokemonListProps> = ({
   currentPage,
   itemsPerPage,
 }) => (
-  <div className="bg-gray-100">
+  <div className="bg-gray-300">
     <Table>
       <TableHeader>
         <TableRow>
