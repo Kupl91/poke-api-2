@@ -29,34 +29,34 @@ interface PokemonFormProps {
 }
 const PokemonForm: React.FC<PokemonFormProps> = ({handleSubmitClick, handleInputChange, handleCreateClick, showForm, newPokemon}) => {
   return (
-    <div>
+    <div className="bg-gray-100">
       <Drawer>
         <DrawerTrigger asChild>
-          <Button variant="outline" onClick={handleCreateClick}>Создай</Button>
+          <Button variant="outline" onClick={handleCreateClick} className="bg-green-500">Создай</Button>
         </DrawerTrigger>
         {showForm && (
           <DrawerContent>
             <DrawerClose />
             <DrawerHeader>Создание Покемона</DrawerHeader>
             <div className="flex flex-col space-y-4 p-4">
-              {["name", "weight", "height", "species", "experience"].map((field) => (
+              {[
+                { name: "name", placeholder: "Введите имя покемона", type: "text" },
+                { name: "weight", placeholder: newPokemon.weight || "Введите вес покемона", type: "number"},
+                { name: "height", placeholder: "Введите высоту покемона", type: "number" },
+                { name: "species", placeholder: "Введите вид покемона", type:"text"},
+                { name:"experience",placeholder:"Введите опыт покемона ",type:"number"}
+              ].map((field) => (
                 <Input
-                  key={field}
-                  type={field === "weight" || field === "height" || field === "experience" ? "number" : "text"}
-                  name={field}
+                  key={field.name}
+                  type={field.type}
+                  name={field.name}
                   onChange={handleInputChange}
-                  placeholder={
-                    field.charAt(0).toUpperCase() + field.slice(1)
-                      .replace("name", 'Имя')
-                      .replace("species", 'Вид')
-                      .replace("weight", 'Вес')
-                      .replace("height", 'Высота')
-                      .replace("experience", 'Опыт')
-                   }
-                  value={newPokemon[field]}
+                  placeholder={field.placeholder}
+                  value={newPokemon[field.name]}
+                  className="bg-gray-200"
                 />
               ))}
-              <Button variant="outline" onClick={handleSubmitClick}>Отправить</Button>
+              <Button variant="outline" onClick={handleSubmitClick} className="bg-blue-500">Отправить</Button>
             </div>
           </DrawerContent>
         )}

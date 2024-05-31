@@ -1,3 +1,4 @@
+// poke-api-2\src\components\ui\Pagination.tsx
 import React from 'react';
 import {
   Pagination as PaginationUI,
@@ -22,10 +23,10 @@ const CustomPagination: React.FC<PaginationProps> = ({ currentPage, totalPages, 
   };
 
   return (
-    <PaginationUI>
+    <PaginationUI className="bg-gray-100">
       <PaginationContent>
         <PaginationItem>
-        <button onClick={previousPage}>
+        <button onClick={previousPage} className="bg-blue-500">
             <PaginationPrevious />
           </button>
         </PaginationItem>
@@ -36,14 +37,14 @@ const CustomPagination: React.FC<PaginationProps> = ({ currentPage, totalPages, 
             </div>
           ) : (
             // Добавь более специфическую логику для обработчика кликов.
-            <div key={index} onClick={() => handleChange(index + 1)}>{index + 1}</div>
+            <div key={index} onClick={() => handleChange(index + 1)} className="bg-gray-200">{index + 1}</div>
           ))
         )}
         {totalPages > (currentPage + 5) && (
           <>
             <PaginationEllipsis />
             <PaginationItem>
-              <button onClick={() => handleChange(totalPages)}>
+              <button onClick={() => handleChange(totalPages)} className="bg-blue-500">
                   <PaginationNext />
               </button>
             </PaginationItem>
@@ -51,7 +52,7 @@ const CustomPagination: React.FC<PaginationProps> = ({ currentPage, totalPages, 
         )}
       </PaginationContent>
       <PaginationItem>
-        <button onClick={nextPage}>
+        <button onClick={nextPage} className="bg-blue-500">
             <PaginationNext />
         </button>
       </PaginationItem>
