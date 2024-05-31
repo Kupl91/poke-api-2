@@ -35,29 +35,37 @@ export const usePokemonActions = () => {
 
   const handleDetailsClick = async (id) => {
     if (selectedDetail && selectedDetail.id === id) {
-        setSelectedDetail(null);
-        return;
+      setSelectedDetail(null);
+      return;
     }
-
+  
     try {
       const response = await fetch(`/api/pokemon/get?id=${id}`);
-        if (!response.ok) {
-            setSelectedDetail(null);
-            alert('Покемон с таким ID не найден');
-            return;
-        }
-
-        const pokemonData = await response.json();
-        setSelectedDetail({
+      
+      if (!response.ok) {
+        setSelectedDetail(null);
+        alert('Покемон с таким ID не найден');
+        return;
+      }
+  
+      const pokemonData = await response.json();
+  
+      // Корректное получение способностей
+      const abilities = Array.isArray(pokemonData.abilities)
+                        ? pokemonData.abilities.map(pa => ({ ability: pa.ability }))
+                        : [];
+  
+          setSelectedDetail({
             id: pokemonData.id,
             experience: pokemonData.experience,
             height: pokemonData.height,
             weight: pokemonData.weight,
-        });
-    } catch (error) {
-        console.error('Ошибка при загрузке данных', error);
-    }
-};
+           abilities, // Поправка
+          });
+   } catch (error) {
+   console.error('Ошибка при загрузке данных', error);
+  }
+  };
 
   const handleDeleteClick = async (id) => {
     try {
