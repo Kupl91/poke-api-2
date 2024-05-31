@@ -1,6 +1,6 @@
 // poke-api-2\src\components\ui\PokemonList.tsx
 import React from 'react';
-import { Button, buttonVariants } from './ui/button';
+import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Drawer, DrawerTrigger, DrawerContent, DrawerClose, DrawerHeader } from "@/components/ui/drawer";
 import {
@@ -9,7 +9,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem
 } from './ui/dropdown-menu';
-
 
 interface Pokemon {
   id: number;
@@ -27,7 +26,7 @@ interface PokemonListProps {
   handleDeleteClick: (id: number) => void;
   handleDetailsClick: (id: number) => void;
   handleUpdateSubmit: () => void;
-  handleUpdateClick: (id: number) => void; // Добавьте эту строку
+  handleUpdateClick: (id: number) => void;
   handleUpdateInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   selectedDetail: Pokemon | null;
   updatingPokemon: Pokemon | null;
@@ -35,7 +34,7 @@ interface PokemonListProps {
   itemsPerPage: number;
 }
 
-const PokemonList = ({
+const PokemonList: React.FC<PokemonListProps> = ({
   pokemons,
   handleDeleteClick,
   handleDetailsClick,
@@ -46,30 +45,31 @@ const PokemonList = ({
   updatingPokemon,
   currentPage,
   itemsPerPage,
-  
 }) => (
-    <div>
-      {pokemons
-        .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-        .map((pokemon) => (
-          <div key={pokemon.id} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-            <Button variant="destructive" onClick={() => handleDeleteClick(pokemon.id)} style={{ marginRight: '10px' }}>Удалить</Button>
-            <h2 style={{ marginRight: '10px' }}>{pokemon.name}</h2>
-            <DropdownMenu>
-  <DropdownMenuTrigger asChild>
-  <Button variant="outline" onClick={() => handleDetailsClick(pokemon.id)} style={{ marginRight: '10px' }}>Детали</Button>
-  </DropdownMenuTrigger>
-  <DropdownMenuContent className="p-36 bg-white shadow-md">
-    {selectedDetail && selectedDetail.id === pokemon.id && (
-      <>
-        <div>ID: {selectedDetail.id}</div>
-        <div>Опыт: {selectedDetail.experience}</div>
-        <div>Высота: {selectedDetail.height}</div>
-        <div>Вес: {selectedDetail.weight}</div>
-      </>
-    )}
-  </DropdownMenuContent>
-</DropdownMenu>
+  <div>
+    {pokemons
+      .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+      .map((pokemon) => (
+        <div key={pokemon.id} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+          <Button variant="destructive" onClick={() => handleDeleteClick(pokemon.id)} style={{ marginRight: '10px' }}>Удалить</Button>
+          <h2 style={{ marginRight: '10px' }}>{pokemon.name}</h2>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" onMouseOver={() => handleDetailsClick(pokemon.id)} style={{ marginRight: '10px' }}>
+                Детали
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent sideOffset={4} className="p-1 bg-white shadow-md">
+              {selectedDetail && selectedDetail.id === pokemon.id && (
+                <>
+                  <DropdownMenuItem>{`ID: ${selectedDetail.id}`}</DropdownMenuItem>
+                  <DropdownMenuItem>{`Опыт: ${selectedDetail.experience}`}</DropdownMenuItem>
+                  <DropdownMenuItem>{`Высота: ${selectedDetail.height}`}</DropdownMenuItem>
+                  <DropdownMenuItem>{`Вес: ${selectedDetail.weight}`}</DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Drawer> 
             <DrawerTrigger asChild>
               <Button variant="outline" onClick={() => handleUpdateClick(pokemon.id)} style={{ marginRight: '10px' }}>Обновить</Button>
@@ -91,7 +91,7 @@ const PokemonList = ({
           </Drawer>
         </div>
       ))}
-    </div>
+  </div>
 );
 
 export default PokemonList;

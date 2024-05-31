@@ -1,4 +1,3 @@
-// C:\Users\Pavel\poke-api-2\src\components\ui\dropdown-menu.tsx
 "use client"
 
 import * as React from "react"

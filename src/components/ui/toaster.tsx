@@ -1,4 +1,3 @@
-//C:\Users\Pavel\poke-api-2\src\components\ui\toaster.tsx
 "use client"
 
 import {
