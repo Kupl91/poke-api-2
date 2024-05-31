@@ -28,7 +28,5 @@ export const GET = async (req: NextRequest) => {
      }
   });
   
-   console.log('cerf');
-  
    return NextResponse.json(pokemons);
 };

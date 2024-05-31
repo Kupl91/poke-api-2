@@ -9,6 +9,14 @@ import {
   DropdownMenuContent,
   DropdownMenuItem
 } from './ui/dropdown-menu';
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell
+} from './ui/table'; // Исправленный импорт
 
 interface Pokemon {
   id: number;
@@ -34,6 +42,7 @@ interface PokemonListProps {
   itemsPerPage: number;
 }
 
+
 const PokemonList: React.FC<PokemonListProps> = ({
   pokemons,
   handleDeleteClick,
@@ -47,50 +56,68 @@ const PokemonList: React.FC<PokemonListProps> = ({
   itemsPerPage,
 }) => (
   <div>
-    {pokemons
-      .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-      .map((pokemon) => (
-        <div key={pokemon.id} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-          <Button variant="destructive" onClick={() => handleDeleteClick(pokemon.id)} style={{ marginRight: '10px' }}>Удалить</Button>
-          <h2 style={{ marginRight: '10px' }}>{pokemon.name}</h2>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" onMouseOver={() => handleDetailsClick(pokemon.id)} style={{ marginRight: '10px' }}>
-                Детали
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent sideOffset={4} className="p-1 bg-white shadow-md">
-              {selectedDetail && selectedDetail.id === pokemon.id && (
-                <>
-                  <DropdownMenuItem>{`ID: ${selectedDetail.id}`}</DropdownMenuItem>
-                  <DropdownMenuItem>{`Опыт: ${selectedDetail.experience}`}</DropdownMenuItem>
-                  <DropdownMenuItem>{`Высота: ${selectedDetail.height}`}</DropdownMenuItem>
-                  <DropdownMenuItem>{`Вес: ${selectedDetail.weight}`}</DropdownMenuItem>
-                </>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Drawer> 
-            <DrawerTrigger asChild>
-              <Button variant="outline" onClick={() => handleUpdateClick(pokemon.id)} style={{ marginRight: '10px' }}>Обновить</Button>
-            </DrawerTrigger>
-            <DrawerContent>
-              <DrawerClose />
-              <DrawerHeader>Обновление Покемона</DrawerHeader>
-              {updatingPokemon && (
-                <>
-                  <Input type="text" name="name" value={updatingPokemon.name || ''} onChange={handleUpdateInputChange} placeholder="Имя" />
-                  <Input type="number" name="weight" value={updatingPokemon.weight || ''} onChange={handleUpdateInputChange} placeholder="Вес" />
-                  <Input type="number" name='height' value={updatingPokemon.height || ''} onChange={handleUpdateInputChange} placeholder='Высота' />
-                  <Input type="text" name="species" value={updatingPokemon.species || ''} onChange={handleUpdateInputChange} placeholder="Вид" />
-                  <Input type="number" name="experience" value={updatingPokemon.experience || ''} onChange={handleUpdateInputChange} placeholder="Опыт" />
-                  <Button variant="outline" onClick={handleUpdateSubmit}>Отправить</Button>
-                </>
-              )}
-            </DrawerContent>
-          </Drawer>
-        </div>
-      ))}
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Имя</TableHead>
+          <TableHead>Вес</TableHead>
+          <TableHead>Высота</TableHead>
+          <TableHead>Вид</TableHead>
+          <TableHead>Опыт</TableHead>
+          <TableHead>Действия</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {pokemons
+          .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+          .map((pokemon) => (
+            <TableRow key={pokemon.id}>
+              <TableCell>{pokemon.name}</TableCell>
+              <TableCell>{pokemon.weight}</TableCell>
+              <TableCell>{pokemon.height}</TableCell>
+              <TableCell>{pokemon.species}</TableCell>
+              <TableCell>{pokemon.experience}</TableCell>
+              <TableCell>
+                <Button variant="destructive" onClick={() => handleDeleteClick(pokemon.id)}>Удалить</Button>
+                <DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline" onMouseOver={() => handleDetailsClick(pokemon.id)}>Детали</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent sideOffset={4} className="p-1 bg-white shadow-md">
+    {selectedDetail && selectedDetail.id === pokemon.id && (
+      <>
+        <DropdownMenuItem>{`ID: ${selectedDetail.id}`}</DropdownMenuItem>
+        {selectedDetail.abilities && selectedDetail.abilities.map((ability) => (
+          <DropdownMenuItem key={ability.ability.name}>{`Способность: ${ability.ability.name}`}</DropdownMenuItem>
+        ))}
+      </>
+    )}
+  </DropdownMenuContent>
+</DropdownMenu>
+                <Drawer> 
+                  <DrawerTrigger asChild>
+                    <Button variant="outline" onClick={() => handleUpdateClick(pokemon.id)}>Обновить</Button>
+                  </DrawerTrigger>
+                  <DrawerContent>
+                    <DrawerClose />
+                    <DrawerHeader>Обновление Покемона</DrawerHeader>
+                    {updatingPokemon && (
+                      <>
+                        <Input type="text" name="name" value={updatingPokemon.name || ''} onChange={handleUpdateInputChange} placeholder="Имя" />
+                        <Input type="number" name="weight" value={updatingPokemon.weight || ''} onChange={handleUpdateInputChange} placeholder="Вес" />
+                        <Input type="number" name='height' value={updatingPokemon.height || ''} onChange={handleUpdateInputChange} placeholder='Высота' />
+                        <Input type="text" name="species" value={updatingPokemon.species || ''} onChange={handleUpdateInputChange} placeholder="Вид" />
+                        <Input type="number" name="experience" value={updatingPokemon.experience || ''} onChange={handleUpdateInputChange} placeholder="Опыт" />
+                        <Button variant="outline" onClick={handleUpdateSubmit}>Отправить</Button>
+                      </>
+                    )}
+                  </DrawerContent>
+                </Drawer>
+              </TableCell>
+            </TableRow>
+          ))}
+      </TableBody>
+    </Table>
   </div>
 );
 
