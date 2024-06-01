@@ -1,4 +1,3 @@
-//C:\Users\pavel.kuplensky\Documents\GitHub\poke-api-2\src\app\api\pokemon\update\route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 
@@ -17,10 +16,12 @@ export async function PUT(req: NextRequest) {
       where: { id: Number(id) },
     });
 
-     if (!existingPokemon) {
-      return new Response(JSON.stringify({ message :`Покемон не найден`}),{status :404});
+     if (!existingPokemon){
+        return new Response(JSON.stringify({ message :"Покемон не найден"}),{
+status :404});
      }
     
+      // Обновляем данные покемона
      const updatedPokemon = await prisma.pokemon.update({
        where:{id:Number(id)},
        data:{
@@ -28,26 +29,35 @@ export async function PUT(req: NextRequest) {
         weight:Number(weight),
         height:Number(height),
         species,
-        experience:Number(experience),
+        experience:
+         Number(experience ),
 }
 });
 
-await prisma.pokemonAbility.deleteMany({
+await 
+prisma.pokemonAbility.deleteMany({
 where:{pokemonId :Number (id)},
 })
 
-await prisma.pokemonAbility.createMany({
-data :abilities.map((ability)=>({ability,pokemonId:Number (id)})),
+ // Указываем тип для элемента abilities 
+await  prisma.pokemonAbility.createMany({
+data :
+abilities.map((ability:string )=>({ability ,pokemonId :Number(
+id)})),
 });
 
- return new Response(JSON.stringify(updatedPokemon),{
+ // Возвращаем обновленного покемона
+return new Response(JSON.stringify(updatedPokemon),{
  status :200
  });
 
-} catch (error){
-console.error('Ошибка при обновлении покемона', error.message);
+} catch (
+error){
+   // Добавляем проверку типа ошибки   
+const errorMessage= error instanceof Error ? error.message :'Неизвестная ошибка';
+console.error('Ошибка при обновлении покемона', errorMessage);
 
-return new Response(JSON.stringify({message:error.message}),
+return new Response(JSON.stringify({message:errorMessage}),
 {status:500});
 }
 }
