@@ -4,18 +4,15 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// Убедись включить правильный тип запроса
 export async function PUT(req: NextRequest) {
   try {
     const body = await req.json();
     const { id, name, weight, height, species, experience, abilities = [] } = body;
 
-    // Валидация данных
     if (!id || isNaN(id) || !name || !species || isNaN(weight) || isNaN(height) || isNaN(experience)) {
       return NextResponse.json({ message: "Неверные данные" }, { status: 400 });
     }
 
-    // Проверна существование покемона с данным id
     const existingPokemon = await prisma.pokemon.findUnique({
       where: { id: Number(id) },
     });
@@ -32,7 +29,6 @@ export async function PUT(req: NextRequest) {
         height:Number(height),
         species,
         experience:Number(experience),
-
 }
 });
 
@@ -40,15 +36,12 @@ await prisma.pokemonAbility.deleteMany({
 where:{pokemonId :Number (id)},
 })
 
-  
 await prisma.pokemonAbility.createMany({
 data :abilities.map((ability)=>({ability,pokemonId:Number (id)})),
 });
 
-
  return new Response(JSON.stringify(updatedPokemon),{
  status :200
- 
  });
 
 } catch (error){
@@ -57,11 +50,4 @@ console.error('Ошибка при обновлении покемона', error
 return new Response(JSON.stringify({message:error.message}),
 {status:500});
 }
-
-}
-
-// Добавь обработку метода запроса
-export async function handler(req){
-  res.setHeader('Allow',['PUT']);
-
 }
