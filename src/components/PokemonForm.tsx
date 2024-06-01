@@ -11,22 +11,27 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer"
+  DrawerTrigger
+} from "@/components/ui/drawer";
 
 interface PokemonFormProps {
-  handleSubmitClick: () => void;
-  handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleCreateClick: () => void;
-  showForm: boolean;
-  newPokemon: {
-    name: string;
-    weight: number;
-    height: number;
-    species: string;
-    experience: number;
-  };
+ handleSubmitClick: () => void;
+ handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+ handleCreateClick: () => void;
+ showForm: boolean;
+ newPokemon: IndexedPokemon; // обновили здесь
 }
+
+interface IndexedPokemon {
+ [key: string]: string | number | undefined; // добавили этот индексный интерфейс
+ name: string;
+ weight:number;
+ height:number;
+ species:string ;
+ experience:number ;
+}
+
+
 const PokemonForm: React.FC<PokemonFormProps> = ({handleSubmitClick, handleInputChange, handleCreateClick, showForm, newPokemon}) => {
   return (
     <div className="bg-gray-300">
@@ -48,15 +53,15 @@ const PokemonForm: React.FC<PokemonFormProps> = ({handleSubmitClick, handleInput
                 { name:"experience",placeholder:"Введите опыт покемона ",type:"number"}
               ].map((field) => (
                 <Input
-                  key={field.name}
-                  type={field.type}
-                  name={field.name}
-                  onChange={handleInputChange}
-                  placeholder={field.placeholder}
-                  value={newPokemon[field.name]}
-                  className="bg-gray-300"
-                />
-              ))}
+                key={field.name}
+                type={field.type}
+                name={field.name}
+                onChange={handleInputChange}
+                placeholder={(newPokemon[field.name] as any)?.toString() ?? field.placeholder}
+                value={newPokemon[field.name]}
+                className='bg-gray-300'
+              />
+            ))}
               <Button variant="outline" onClick={handleSubmitClick} className="bg-blue-500">Отправить</Button>
             </div>
           </DrawerContent>
