@@ -98,7 +98,7 @@ const PokemonList: React.FC<PokemonListProps> = ({
                   <DrawerTrigger asChild>
                     <Button variant="outline" onClick={() => handleUpdateClick(pokemon.id)} className="bg-blue-500">Обновить</Button>
                   </DrawerTrigger>
-                  <DrawerContent>
+                  <DrawerContent  className="bg-grey-301 w-1/3">
                     <DrawerClose />
                     <DrawerHeader>Обновление Покемона</DrawerHeader>
                     {updatingPokemon && (
