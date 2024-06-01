@@ -28,16 +28,13 @@ export async function POST(req: NextRequest) {
         height: Number(height),
         species,
         experience: Number(experience),
-        abilities: {
+        abilities :{
           createMany:{
             data :abilities.map((ability)=> ({ability})),
           }
-          
-},
+      },
 },
 });
-
-    
 
 return new Response(JSON.stringify(newPokemon),{
 status :201
@@ -51,9 +48,4 @@ return new Response(JSON.stringify({message:error.message}),{
 status :500
 });
 }
-}
-// Продолжай обработку метода запроса
-export async function handler(req){
-res.setHeader('Allow',['POST']);
-
 }
