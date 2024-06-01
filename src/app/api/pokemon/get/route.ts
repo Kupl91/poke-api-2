@@ -1,9 +1,9 @@
+import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export async function GET(request) {
+export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
@@ -23,28 +23,31 @@ export async function GET(request) {
       },
     });
 
-    if (!pokemon) return NextResponse.json({ message: 'Покемон не найден' }, { status: 404 });
+    if (!pokemon) return NextResponse.json({ message : "Покемон не найден"},{
+status :404});
     
-    // Форматируем данные для возвращаемого ответа
-    const responseData = {
-      id: pokemon.id,
-      name: pokemon.name,
-      weight: pokemon.weight,
-      height: pokemon.height,
-      species: pokemon.species,
-      experience: pokemon.experience,
-       abilities:
-         pokemon.abilities.map((pa) => ({
-           ability:
-            pa.ability
-     })),
+   // Форматируем данные для возвращаемого ответа
+const responseData={
+         id:pokemon.id,
+         name:pokemon.name,
+     weight:pokemon.weight,
+     height:pokemon.height,
+species:pokemon.species ,
+experience:
+pokemon.experience ,abilities:
+         pokemon.abilities.map((pa )=>({
+           ability :
+            pa.ability })),
    };
 
-return NextResponse.json(responseData);
+return 
+NextResponse.json(responseData);
    
-} catch (error) {
-console.error(error);
+} catch (error){
+       const errorMessage= error instanceof Error ? error.message :'Неизвестная ошибка';
+       console.error('Ошибка получения покемона:',errorMessage);
 
-return NextResponse.json({ message:'Внутренняя ошибка сервера'},  {status : 500});
+return new Response(JSON.stringify({message:'Внутренняя ошибка сервера',details:errorMessage}),{
+status :500 });
 }
 }
