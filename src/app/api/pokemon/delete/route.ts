@@ -25,12 +25,13 @@ export async function DELETE(req: NextRequest) {
       }),
     ]);
 
-    return NextResponse.json({ message: 'Покемон успешно удален' }, 
-                             { status: 200 });
-  } catch (error) {
-    console.error('Ошибка при удалении покемона:', error);
-    
-   return new Response(JSON.stringify({ error:`Не удалось удалить покемона`, details:error.message}),{status :500});
-     
+   return  NextResponse.json({ message : "Покемон успешно удален" },{status :200});
+
+} catch (error ){
+       const errorMessage= error instanceof Error ? error.message :'Неизвестная ошибка';
+console.error('Ошибка при удалении покемона:',errorMessage);
+
+return new Response(JSON.stringify({error:'Не удалось удалить покемона',details:errorMessage}),{
+status :500 });
 }
 }
