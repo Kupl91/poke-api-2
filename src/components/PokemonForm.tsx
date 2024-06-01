@@ -29,13 +29,14 @@ interface PokemonFormProps {
 }
 const PokemonForm: React.FC<PokemonFormProps> = ({handleSubmitClick, handleInputChange, handleCreateClick, showForm, newPokemon}) => {
   return (
-    <div className="bg-gray-100">
+    <div className="bg-gray-300">
       <Drawer>
         <DrawerTrigger asChild>
           <Button variant="outline" onClick={handleCreateClick} className="bg-green-500">Создай</Button>
         </DrawerTrigger>
         {showForm && (
-          <DrawerContent>
+          <div className="fixed inset-0 flex items-center justify-center">
+          <DrawerContent className="bg-grey-300 w-1/3">
             <DrawerClose />
             <DrawerHeader>Создание Покемона</DrawerHeader>
             <div className="flex flex-col space-y-4 p-4">
@@ -53,12 +54,13 @@ const PokemonForm: React.FC<PokemonFormProps> = ({handleSubmitClick, handleInput
                   onChange={handleInputChange}
                   placeholder={field.placeholder}
                   value={newPokemon[field.name]}
-                  className="bg-gray-200"
+                  className="bg-gray-300"
                 />
               ))}
               <Button variant="outline" onClick={handleSubmitClick} className="bg-blue-500">Отправить</Button>
             </div>
           </DrawerContent>
+          </div>
         )}
       </Drawer>
       <Toaster />

@@ -15,15 +15,15 @@ const FilterAndSort: React.FC<FilterAndSortProps> = ({
   handleFilterValueChange 
 }) => {
   return (
-    <div className="flex space-x-4 bg-gray-100 rounded-lg">
+    <div className="flex space-x-4 bg-gray-300 rounded-lg">
       <Input
         type="text"
         onChange={handleFilterValueChange}
-        className="w-35 bg-gray-200"
+        className="w-35 bg-gray-300"
         placeholder="Фильтрация по "
       />
-      <Select onValueChange={handleFilterTypeChange} className="bg-gray-200 rounded-lg">
-        <SelectTrigger>
+      <Select onValueChange={handleFilterTypeChange} className="bg-gray-300 rounded-lg">
+        <SelectTrigger className="bg-grey-300">
           <SelectValue placeholder="Выберите опцию" />
         </SelectTrigger>
         <SelectContent>
@@ -32,8 +32,8 @@ const FilterAndSort: React.FC<FilterAndSortProps> = ({
           <SelectItem value="height">Высота</SelectItem>
         </SelectContent>
       </Select>
-      <Select onValueChange={handleSortChange} className="bg-gray-200 rounded-lg">
-        <SelectTrigger>
+      <Select onValueChange={handleSortChange} className="bg-gray-300 rounded-lg">
+        <SelectTrigger className="bg-grey-300">
           <SelectValue placeholder="Выберите опцию" />
         </SelectTrigger>
         <SelectContent>

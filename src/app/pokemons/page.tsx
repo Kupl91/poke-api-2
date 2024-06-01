@@ -39,7 +39,7 @@ const PokemonsPage = () => {
   } = usePokemonFilterAndSort(pokemons);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 bg-gray-300">
       <FilterAndSort 
         handleSortChange={handleSortChange} 
         handleFilterTypeChange={handleFilterTypeChange}

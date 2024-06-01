@@ -23,28 +23,28 @@ const CustomPagination: React.FC<PaginationProps> = ({ currentPage, totalPages, 
   };
 
   return (
-    <PaginationUI className="bg-gray-100 rounded-lg p-2">
+    <PaginationUI className="bg-gray-300 rounded-lg p-2">
       <PaginationContent>
         <PaginationItem>
-        <button onClick={previousPage} className="bg-gray-500 rounded-lg">
+        <button onClick={previousPage} className="bg-gray-300 rounded-lg">
             <PaginationPrevious />
           </button>
         </PaginationItem>
         {[...Array(totalPages)].map((_, index) => (
           (index + 1 === currentPage) ? (
-            <div key={index} className="bg-gray-200 rounded-lg">
+            <div key={index} className="bg-gray-300 rounded-lg">
               <p><strong>{index + 1}</strong></p>
             </div>
           ) : (
             // Добавь более специфическую логику для обработчика кликов.
-            <div key={index} onClick={() => handleChange(index + 1)} className="bg-gray-200 rounded-lg">{index + 1}</div>
+            <div key={index} onClick={() => handleChange(index + 1)} className="bg-gray-300 rounded-lg">{index + 1}</div>
           ))
         )}
         {totalPages > (currentPage + 5) && (
           <>
             <PaginationEllipsis />
             <PaginationItem>
-              <button onClick={() => handleChange(totalPages)} className="bg-gray-500 rounded-lg">
+              <button onClick={() => handleChange(totalPages)} className="bg-gray-300 rounded-lg">
                   <PaginationNext />
               </button>
             </PaginationItem>
@@ -52,7 +52,7 @@ const CustomPagination: React.FC<PaginationProps> = ({ currentPage, totalPages, 
         )}
       </PaginationContent>
       <PaginationItem>
-        <button onClick={nextPage} className="bg-gray-500 rounded-lg">
+        <button onClick={nextPage} className="bg-gray-300 rounded-lg">
             <PaginationNext />
         </button>
       </PaginationItem>
