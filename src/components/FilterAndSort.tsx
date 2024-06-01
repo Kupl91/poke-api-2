@@ -4,8 +4,8 @@ import { Input } from './ui/input';
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from './ui/select'; 
 
 interface FilterAndSortProps {
-  handleSortChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-  handleFilterTypeChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleSortChange: (value: string) => void;
+  handleFilterTypeChange: (value: string) => void;
   handleFilterValueChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -22,7 +22,7 @@ const FilterAndSort: React.FC<FilterAndSortProps> = ({
         className="w-35 bg-gray-300"
         placeholder="Фильтрация по "
       />
-      <Select onValueChange={handleFilterTypeChange} className="bg-gray-300 rounded-lg">
+      <Select onValueChange={handleFilterTypeChange} >
         <SelectTrigger className="bg-grey-300">
           <SelectValue placeholder="Выберите опцию" />
         </SelectTrigger>
@@ -32,7 +32,7 @@ const FilterAndSort: React.FC<FilterAndSortProps> = ({
           <SelectItem value="height">Высота</SelectItem>
         </SelectContent>
       </Select>
-      <Select onValueChange={handleSortChange} className="bg-gray-300 rounded-lg">
+      <Select onValueChange={handleSortChange} >
         <SelectTrigger className="bg-grey-300">
           <SelectValue placeholder="Выберите опцию" />
         </SelectTrigger>
