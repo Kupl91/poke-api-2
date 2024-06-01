@@ -1,3 +1,4 @@
+# .vercelignore
 src/app/page.tsx
 src/app/newUser.js
 src/app/fetchAndSavePokemonData.js
