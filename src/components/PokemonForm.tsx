@@ -60,7 +60,7 @@ const PokemonForm: React.FC<PokemonFormProps> = ({handleSubmitClick, handleInput
               <Button variant="outline" onClick={handleSubmitClick} className="bg-blue-500">Отправить</Button>
             </div>
           </DrawerContent>
-          </div>
+          </div> 
         )}
       </Drawer>
       <Toaster />
