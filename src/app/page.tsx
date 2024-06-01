@@ -1,158 +1,77 @@
-// C:\Users\Pavel\poke-api-2\src\app\page.tsx
-'use client';
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { Button } from "@/components/ui/button"; 
+// C:\Users\Pavel\poke-api-2\src\app\pokemons\page.tsx
+"use client"
+import React, { useEffect, useState } from 'react';
+import FilterAndSort from '@/components/FilterAndSort';
+import Pagination from '@/components/Pagination';
+import PokemonList from '@/components/PokemonList';
+import PokemonForm from '@/components/PokemonForm';
+import { usePokemonActions } from '@/lib/PokemonUtils/pokeActions';
+import { usePokemonPagination } from '@/lib/PokemonUtils/pokePagination';
+import { usePokemonFilterAndSort } from '@/lib/PokemonUtils/pokeFilterAndSort';
 
-const DetailPage = ({ pokeName }) => {
-  return <div>{pokeName}</div>;
-};
+const PokemonsPage = () => {
+  const { currentPage, itemsPerPage, nextPage, previousPage } = usePokemonPagination();
+  const {
+    pokemons,
+    selectedDetail,
+    newPokemon,
+    updatingPokemon,
+    fetchPokemons,
+    handleDetailsClick,
+    handleDeleteClick,
+    handleSubmitClick,
+    handleUpdateSubmit,
+    handleUpdateInputChange,
+    showForm, 
+    handleCreateClick,
+    handleInputChange,
+    handleUpdateClick,
+  } = usePokemonActions();
 
-const PageCounter = ({ currentPage, totalPages }) => {
+  const {
+    sortType, 
+    filterType, 
+    filterValue, 
+    handleSortChange, 
+    handleFilterTypeChange, 
+    handleFilterValueChange, 
+    sortedAndFilteredPokemons 
+  } = usePokemonFilterAndSort(pokemons);
+
   return (
-    <div>
-      Страница {currentPage} из {totalPages}.
+    <div className="space-y-4 bg-gray-300">
+      <FilterAndSort 
+        handleSortChange={handleSortChange} 
+        handleFilterTypeChange={handleFilterTypeChange}
+        handleFilterValueChange={handleFilterValueChange}
+      />
+      <PokemonList 
+        pokemons={sortedAndFilteredPokemons}
+        handleDeleteClick={handleDeleteClick}
+        handleDetailsClick={handleDetailsClick}
+        handleUpdateSubmit={handleUpdateSubmit}
+        handleUpdateClick={handleUpdateClick}
+        handleUpdateInputChange={handleUpdateInputChange}
+        selectedDetail={selectedDetail}
+        updatingPokemon={updatingPokemon}
+        currentPage={currentPage}
+        itemsPerPage={itemsPerPage}
+      />
+      <Pagination
+        currentPage={currentPage}
+        totalPages={Math.ceil(sortedAndFilteredPokemons.length / itemsPerPage)}
+        nextPage={nextPage}
+        previousPage={previousPage}
+      />
+      <PokemonForm
+       handleSubmitClick={handleSubmitClick}
+       handleInputChange={handleInputChange}
+       handleCreateClick={handleCreateClick}
+       newPokemon={newPokemon}
+       showForm={showForm} 
+      />
     </div>
   );
 };
 
-const Page = () => {
-  const [pokemons, setPokemons] = useState([]);
-  const [selectedDetail, setSelectedDetail] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(10);
-  const [sortType, setSortType] = useState('id');
-  const [filterType, setFilterType] = useState('name');
-  const [filterValue, setFilterValue] = useState('');
-  const itemsPerPage = 10;
-
-  useEffect(() => {
-    async function getAllPokemon() {
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=100`);
-      const data = await response.json();
-      const pokemonsData = await Promise.all(data.results.map(async (pokemon, index) => {
-        const pokemonResponse = await fetch(pokemon.url);
-        const pokemonData = await pokemonResponse.json();
-        return { 
-          id: index + 1,
-          name: pokemon.name, 
-          url: pokemon.url,
-          height: pokemonData.height
-        };
-      }));
-
-      setPokemons(pokemonsData);
-      setTotalPages(Math.ceil(pokemonsData.length / itemsPerPage));
-    }
-
-    getAllPokemon();
-  }, []);
-
-  const [sortedPokemons, setSortedPokemons] = useState([]);
-
-useEffect(() => {
-  sortPokemons();
-}, [pokemons, sortType]);
-
-const sortPokemons = () => {
-  let sorted;
-  switch(sortType) {
-    case 'id' :
-      sorted = [...pokemons].sort((a , b) => a.id - b.id);
-      break;
-    case 'name' :
-      sorted = [...pokemons].sort((a , b) => a.name.localeCompare(b.name));
-      break;
-    case 'height':
-      sorted = [...pokemons].sort((a , b) => a.height - b.height);
-      break;
-      default:
-        sorted = pokemons;
-  }
-  setSortedPokemons(sorted);
-}
-
-  const handleDetailsClick = async (url) => {
-    setSelectedDetail(null);
-    try {
-      const response = await fetch(url);
-      if(response.ok){
-        const pokemonData = await response.json();
-        
-        setSelectedDetail({
-          name: pokemonData.name,
-          abilities: pokemonData.abilities.map(a => a.ability.name).join(', '),
-          experience: pokemonData.base_experience,
-          height: pokemonData.height
-        });
-      } else {
-         throw new Error('Не удалось получить информацию о покемоне');
-       }
-      
-    } catch (error) {
-       console.error("Ошибка при загрузке данных:", error);
-     }
-   };
-
-   const nextPage = () => {
-     if (currentPage < totalPages) {
-       setCurrentPage(currentPage + 1);
-     }
-   };
-   
-   const previousPage = () => {
-     if (currentPage > 1) {
-       setCurrentPage(currentPage - 1);
-     }
-   };
-   
-   const handleSortChange = (event) => {
-    setSortType(event.target.value);
-   };
-
-   const handleFilterTypeChange = (event) => {
-    setFilterType(event.target.value);
-   };
-
-   const handleFilterValueChange = (event) => {
-    setFilterValue(event.target.value.toLowerCase()); 
-   };
-
-  return (
-    <div>
-      <input type="text" onChange={handleFilterValueChange} placeholder="Фильтр..." /> 
-      <select onChange={handleFilterTypeChange}>
-        <option value="name">Имя</option>
-        <option value="id">ID</option>
-        <option value="height">Высота</option>
-      </select>
-      <select onChange={handleSortChange}>
-        <option value="id">ID</option>
-        <option value="name">Имя</option>
-        <option value="height">Высота</option>
-      </select>
-      {pokemons
-        .filter((pokemon) => pokemon[filterType].toString().toLowerCase().includes(filterValue)) 
-        .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-        .map(({ id, name, url }) => (
-          <div key={id} style={{ marginBottom:'10px' }}>
-            <span>{name}</span>
-            <Button  onClick={() => handleDetailsClick(url)}>Детали</Button> 
-            
-            <Link href={`/${name}`} legacyBehavior>
-              <a target="_blank" style={{ marginLeft: '10px', padding: '5px 10px', backgroundColor: '#0070f3', color: '#fff', textDecoration: 'none', borderRadius: '5px' }}>Подробно</a>
-             </Link>
-
-             {selectedDetail && selectedDetail.name === name && 
-               (<span style={{ marginLeft:"20px" }}>{`Имя:${selectedDetail.name}, Способности:${selectedDetail.abilities}, Опыт:${selectedDetail.experience}, Высота:${selectedDetail.height}`}</span>)
-             }
-          </div>
-        ))}
-        <Button onClick={previousPage}>Предыдущая</Button> 
-      <Button onClick={nextPage}>Следующая</Button>
-      <PageCounter currentPage={currentPage} totalPages={totalPages} />
-    </div>
-  );
-};
-
-export default Page;
+export default PokemonsPage;
