@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 
 export const usePokemonActions = () => {
-  const [pokemons, setPokemons] = useState([]);
-  const [selectedDetail, setSelectedDetail] = useState(null);
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [selectedDetail, setSelectedDetail] = useState<PokemonDetail | null>(null)
   const [newPokemon, setNewPokemon] = useState({
     name: '',
     weight: 0,
@@ -12,7 +12,7 @@ export const usePokemonActions = () => {
     species: '',
     experience: 0,
   });
-  const [updatingPokemon, setUpdatingPokemon] = useState(null);
+  
   const [showForm, setShowForm] = useState(false);
   const [updateFormOpen, setUpdateFormOpen] = useState(false);
 
@@ -28,50 +28,92 @@ export const usePokemonActions = () => {
       }
       const data = await response.json();
       setPokemons(data);
-    } catch (error) {
-      console.error("Ошибка при загрузке покемонов:", error.message); 
-    }
-  };
-
-  const handleDetailsClick = async (id) => {
-    if (selectedDetail && selectedDetail.id === id) {
-      setSelectedDetail(null);
-      return;
-    }
-  
-    try {
-      const response = await fetch(`/api/pokemon/get?id=${id}`);
+    } catch (unknownError) {
+      let errorMessage;
       
-      if (!response.ok) {
-        setSelectedDetail(null);
-        alert('Покемон с таким ID не найден');
-        return;
+      if (unknownError instanceof Error) {
+        errorMessage = unknownError.message;
+      } else {
+        errorMessage = String(unknownError); 
       }
   
-      const pokemonData = await response.json();
-  
-      // Корректное получение способностей
-      const abilities = Array.isArray(pokemonData.abilities)
-                        ? pokemonData.abilities.map(pa => ({ ability: pa.ability }))
-                        : [];
-  
-          setSelectedDetail({
-            id: pokemonData.id,
-            experience: pokemonData.experience,
-            height: pokemonData.height,
-            weight: pokemonData.weight,
-           abilities, // Поправка
-          });
-   } catch (error) {
-   console.error('Ошибка при загрузке данных', error);
-  }
+     console.error("Ошибка при загрузке покемонов:", errorMessage);
+    }
   };
 
-  const handleDeleteClick = async (id) => {
+  interface PokemonDetail {
+    id: number;
+    experience: number;
+    height: number;
+    weight: number;
+    abilities: { ability: string }[];
+  }
+  
+  interface Pokemon {
+    id: number;
+    name: string;
+    weight: number;
+    height: number;
+    species: string;
+    experience: number;
+    abilities: { [key: string]: any }[];
+  }
+
+  const initialPokemonState = {
+    id: -1,
+    name: '',
+    weight: -1,
+    height: -1,
+    species:'',
+    experience:-1,
+     abilities:[]
+  }
+
+  const [updatingPokemon, setUpdatingPokemon] = useState<Pokemon | null>(initialPokemonState);
+
+  const handleDetailsClick = async (id: number) => {
+      if (selectedDetail && selectedDetail.id === id) {
+        setSelectedDetail(null);
+        return;
+      }
+    
+      try {
+          const response = await fetch(`/api/pokemon/get?id=${id}`);
+          
+          if (!response.ok) {
+            setSelectedDetail(null);
+            alert('Покемон с таким ID не найден');
+            return;
+          }
+      
+        const pokemonData = await response.json();
+        
+        // Корректное получение способностей
+        const abilities = Array.isArray(pokemonData.abilities)
+                          ? pokemonData.abilities.map((pa : {ability : string}) => ({ ability: pa.ability }))
+                          : [];
+      
+        // Задание типа для выбранного Покемона
+        const detail : PokemonDetail = {
+          id: pokemonData.id,
+          experience: pokemonData.experience,
+          height: pokemonData.height,
+          weight: pokemonData.weight,
+         abilities, 
+       };
+  
+       setSelectedDetail(detail);   // использование интерфейса 
+     } catch (error) {
+     console.error('Ошибка при загрузке данных', error);
+    }
+  };
+
+  const handleDeleteClick = async (id: number) => {
     try {
       const response = await fetch(`/api/pokemon/delete?id=${id}`, {
         method: 'DELETE',
       });
+
       if (response.ok) {
         setPokemons(pokemons.filter((pokemon) => pokemon.id !== id));
       } else {
@@ -80,10 +122,10 @@ export const usePokemonActions = () => {
     } catch (error) {
       console.error("Ошибка при удалении покемона:", error);
     }
-  };
+};
 
 
-const handleSubmitClick = async () => {
+ const handleSubmitClick = async () => {
   try {
     const response = await fetch('/api/pokemon/create', {
       method: 'POST',
@@ -98,72 +140,81 @@ const handleSubmitClick = async () => {
         experience: newPokemon.experience,
       }),
     });
+
     if (response.ok) {
       const pokemon = await response.json();
-      setPokemons([...pokemons, pokemon]);
+      setPokemons((prevPokemons) => [...prevPokemons, pokemon]);
+      
       toast({
         title: "Успех!",
         description: 'Покемон успешно заведен!',
         variant: "default",
       });
     } else {
-      throw new Error('Не удалось создать покемона');
+   console.log("Server Error ",response.status);  
+   throw new Error('Не удалось создать покемона');
     }
-  } catch (error) {
-    console.error("Ошибка при создании покемона:", error.message);
-    toast({
+  } catch (err) { 
+ const error = err as Error; // Приведение типа ошибки
+
+ console.error("Ошибка при создании покемона:", error.message);
+
+ toast({
        title:"Ошибка!", 
        description:'Такой покемон уже существует.',
-       variant:"destructive",
-     });
+    variant:"destructive",
+ });
   }
 };
-  const handleUpdateSubmit = async () => {
-    if (!updatingPokemon) {
-      console.error("Нет покемона для обновления");
-      return;
-    }
-  
-    try {
-      const response = await fetch('/api/pokemon/update', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: updatingPokemon.id,
-          name: updatingPokemon.name,
-          weight: updatingPokemon.weight,
-          height: updatingPokemon.height,
-          species: updatingPokemon.species,
-          experience: updatingPokemon.experience,
-        }),
-      });
-  
-      if (response.ok) {
-        const updatedPokemon = await response.json();
-        setPokemons(pokemons.map((pokemon) => pokemon.id === updatedPokemon.id ? updatedPokemon : pokemon));
-        setUpdatingPokemon(null);
-      } else {
-        throw new Error('Не удалось обновить покемона');
-      }
-    } catch (error) {
-      console.error("Ошибка при обновлении покемона:", error.message);
-    }
-  };
 
-  const handleUpdateInputChange = (event) => {
-    setUpdatingPokemon({
-      ...updatingPokemon,
-      [event.target.name]: event.target.value,
+const handleUpdateSubmit = async () => {
+  if (!updatingPokemon) {
+    console.error("Нет покемона для обновления");
+    return;
+  }
+
+  try {
+    const response = await fetch('/api/pokemon/update', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: updatingPokemon.id,
+        name: updatingPokemon.name,
+        weight: updatingPokemon.weight,
+        height: updatingPokemon.height,
+        species: updatingPokemon.species,
+        experience: updatingPokemon.experience,
+      }),
     });
-  };
+
+    if (response.ok) {
+      const updatedPokemon = await response.json();
+      setPokemons(pokemons.map((pokemon) => pokemon.id === updatedPokemon.id ? updatedPokemon : pokemon));
+      setUpdatingPokemon(null);
+    } else {
+      throw new Error('Не удалось обновить покемона');
+    }
+  } catch (err) { 
+     // Приведение типа ошибки
+     const error = err as Error; 
+
+     console.error("Ошибка при обновлении покемона:", error.message);
+  }
+};
+
+const handleUpdateInputChange= (event : React.ChangeEvent<HTMLInputElement>)=>{
+  setUpdatingPokemon((prev)=>({
+     ...prev!,
+      [event.target.name]: event.target.value}))
+}
 
   const handleCreateClick = () => {
     setShowForm((prevShowForm) => !prevShowForm);
   };
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewPokemon({
       ...newPokemon,
       [event.target.name]: event.target.value,
