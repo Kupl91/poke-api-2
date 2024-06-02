@@ -1,11 +1,6 @@
 // C:\Users\Pavel\poke-api-2\src\lib\PokemonUtils\pokeFilterAndSort.ts
 import { useState } from 'react';
-
-interface Pokemon {
-  id: number;
-  name: string;
-  [key: string]: any; // Позволяет добавлять другие свойства
-}
+import { Pokemon } from '@/lib/types';
 
 export const usePokemonFilterAndSort = (pokemons: Pokemon[]) => {
   const [sortType, setSortType] = useState<keyof Pokemon>('id');

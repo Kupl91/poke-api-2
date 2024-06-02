@@ -2,12 +2,14 @@
 import React from 'react';
 import { Input } from './ui/input';
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from './ui/select'; 
+import { Pokemon } from '@/lib/types';
 
 interface FilterAndSortProps {
-  handleSortChange: (value: string) => void;
-  handleFilterTypeChange: (value: string) => void;
+  handleSortChange: (value: keyof Pokemon) => void;
+  handleFilterTypeChange: (value: keyof Pokemon) => void;
   handleFilterValueChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
+
 
 const FilterAndSort: React.FC<FilterAndSortProps> = ({ 
   handleSortChange, 

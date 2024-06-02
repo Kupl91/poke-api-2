@@ -16,18 +16,8 @@ import {
   TableRow,
   TableHead,
   TableCell
-} from './ui/table'; // Исправленный импорт
-
-interface Pokemon {
-  id: number;
-  name: string;
-  weight: number;
-  height: number;
-  baseExperience: number;
-  species: string;
-  experience: number;
-  abilities: { ability: { name: string } }[];
-}
+} from './ui/table'; 
+import { Pokemon } from '@/lib/types';
 
 interface PokemonListProps {
   pokemons: Pokemon[];
@@ -41,7 +31,6 @@ interface PokemonListProps {
   currentPage: number;
   itemsPerPage: number;
 }
-
 
 const PokemonList: React.FC<PokemonListProps> = ({
   pokemons,

@@ -1,6 +1,7 @@
 // C:\Users\Pavel\poke-api-2\src\lib\PokemonUtils\pokeActions.ts
 import { useState, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
+import { Pokemon } from '@/lib/types';
 
 export const usePokemonActions = () => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
@@ -49,15 +50,6 @@ export const usePokemonActions = () => {
     abilities: { ability: string }[];
   }
   
-  interface Pokemon {
-    id: number;
-    name: string;
-    weight: number;
-    height: number;
-    species: string;
-    experience: number;
-    abilities: { [key: string]: any }[];
-  }
 
   const initialPokemonState = {
     id: -1,
