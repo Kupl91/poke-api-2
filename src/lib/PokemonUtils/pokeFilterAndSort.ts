@@ -19,26 +19,24 @@ export const usePokemonFilterAndSort = (pokemons: Pokemon[]) => {
     setFilterValue(event.target.value.toLowerCase());
   };
 
-  const sortedAndFilteredPokemons = pokemons
-    .filter((pokemon) =>
-      pokemon[filterType]?.toString().toLowerCase().includes(filterValue)
-    )
-    .sort((a, b) => {
-      if (sortType === 'name') {
-        return a.name.localeCompare(b.name);
-      } else {
-        return a[sortType] - b[sortType];
-      }
-    });
-
-
-  return { 
-    sortType, 
-    filterType, 
-    filterValue, 
-    handleSortChange, 
-    handleFilterTypeChange, 
-    handleFilterValueChange, 
-    sortedAndFilteredPokemons 
+  return {
+    sortType,
+    filterType,
+    filterValue,
+    handleSortChange,
+    handleFilterTypeChange,
+    handleFilterValueChange,
+    sortedAndFilteredPokemons: pokemons
+      .filter((pokemon) =>
+        (pokemon[filterType] as string | number)?.toString().toLowerCase().includes(filterValue)
+      )
+      .sort((a, b) => {
+        if (typeof a[sortType] === 'string' && typeof b[sortType] === 'string') {
+          return (a[sortType] as string).localeCompare(b[sortType] as string);
+        } else if (typeof a[sortType] === 'number' && typeof b[sortType] === 'number') {
+          return (a[sortType] as number) - (b[sortType] as number);
+        }
+        return 0;
+      })
   };
 };
