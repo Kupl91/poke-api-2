@@ -1,3 +1,2 @@
 # .vercelignore
-src/app/page.tsx
 src/app/[id]/page.tsx
