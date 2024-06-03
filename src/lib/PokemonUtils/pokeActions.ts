@@ -44,10 +44,12 @@ export const usePokemonActions = () => {
 
   interface PokemonDetail {
     id: number;
-    experience: number;
-    height: number;
+    name: string;
     weight: number;
-    abilities: { ability: string }[];
+    height: number;
+    species: string;
+    experience: number;
+    abilities: { ability: { name: string } }[];
   }
   
 
@@ -64,40 +66,42 @@ export const usePokemonActions = () => {
   const [updatingPokemon, setUpdatingPokemon] = useState<Pokemon | null>(initialPokemonState);
 
   const handleDetailsClick = async (id: number) => {
-      if (selectedDetail && selectedDetail.id === id) {
+    if (selectedDetail && selectedDetail.id === id) {
+      setSelectedDetail(null);
+      return;
+    }
+  
+    try {
+      const response = await fetch(`/api/pokemon/get?id=${id}`);
+      
+      if (!response.ok) {
         setSelectedDetail(null);
+        alert('Покемон с таким ID не найден');
         return;
       }
-    
-      try {
-          const response = await fetch(`/api/pokemon/get?id=${id}`);
-          
-          if (!response.ok) {
-            setSelectedDetail(null);
-            alert('Покемон с таким ID не найден');
-            return;
-          }
-      
-        const pokemonData = await response.json();
-        
-        // Корректное получение способностей
-        const abilities = Array.isArray(pokemonData.abilities)
-                          ? pokemonData.abilities.map((pa : {ability : string}) => ({ ability: pa.ability }))
-                          : [];
-      
-        // Задание типа для выбранного Покемона
-        const detail : PokemonDetail = {
-          id: pokemonData.id,
-          experience: pokemonData.experience,
-          height: pokemonData.height,
-          weight: pokemonData.weight,
-         abilities, 
-       };
   
-       setSelectedDetail(detail);   // использование интерфейса 
-     } catch (error) {
+      const pokemonData = await response.json();
+  
+      // Корректное получение способностей
+      const abilities = Array.isArray(pokemonData.abilities)
+                        ? pokemonData.abilities.map((pa: { ability: { name: string } }) => ({ ability: { name: pa.ability.name } }))
+                        : [];
+  
+      // Задание типа для выбранного Покемона
+      const detail: PokemonDetail = {
+        id: pokemonData.id,
+        name: pokemonData.name,
+        weight: pokemonData.weight,
+        height: pokemonData.height,
+        species: pokemonData.species,
+        experience: pokemonData.experience,
+       abilities, 
+     };
+  
+     setSelectedDetail(detail);   // использование интерфейса 
+   } catch (error) {
      console.error('Ошибка при загрузке данных', error);
-    }
+   }
   };
 
   const handleDeleteClick = async (id: number) => {
