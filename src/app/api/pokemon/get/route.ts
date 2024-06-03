@@ -1,14 +1,14 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { NextRequest } from 'next/server';
+import { PrismaClient}  from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export async function GET(request: NextRequest) {
+export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
     
-    if (!id) return NextResponse.json({ message: 'ID не указан' }, { status: 400 });
+    if (!id) return new Response(JSON.stringify({ message: 'ID не указан' }), { status: 400 });
 
     const pokemon = await prisma.pokemon.findUnique({
       where: {
@@ -23,26 +23,24 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    if (!pokemon) return NextResponse.json({ message : "Покемон не найден"},{
-status :404});
+    if (!pokemon) return new Response(JSON.stringify({ message : "Покемон не найден"}), {status :404});
     
    // Форматируем данные для возвращаемого ответа
-const responseData={
+   const responseData={
          id:pokemon.id,
          name:pokemon.name,
-     weight:pokemon.weight,
-     height:pokemon.height,
-species:pokemon.species ,
-experience:
-pokemon.experience ,abilities:
-         pokemon.abilities.map((pa )=>({
-           ability :
-            pa.ability })),
+         weight:pokemon.weight,
+         height:pokemon.height,
+         species:pokemon.species ,
+         experience:
+             pokemon.experience ,
+             abilities:
+             pokemon.abilities.map((pa )=>
+                pa.ability ),
    };
 
-return 
-NextResponse.json(responseData);
-   
+return new Response(JSON.stringify(responseData), {status :200});
+
 } catch (error){
        const errorMessage= error instanceof Error ? error.message :'Неизвестная ошибка';
        console.error('Ошибка получения покемона:',errorMessage);
