@@ -1,9 +1,9 @@
-import { NextRequest } from 'next/server';
-import { PrismaClient}  from '@prisma/client';
+import { NextRequest, NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export async function GET(request) {
+export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
@@ -23,7 +23,7 @@ export async function GET(request) {
       },
     });
 
-    if (!pokemon) return new Response(JSON.stringify({ message : "Покемон не найден"}), {status :404});
+    if (!pokemon) return new Response(JSON.stringify({ message : "Покемон не найден" }), {status :404});
     
    // Форматируем данные для возвращаемого ответа
    const responseData={
@@ -34,12 +34,12 @@ export async function GET(request) {
          species:pokemon.species ,
          experience:
              pokemon.experience ,
-             abilities:
+       abilities:
              pokemon.abilities.map((pa )=>
                 pa.ability ),
    };
 
-return new Response(JSON.stringify(responseData), {status :200});
+return new Response(JSON.stringify(responseData), { status :200 });
 
 } catch (error){
        const errorMessage= error instanceof Error ? error.message :'Неизвестная ошибка';
