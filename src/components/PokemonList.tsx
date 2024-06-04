@@ -1,4 +1,3 @@
-// poke-api-2\src\components\ui\PokemonList.tsx
 import React from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
