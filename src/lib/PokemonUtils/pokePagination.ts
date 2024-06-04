@@ -1,12 +1,12 @@
 // C:\Users\Pavel\poke-api-2\src\lib\PokemonUtils\pokePagination.ts
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
-export const usePokemonPagination = () => {
+export const usePokemonPagination = (totalPages: number) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const nextPage = () => {
-    setCurrentPage((prev) => prev + 1);
+    setCurrentPage((prev) => (prev < totalPages ? prev + 1 : prev)); 
   };
 
   const previousPage = () => {
@@ -21,6 +21,12 @@ export const usePokemonPagination = () => {
   setItemsPerPage(Number(event.target.value));
  };
 
+ const pageNumbers = useMemo(() => {
+  const generatedPageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+  return generatedPageNumbers;
+ }, [totalPages]);
+
+
  return { 
    currentPage, 
    itemsPerPage,
@@ -29,5 +35,6 @@ export const usePokemonPagination = () => {
    previousPage,
   handleChange,
   handleItemsPerChange,
+  pageNumbers,
  };
 };

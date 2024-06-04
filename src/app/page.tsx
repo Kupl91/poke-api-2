@@ -18,7 +18,7 @@ const PokemonsPage = () => {
     nextPage,
     previousPage,
    handleChange,
-   handleItemsPerChange, } = usePokemonPagination();
+   handleItemsPerChange, pageNumbers } = usePokemonPagination();
   const {
     pokemons,
     selectedDetail,
@@ -65,13 +65,16 @@ const PokemonsPage = () => {
         itemsPerPage={itemsPerPage}
       />
       <Pagination
-  currentPage={currentPage}
-  totalPages={Math.ceil(sortedAndFilteredPokemons.length / itemsPerPage)}
-  nextPage={nextPage}
-  previousPage={previousPage}
-  handleChange={handleChange}
-  handleItemsPerChange={handleItemsPerChange}
-  itemsPerPage={itemsPerPage}
+      currentPage={currentPage}
+totalPages={Math.ceil(sortedAndFilteredPokemons.length / itemsPerPage)}
+nextPage={nextPage}
+previousPage={previousPage}
+handleChange={handleChange}
+handleItemsPerChange={handleItemsPerChange}
+itemsPerPage={itemsPerPage}
+pageNumbers={
+    Array.from({ length: Math.ceil(sortedAndFilteredPokemons.length / itemsPerPage) }, (_, i) => i + 1)
+}
 />
       <PokemonForm
        handleSubmitClick={handleSubmitClick}

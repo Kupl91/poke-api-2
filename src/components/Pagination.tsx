@@ -1,12 +1,12 @@
 // poke-api-2\src\components\ui\Pagination.tsx
-import React from 'react';
+// poke-api-2\src\components\ui\Pagination.tsx
+import React, { useMemo } from 'react';
 import {
   Pagination as PaginationUI,
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
   PaginationNext,
-
   PaginationPrevious,
 } from './ui/pagination';
 
@@ -15,10 +15,12 @@ interface PaginationProps {
   totalPages: number;
   nextPage(): void;
   previousPage(): void;
-  handleChange(pageNumber: number): void;
-  handleItemsPerChange(event: any): void;
-  itemsPerPage: number;
+   handleChange(pageNumber: number): void; // добавляем снова входные параметры
+   handleItemsPerChange(event: any): void; // добавляем снова входные параметры
+   itemsPerPage: number;
+   pageNumbers: number[];
 }
+
 
 const CustomPagination = ({ 
   currentPage, 
@@ -27,7 +29,8 @@ const CustomPagination = ({
   previousPage,
  handleChange,
  handleItemsPerChange,
- itemsPerPage
+ itemsPerPage,
+ pageNumbers,
 }: PaginationProps) => {
 
 
@@ -50,15 +53,25 @@ return (
           </button>
         </PaginationItem>
         
-        {[...Array(totalPages)].map((_, index) => (
-          (index + 1 === currentPage) ? (
-            <div key={index} className="bg-gray-300 rounded-lg">
-              <p><strong>{index + 1}</strong></p>
-            </div>
-          ) : (
-            <div key={index} onClick={() => handleChange(index + 1)} className="bg-gray-300 rounded-lg">{index + 1}</div>
-          )
-        ))}
+        {pageNumbers && pageNumbers.map((number) => (
+  number === currentPage ? (
+    <div key={number} className="bg-gray-300 rounded-lg">
+      <p><strong>{number}</strong></p>
+    </div>
+  ) : (
+    <>
+      {Math.abs(number - currentPage) <= 3 && (
+        <div key={number} onClick={() => handleChange(number)} className="bg-gray-300 rounded-lg">
+          {number}
+        </div>
+      )}
+      
+      {Math.abs(number - currentPage) > 3 && number !== totalPages - (totalPages - number) && ( // изменить условие показа ellipsis
+        <PaginationEllipsis key={number + '-ellipsis'} />
+       )};
+    </>
+  )
+))}
         
         {totalPages > (currentPage + 5) && (
           <>
