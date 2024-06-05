@@ -58,12 +58,9 @@ const FilterAndSort: React.FC<FilterAndSortProps> = ({
            {
              sortAttributes.map((attribute, idx) => (
               <TableHead key={`sort-${attribute.key}`}>
-                <button onClick={() => handleSortChange(attribute.key)}>
+                <button onClick={() => handleSortChange(attribute.key)} style={{ display: 'flex', alignItems: 'center' }}>
                   {`${attribute.label} `}
                   {sortDirection === 'asc' ? <FaArrowUp size={15} /> : <FaArrowDown size={15} />}
-                </button>
-                <button onClick={handleSortDirectionChange}>
-                  {sortDirection === 'asc' ? <FaArrowDown size={15} /> : <FaArrowUp size={15} />}
                 </button>
                </TableHead>
              ))
