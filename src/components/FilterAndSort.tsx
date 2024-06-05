@@ -30,8 +30,10 @@ const FilterAndSort: React.FC<FilterAndSortProps> = ({
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="name">Имя</SelectItem>
-          <SelectItem value="id">ID</SelectItem>
+          <SelectItem value="weight">Вес</SelectItem>
           <SelectItem value="height">Высота</SelectItem>
+          <SelectItem value="species">Вид</SelectItem>
+          <SelectItem value="experience">Опыт</SelectItem>
         </SelectContent>
       </Select>
       <Select onValueChange={handleSortChange} >
@@ -40,8 +42,10 @@ const FilterAndSort: React.FC<FilterAndSortProps> = ({
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="name">Имя</SelectItem>
-          <SelectItem value="id">ID</SelectItem>
+          <SelectItem value="weight">Вес</SelectItem>
           <SelectItem value="height">Высота</SelectItem>
+          <SelectItem value="species">Вид</SelectItem>
+          <SelectItem value="experience">Опыт</SelectItem>
         </SelectContent>
       </Select>
     </div>
