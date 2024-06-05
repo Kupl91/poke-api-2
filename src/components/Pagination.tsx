@@ -9,6 +9,7 @@ import {
 
   PaginationPrevious,
 } from './ui/pagination';
+import { Button } from './ui/button';
 
 interface PaginationProps {
   currentPage: number;
@@ -33,59 +34,71 @@ const CustomPagination = ({
 }: PaginationProps) => {
 
 
-return (
-  <>
-    <div className="mb-2">
-      {"Rows per page:"}
-      <select value={itemsPerPage} onChange={handleItemsPerChange}>
-        {[5, 10, 15].map((item) => (
-          <option key={item} value={item}>{item}</option>
-        ))}
-      </select>
-    </div>
-
-    <PaginationUI className="bg-gray-300 rounded-lg p-2">
-      <PaginationContent>
-        <PaginationItem>
-          <button onClick={previousPage} className="bg-gray-300 rounded-lg">
-            <PaginationPrevious />
-          </button>
-        </PaginationItem>
-        
-        {pageNumbers.map((number) => (
-  number === currentPage ? (
-    <div key={number} className="bg-gray-300 rounded-lg">
-      <p><strong>{number}</strong></p>
-    </div>
-  ) : (
+  return (
     <>
-      {Math.abs(number - currentPage) <= 3 && (
-        <div key={number} onClick={() => handleChange(number)} className="bg-gray-300 rounded-lg">
-          {number}
-        </div>
-      )}
-      
-      {(Math.abs(number - currentPage) > 3 && number === totalPages - (totalPages - number)) && (
-        <PaginationEllipsis key={number + '-ellipsis'} />
-      )}
-    </>
-  )
-))}
-        
-        {totalPages > (currentPage + 5) && (
-          <>
-             <PaginationEllipsis />
-          </>
+      <div className="mb-2">
+        {"Rows per page:"}
+        <select value={itemsPerPage} onChange={handleItemsPerChange}>
+          {[5, 10, 15].map((item) => (
+            <option key={item} value={item}>{item}</option>
+          ))}
+        </select>
+      </div>
+  
+      <PaginationUI className="bg-gray-300 rounded-lg p-2">
+        <PaginationContent>
+          <PaginationItem>
+            <Button onClick={() => handleChange(1)} variant="default" size="sm">
+              В начало
+            </Button>
+          </PaginationItem>
+  
+          <PaginationItem>
+            <Button onClick={previousPage} variant="default" size="sm">
+              <PaginationPrevious />
+            </Button>
+          </PaginationItem>
+          
+          {pageNumbers.map((number) => (
+    number === currentPage ? (
+      <div key={number} className="bg-gray-300 rounded-lg">
+        <p><strong>{number}</strong></p>
+      </div>
+    ) : (
+      <>
+        {Math.abs(number - currentPage) <= 3 && (
+          <Button key={number} onClick={() => handleChange(number)} variant="default" size="sm">
+            {number}
+          </Button>
         )}
-
-        <PaginationItem>
-          <button onClick={nextPage} className="bg-gray-300 rounded-lg">
-            <PaginationNext />
-          </button>
-        </PaginationItem>
-      </PaginationContent>
-    </PaginationUI>
-  </>
-);
-};
-export default CustomPagination;
+        
+        {(Math.abs(number - currentPage) > 3 && number === totalPages - (totalPages - number)) && (
+          <PaginationEllipsis key={number + '-ellipsis'} />
+        )}
+      </>
+    )
+  ))}
+          
+          {totalPages > (currentPage + 5) && (
+            <>
+               <PaginationEllipsis />
+            </>
+          )}
+  
+          <PaginationItem>
+            <Button onClick={nextPage} variant="default" size="sm">
+              <PaginationNext />
+            </Button>
+          </PaginationItem>
+  
+          <PaginationItem>
+            <Button onClick={() => handleChange(totalPages)} variant="default" size="sm">
+              В конец
+            </Button>
+          </PaginationItem>
+        </PaginationContent>
+      </PaginationUI>
+    </>
+  );
+  };
+  export default CustomPagination;
