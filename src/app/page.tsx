@@ -12,13 +12,11 @@ import { Pokemon } from '@/lib/types';
 
 
 const PokemonsPage = () => {
-  const { currentPage, itemsPerPage, nextPage, previousPage } = usePokemonPagination();
   const {
     pokemons,
     selectedDetail,
     newPokemon,
     updatingPokemon,
-    fetchPokemons,
     handleDetailsClick,
     handleDeleteClick,
     handleSubmitClick,
@@ -40,6 +38,14 @@ const PokemonsPage = () => {
     sortedAndFilteredPokemons 
   } = usePokemonFilterAndSort(pokemons);
 
+  const { currentPage, 
+    itemsPerPage,
+    setItemsPerPage,
+    nextPage,
+    previousPage,
+   handleChange,
+   handleItemsPerChange,pageNumbers } = usePokemonPagination(Math.ceil(sortedAndFilteredPokemons.length / 5));
+
   return (
     <div className="space-y-4 bg-gray-300">
       <FilterAndSort 
@@ -59,12 +65,16 @@ const PokemonsPage = () => {
         currentPage={currentPage}
         itemsPerPage={itemsPerPage}
       />
-      <Pagination
-        currentPage={currentPage}
-        totalPages={Math.ceil(sortedAndFilteredPokemons.length / itemsPerPage)}
-        nextPage={nextPage}
-        previousPage={previousPage}
-      />
+     <Pagination
+  currentPage={currentPage}
+  totalPages={Math.ceil(sortedAndFilteredPokemons.length / itemsPerPage)}
+  nextPage={nextPage}
+  previousPage={previousPage}
+  handleChange={handleChange}
+  handleItemsPerChange={handleItemsPerChange}
+  itemsPerPage={itemsPerPage}
+  pageNumbers={pageNumbers} // добавьте это
+/>
       <PokemonForm
        handleSubmitClick={handleSubmitClick}
        handleInputChange={handleInputChange}
