@@ -12,13 +12,6 @@ import { Pokemon } from '@/lib/types';
 
 
 const PokemonsPage = () => {
-  const { currentPage, 
-    itemsPerPage,
-    setItemsPerPage,
-    nextPage,
-    previousPage,
-   handleChange,
-   handleItemsPerChange, pageNumbers } = usePokemonPagination();
   const {
     pokemons,
     selectedDetail,
@@ -42,16 +35,29 @@ const PokemonsPage = () => {
     handleSortChange, 
     handleFilterTypeChange, 
     handleFilterValueChange, 
-    sortedAndFilteredPokemons 
+    sortedAndFilteredPokemons,
+    handleSortDirectionChange,
+    sortOrder,
   } = usePokemonFilterAndSort(pokemons);
+
+  const { currentPage, 
+    itemsPerPage,
+    setItemsPerPage,
+    nextPage,
+    previousPage,
+   handleChange,
+   handleItemsPerChange,pageNumbers } = usePokemonPagination(Math.ceil(sortedAndFilteredPokemons.length / 5));
 
   return (
     <div className="space-y-4 bg-gray-300">
-      <FilterAndSort 
-        handleSortChange={handleSortChange} 
-        handleFilterTypeChange={handleFilterTypeChange}
-        handleFilterValueChange={handleFilterValueChange}
-      />
+     <FilterAndSort 
+  handleSortChange={handleSortChange} 
+  handleFilterTypeChange={handleFilterTypeChange}
+  handleFilterValueChange={handleFilterValueChange}
+  handleSortDirectionChange={handleSortDirectionChange} // новый обработчик
+  sortDirection={sortOrder} // новое свойство
+/>
+
       <PokemonList 
         pokemons={sortedAndFilteredPokemons}
         handleDeleteClick={handleDeleteClick}
@@ -64,17 +70,15 @@ const PokemonsPage = () => {
         currentPage={currentPage}
         itemsPerPage={itemsPerPage}
       />
-      <Pagination
-      currentPage={currentPage}
-totalPages={Math.ceil(sortedAndFilteredPokemons.length / itemsPerPage)}
-nextPage={nextPage}
-previousPage={previousPage}
-handleChange={handleChange}
-handleItemsPerChange={handleItemsPerChange}
-itemsPerPage={itemsPerPage}
-pageNumbers={
-    Array.from({ length: Math.ceil(sortedAndFilteredPokemons.length / itemsPerPage) }, (_, i) => i + 1)
-}
+     <Pagination
+  currentPage={currentPage}
+  totalPages={Math.ceil(sortedAndFilteredPokemons.length / itemsPerPage)}
+  nextPage={nextPage}
+  previousPage={previousPage}
+  handleChange={handleChange}
+  handleItemsPerChange={handleItemsPerChange}
+  itemsPerPage={itemsPerPage}
+  pageNumbers={pageNumbers} // добавьте это
 />
       <PokemonForm
        handleSubmitClick={handleSubmitClick}

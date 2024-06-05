@@ -6,7 +6,7 @@ export const usePokemonPagination = (totalPages: number) => {
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const nextPage = () => {
-    setCurrentPage((prev) => (prev < totalPages ? prev + 1 : prev)); 
+    setCurrentPage((prev) => prev + 1);
   };
 
   const previousPage = () => {
@@ -21,10 +21,10 @@ export const usePokemonPagination = (totalPages: number) => {
   setItemsPerPage(Number(event.target.value));
  };
 
- const pageNumbers = useMemo(() => {
-  const generatedPageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
-  return generatedPageNumbers;
- }, [totalPages]);
+ const pageNumbers = useMemo(() =>
+  Array.from({ length: totalPages }, (_, i) => i + 1), 
+  [totalPages]
+  );
 
 
  return { 

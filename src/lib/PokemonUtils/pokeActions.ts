@@ -82,23 +82,27 @@ export const usePokemonActions = () => {
   
       const pokemonData = await response.json();
   
-      // Корректное получение способностей
+      // Корректное получение валидных способностей
       const abilities = Array.isArray(pokemonData.abilities)
-                        ? pokemonData.abilities.map((pa: { ability: { name: string } }) => ({ ability: { name: pa.ability.name } }))
+                        ? pokemonData.abilities.map((pa: { ability?: { name?: string } }, index: number) => ({
+                            ability: { 
+                                name: pa?.ability?.name || `Неизвестная способность ${index}` // уникальные имена
+                            }
+                          }))
                         : [];
   
-      // Задание типа для выбранного Покемона
-      const detail: PokemonDetail = {
-        id: pokemonData.id,
-        name: pokemonData.name,
-        weight: pokemonData.weight,
-        height: pokemonData.height,
-        species: pokemonData.species,
-        experience: pokemonData.experience,
+     // Задание типа для выбранного Покемона
+     const detail: PokemonDetail = {
+       id: pokemonData.id,
+       name: pokemonData.name,
+       weight: pokemonData.weight,
+       height: pokemonData.height,
+       species: pokemonData.species,
+       experience: pokemonData.experience,
        abilities, 
      };
   
-     setSelectedDetail(detail);   // использование интерфейса 
+     setSelectedDetail(detail);  
    } catch (error) {
      console.error('Ошибка при загрузке данных', error);
    }
