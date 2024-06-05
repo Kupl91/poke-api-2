@@ -35,7 +35,9 @@ const PokemonsPage = () => {
     handleSortChange, 
     handleFilterTypeChange, 
     handleFilterValueChange, 
-    sortedAndFilteredPokemons 
+    sortedAndFilteredPokemons,
+    handleSortDirectionChange,
+    sortOrder,
   } = usePokemonFilterAndSort(pokemons);
 
   const { currentPage, 
@@ -48,11 +50,14 @@ const PokemonsPage = () => {
 
   return (
     <div className="space-y-4 bg-gray-300">
-      <FilterAndSort 
-        handleSortChange={handleSortChange} 
-        handleFilterTypeChange={handleFilterTypeChange}
-        handleFilterValueChange={handleFilterValueChange}
-      />
+     <FilterAndSort 
+  handleSortChange={handleSortChange} 
+  handleFilterTypeChange={handleFilterTypeChange}
+  handleFilterValueChange={handleFilterValueChange}
+  handleSortDirectionChange={handleSortDirectionChange} // новый обработчик
+  sortDirection={sortOrder} // новое свойство
+/>
+
       <PokemonList 
         pokemons={sortedAndFilteredPokemons}
         handleDeleteClick={handleDeleteClick}

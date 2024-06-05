@@ -21,6 +21,10 @@ export const usePokemonFilterAndSort = (pokemons: Pokemon[]) => {
     setFilterValue(event.target.value.toLowerCase());
   };
 
+  const handleSortDirectionChange = () => {
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  };
+
   return {
     sortType,
     filterType,
@@ -29,6 +33,7 @@ export const usePokemonFilterAndSort = (pokemons: Pokemon[]) => {
     handleSortChange,
     handleFilterTypeChange,
     handleFilterValueChange,
+    handleSortDirectionChange,
     sortedAndFilteredPokemons: pokemons
       .filter((pokemon) =>
         (pokemon[filterType] as string | number)?.toString().toLowerCase().includes(filterValue)

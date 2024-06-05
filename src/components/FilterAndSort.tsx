@@ -21,13 +21,13 @@ const FilterAndSort: React.FC<FilterAndSortProps> = ({
   sortDirection
 }) => {
   
-  const sortAttributes = [ 
-    { key: 'name' as keyof Pokemon, label: 'Имя' },
-    { key: 'weight' as keyof Pokemon, label: 'Вес' },
-    { key: 'height' as keyof Pokemon, label: 'Высота' },
-    { key:'species',label:'Вид'}, 
-    {key:'experience',label:'Опыт'}
-  ];
+  const sortAttributes = [
+    "name",
+    "weight",
+    "height",
+    "species", 
+    "experience"
+  ].map(key => ({ key:key as keyof Pokemon, label:key.charAt(0).toUpperCase()+key.slice(1)}));
 
  return (
    <div className="space-y-4">
