@@ -3,26 +3,31 @@ import { Input } from './ui/input';
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from './ui/select'; 
 import { Pokemon } from '@/lib/types';
 import { Table, TableHeader, TableRow, TableHead, TableCell, TableBody } from './ui/table';
+import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 
 interface FilterAndSortProps {
   handleSortChange: (value: keyof Pokemon) => void;
+  handleSortDirectionChange: () => void;
   handleFilterTypeChange: (value: keyof Pokemon) => void;
   handleFilterValueChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  sortDirection: 'asc' | 'desc';
 }
 
 const FilterAndSort: React.FC<FilterAndSortProps> = ({
   handleSortChange,
+  handleSortDirectionChange,
   handleFilterTypeChange,
-  handleFilterValueChange
+  handleFilterValueChange,
+  sortDirection
 }) => {
   
-  const sortAttributes = [
-    { key: 'name', label: 'Имя' },
-    { key: 'weight', label: 'Вес' },
-    { key: 'height', label: 'Высота' },
-    { key: 'species', label:'Вид' },
-    { key:'experience',label:'Опыт'}
- ];
+  const sortAttributes = [ 
+    { key: 'name' as keyof Pokemon, label: 'Имя' },
+    { key: 'weight' as keyof Pokemon, label: 'Вес' },
+    { key: 'height' as keyof Pokemon, label: 'Высота' },
+    { key:'species',label:'Вид'}, 
+    {key:'experience',label:'Опыт'}
+  ];
 
  return (
    <div className="space-y-4">
@@ -33,28 +38,33 @@ const FilterAndSort: React.FC<FilterAndSortProps> = ({
          className="w-35 bg-gray-300"
          placeholder="Фильтрация по "
        />
-       <Select onValueChange={handleFilterTypeChange} >
-         <SelectTrigger className="bg-grey-300">
-           <SelectValue placeholder="Выберите опцию" />
-         </SelectTrigger>
-         <SelectContent>
-           {/* Вставляем те же самые атрибуты что и в `sortAttributes` */}
-           {
-             sortAttributes.map((attribute)=>(
-              <SelectItem value={attribute.key}>{attribute.label}</SelectItem>
-             ))
-           }
-         </SelectContent>
-       </Select>
+       <Select onValueChange={(value) => handleFilterTypeChange(value as keyof Pokemon)}>
+  <SelectTrigger className="bg-grey-300">
+    <SelectValue placeholder="Выберите опцию" />
+  </SelectTrigger>
+  <SelectContent>
+    {
+      sortAttributes.map((attribute) => (
+        <SelectItem value={attribute.key} key={`filter-${attribute.key}`}>{attribute.label}</SelectItem>
+      ))
+    }
+  </SelectContent>
+</Select>
      </div>
      
      <Table className="min-w-full divide-y divide-gray-200">
        <TableHeader>
          <TableRow>
            {
-             sortAttributes.map((attribute) => (
-               <TableHead key={attribute.key} onClick={() => handleSortChange(attribute.key)}>
-                 <button>{`${attribute.label}`}</button>
+             sortAttributes.map((attribute, idx) => (
+              <TableHead key={`sort-${attribute.key}`}>
+                <button onClick={() => handleSortChange(attribute.key)}>
+                  {`${attribute.label} `}
+                  {sortDirection === 'asc' ? <FaArrowUp size={15} /> : <FaArrowDown size={15} />}
+                </button>
+                <button onClick={handleSortDirectionChange}>
+                  {sortDirection === 'asc' ? <FaArrowDown size={15} /> : <FaArrowUp size={15} />}
+                </button>
                </TableHead>
              ))
            }
