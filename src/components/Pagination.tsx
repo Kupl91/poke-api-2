@@ -1,4 +1,3 @@
-// poke-api-2\src\components\ui\Pagination.tsx
 import React from 'react';
 import {
   Pagination as PaginationUI,
@@ -6,7 +5,6 @@ import {
   PaginationEllipsis,
   PaginationItem,
   PaginationNext,
-
   PaginationPrevious,
 } from './ui/pagination';
 import { Button } from './ui/button';
@@ -27,13 +25,11 @@ const CustomPagination = ({
   totalPages,
   nextPage,
   previousPage,
- handleChange,
- handleItemsPerChange,
- itemsPerPage,
- pageNumbers,
+  handleChange,
+  handleItemsPerChange,
+  itemsPerPage,
+  pageNumbers,
 }: PaginationProps) => {
-
-
   return (
     <>
       <div className="mb-2">
@@ -59,30 +55,29 @@ const CustomPagination = ({
             </Button>
           </PaginationItem>
           
-          {pageNumbers.map((number) => (
-    number === currentPage ? (
-      <div key={number} className="bg-gray-300 rounded-lg">
-        <p><strong>{number}</strong></p>
-      </div>
-    ) : (
-      <>
-        {Math.abs(number - currentPage) <= 3 && (
-          <Button key={number} onClick={() => handleChange(number)} variant="default" size="sm">
-            {number}
-          </Button>
-        )}
-        
-        {(Math.abs(number - currentPage) > 3 && number === totalPages - (totalPages - number)) && (
-          <PaginationEllipsis key={number + '-ellipsis'} />
-        )}
-      </>
-    )
-  ))}
+          {pageNumbers.map((number) => {
+            if (number === currentPage) {
+              return (
+                <div key={number} className="bg-gray-300 rounded-lg">
+                  <p><strong>{number}</strong></p>
+                </div>
+              );
+            } else if (Math.abs(number - currentPage) <= 3) {
+              return (
+                <Button key={number} onClick={() => handleChange(number)} variant="default" size="sm">
+                  {number}
+                </Button>
+              );
+            } else if (Math.abs(number - currentPage) > 3 && number === totalPages - (totalPages - number)) {
+              return (
+                <PaginationEllipsis key={`${number}-ellipsis`} />
+              );
+            }
+            return null;
+          })}
           
           {totalPages > (currentPage + 5) && (
-            <>
-               <PaginationEllipsis />
-            </>
+            <PaginationEllipsis />
           )}
   
           <PaginationItem>
@@ -100,5 +95,6 @@ const CustomPagination = ({
       </PaginationUI>
     </>
   );
-  };
-  export default CustomPagination;
+};
+
+export default CustomPagination;
