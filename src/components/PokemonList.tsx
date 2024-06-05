@@ -46,16 +46,7 @@ const PokemonList: React.FC<PokemonListProps> = ({
   return (
   <div className="bg-gray-300">
     <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Имя</TableHead>
-          <TableHead>Вес</TableHead>
-          <TableHead>Высота</TableHead>
-          <TableHead>Вид</TableHead>
-          <TableHead>Опыт</TableHead>
-          <TableHead>Действия</TableHead>
-        </TableRow>
-      </TableHeader>
+      
       <TableBody>
         {pokemons
           .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
