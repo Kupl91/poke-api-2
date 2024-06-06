@@ -17,6 +17,7 @@ import {
   TableCell
 } from './ui/table'; 
 import { Pokemon } from '@/lib/types';
+import { Checkbox } from './ui/checkbox'; // импортируйте Checkbox
 
 interface PokemonListProps {
   pokemons: Pokemon[];
@@ -52,7 +53,7 @@ const PokemonList: React.FC<PokemonListProps> = ({
           .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
           .map((pokemon) => (
             <TableRow key={pokemon.id}>
-              <TableCell>{pokemon.name}</TableCell>
+              <TableCell><Checkbox /> {pokemon.name}</TableCell> {/* добавьте Checkbox здесь */}
               <TableCell>{pokemon.weight}</TableCell>
               <TableCell>{pokemon.height}</TableCell>
               <TableCell>{pokemon.species}</TableCell>
