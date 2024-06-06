@@ -32,7 +32,7 @@ interface IndexedPokemon {
 }
 
 
-const PokemonForm: React.FC<PokemonFormProps> = ({handleSubmitClick, handleInputChange, handleCreateClick, showForm, newPokemon}) => {
+const PokemonForm: React.FC<PokemonFormProps> = ({ handleSubmitClick, handleInputChange, handleCreateClick, showForm, newPokemon }) => {
   return (
     <div className="bg-gray-300">
       <Drawer>
@@ -40,31 +40,35 @@ const PokemonForm: React.FC<PokemonFormProps> = ({handleSubmitClick, handleInput
           <Button variant="outline" onClick={handleCreateClick} className="bg-green-500">Создай</Button>
         </DrawerTrigger>
         {showForm && (
-          <div className="fixed inset-0 flex items-center justify-center">
-          <DrawerContent className="bg-grey-300 w-1/3">
-            <DrawerClose />
-            <DrawerHeader>Создание Покемона</DrawerHeader>
-            <div className="flex flex-col space-y-4 p-4">
-              {[
-                { name: "name", placeholder: "Введите имя покемона", type: "text" },
-                { name: "weight", placeholder: newPokemon.weight || "Введите вес покемона", type: "number"},
-                { name: "height", placeholder: "Введите высоту покемона", type: "number" },
-                { name: "species", placeholder: "Введите вид покемона", type:"text"},
-                { name:"experience",placeholder:"Введите опыт покемона ",type:"number"}
-              ].map((field) => (
-                <Input
-                key={field.name}
-                type={field.type}
-                name={field.name}
-                onChange={handleInputChange}
-                placeholder={(newPokemon[field.name] as any)?.toString() ?? field.placeholder}
-                value={newPokemon[field.name]}
-                className='bg-gray-300'
-              />
-            ))}
-              <Button variant="outline" onClick={handleSubmitClick} className="bg-blue-500">Отправить</Button>
-            </div>
-          </DrawerContent>
+          <div className="fixed inset-0 flex items-center justify-center pointer-events-none">
+    <DrawerContent className="bg-black w-1/3 pointer-events-auto">
+              <DrawerClose />
+              <DrawerHeader className="text-gray-300">Создание Покемона</DrawerHeader>
+              <div className="flex flex-col space-y-4 p-4">
+                {[
+                  { name: "name", placeholder: "Введите имя покемона", type: "text" },
+                  { name: "weight", placeholder: "Введите вес покемона", type: "number"},
+                  { name:"height",placeholder:"Введите высоту покемона ",type:"number"},
+                  { name:"species",placeholder:"Введите вид покемона ", type:"text"},
+                  { name:"experience",placeholder:"Введите опыт покемона ",type:"number"}
+                ].map((field) => {
+                    const inputValue = newPokemon[field.name];
+                    return (
+                      <div key={field.name}>
+                        <label className="text-gray-300">{field.placeholder}</label>
+                        <Input
+                          type={field.type}
+                          name={field.name}
+                          onChange={handleInputChange}
+                          value={inputValue !== undefined ? String(inputValue) : ''}
+                          className='bg-gray-300'
+                        />
+                      </div>
+                    );
+                })}
+                <Button variant="outline" onClick={handleSubmitClick} className="bg-blue-500">Отправить</Button>
+              </div>
+            </DrawerContent>
           </div> 
         )}
       </Drawer>
