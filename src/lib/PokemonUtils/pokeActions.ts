@@ -17,6 +17,19 @@ export const usePokemonActions = () => {
   const [showForm, setShowForm] = useState(false);
   const [updateFormOpen, setUpdateFormOpen] = useState(false);
 
+  const [selectedPokemons, setSelectedPokemons] = useState<number[]>([]);
+  
+
+
+  const handleCheckboxChange = (id: number) => {
+    if (selectedPokemons.includes(id)) {
+      setSelectedPokemons(selectedPokemons.filter(pokemonId => pokemonId !== id));
+    } else {
+      setSelectedPokemons([...selectedPokemons, id]);
+    }
+  };
+  // Конец добавленных строк
+
   useEffect(() => {
     fetchPokemons();
   }, []);
@@ -248,6 +261,7 @@ const handleUpdateInputChange= (event : React.ChangeEvent<HTMLInputElement>)=>{
     handleCreateClick,
     handleInputChange,
     handleUpdateClick,
-    
+    selectedPokemons, // Добавленная строка
+    handleCheckboxChange, // Добавленная строка
   };
 };

@@ -1,4 +1,5 @@
-import React from 'react';
+//C:\Users\pavel.kuplensky\Documents\GitHub\poke-api-2\src\components\PokemonList.tsx
+import React,{ useState }  from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Drawer, DrawerTrigger, DrawerContent, DrawerClose, DrawerHeader } from "@/components/ui/drawer";
@@ -30,6 +31,8 @@ interface PokemonListProps {
   updatingPokemon: Pokemon | null;
   currentPage: number;
   itemsPerPage: number;
+  selectedPokemons: number[]; // добавьте это
+  handleCheckboxChange: (id: number) => void; // добавьте это
 }
 
 const PokemonList: React.FC<PokemonListProps> = ({
@@ -43,17 +46,41 @@ const PokemonList: React.FC<PokemonListProps> = ({
   updatingPokemon,
   currentPage,
   itemsPerPage,
+  selectedPokemons, 
+  handleCheckboxChange, 
 }) => {
   return (
   <div className="bg-gray-300">
     <Table>
-      
+      {selectedPokemons.length > 0 && ( 
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="bg-gray-200">Действия</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent sideOffset={4} className="p-1 bg-white shadow-md">
+            <DropdownMenuItem>
+              <Button variant="outline" className="bg-gray-200">Кнопка 1</Button>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Button variant="outline" className="bg-gray-200">Кнопка 2</Button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
       <TableBody>
         {pokemons
           .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
           .map((pokemon) => (
-            <TableRow key={pokemon.id}>
-              <TableCell><Checkbox /> {pokemon.name}</TableCell> {/* добавьте Checkbox здесь */}
+            <TableRow key={pokemon.id} onClick={(e) => e.stopPropagation()}>
+  <TableCell>
+    <Checkbox 
+      onChange={(e) => {
+        e.stopPropagation(); // предотвращение всплытия события при клике на checkbox
+        handleCheckboxChange(pokemon.id);
+      }}
+    />
+    {pokemon.name}
+  </TableCell>
               <TableCell>{pokemon.weight}</TableCell>
               <TableCell>{pokemon.height}</TableCell>
               <TableCell>{pokemon.species}</TableCell>
