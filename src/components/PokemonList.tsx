@@ -52,21 +52,6 @@ const PokemonList: React.FC<PokemonListProps> = ({
   return (
   <div className="bg-gray-300">
     <Table>
-      {selectedPokemons.length > 0 && ( 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="bg-gray-200">Действия</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent sideOffset={4} className="p-1 bg-white shadow-md">
-            <DropdownMenuItem>
-              <Button variant="outline" className="bg-gray-200">Кнопка 1</Button>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Button variant="outline" className="bg-gray-200">Кнопка 2</Button>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
       <TableBody>
         {pokemons
           .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
@@ -75,7 +60,7 @@ const PokemonList: React.FC<PokemonListProps> = ({
   <TableCell>
     <Checkbox 
       onChange={(e) => {
-        e.stopPropagation(); // предотвращение всплытия события при клике на checkbox
+        
         handleCheckboxChange(pokemon.id);
       }}
     />
@@ -116,10 +101,11 @@ const PokemonList: React.FC<PokemonListProps> = ({
   <DrawerTrigger asChild>
     <Button variant="outline" onClick={(event) => { event.stopPropagation(); handleUpdateClick(pokemon.id); }} className="bg-blue-500">Обновить</Button>
   </DrawerTrigger>
-  <DrawerContent  className="bg-black text-gray-200 w-1/3">
-    <DrawerClose />
+  <DrawerContent className="bg-black text-gray-200 w-1/3" onClick={(e) => e.stopPropagation()}>
+  <DrawerClose />
     <DrawerHeader>Обновление Покемона</DrawerHeader>
-    {updatingPokemon && (
+    {updatingPokemon  && updatingPokemon.id === pokemon.id && (
+      
       <>
         <label>Имя:</label>
         <Input type="text" name="name" value={updatingPokemon.name || ''} onChange={handleUpdateInputChange} placeholder="Имя" className="bg-gray-200" />
