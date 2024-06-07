@@ -22,13 +22,17 @@ export const usePokemonActions = () => {
 
 
   const handleCheckboxChange = (id: number) => {
-    if (selectedPokemons.includes(id)) {
-      setSelectedPokemons(selectedPokemons.filter(pokemonId => pokemonId !== id));
-    } else {
-      setSelectedPokemons([...selectedPokemons, id]);
-    }
+    console.log(id); // Добавленная строка
+    setSelectedPokemons(prevState =>
+      prevState.includes(id)
+        ? prevState.filter(pokemonId => pokemonId !== id)
+        : [...prevState, id]
+    );
   };
-  // Конец добавленных строк
+  
+  useEffect(() => {
+    console.log(selectedPokemons);
+  }, [selectedPokemons]);
 
   useEffect(() => {
     fetchPokemons();
