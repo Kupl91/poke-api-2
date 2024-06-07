@@ -40,7 +40,7 @@ const PokemonForm: React.FC<PokemonFormProps> = ({ handleSubmitClick, handleInpu
           <Button variant="outline" onClick={handleCreateClick} className="bg-green-500">Создай</Button>
         </DrawerTrigger>
         {showForm && (
-          <div className="fixed inset-0 flex items-center justify-center pointer-events-none">
+          <div className="flex items-center justify-center pointer-events-none">
     <DrawerContent className="bg-black w-1/3 pointer-events-auto">
               <DrawerClose />
               <DrawerHeader className="text-gray-300">Создание Покемона</DrawerHeader>
