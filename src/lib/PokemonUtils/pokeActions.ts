@@ -13,11 +13,10 @@ export const usePokemonActions = () => {
     species: '',
     experience: 0,
   });
-  
   const [showForm, setShowForm] = useState(false);
   const [updateFormOpen, setUpdateFormOpen] = useState(false);
-
   const [selectedPokemons, setSelectedPokemons] = useState<number[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
   
 
 
@@ -31,7 +30,11 @@ export const usePokemonActions = () => {
   };
   
   useEffect(() => {
-    console.log(selectedPokemons);
+    if (selectedPokemons.length > 0) {
+      setShowDropdown(true);
+    } else {
+      setShowDropdown(false);
+    }
   }, [selectedPokemons]);
 
   useEffect(() => {
@@ -265,7 +268,9 @@ const handleUpdateInputChange= (event : React.ChangeEvent<HTMLInputElement>)=>{
     handleCreateClick,
     handleInputChange,
     handleUpdateClick,
-    selectedPokemons, // Добавленная строка
-    handleCheckboxChange, // Добавленная строка
+    selectedPokemons, 
+    handleCheckboxChange,
+    showDropdown,
+    setShowDropdown, 
   };
 };

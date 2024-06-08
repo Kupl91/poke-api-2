@@ -26,8 +26,10 @@ const PokemonsPage = () => {
     handleCreateClick,
     handleInputChange,
     handleUpdateClick,
-    selectedPokemons, // Добавленная строка
-    handleCheckboxChange, // Добавленная строка
+    selectedPokemons, 
+    handleCheckboxChange,
+    showDropdown,
+    setShowDropdown, 
   } = usePokemonActions();
 
   const {
@@ -72,7 +74,9 @@ const PokemonsPage = () => {
         currentPage={currentPage}
         itemsPerPage={itemsPerPage}
         selectedPokemons={selectedPokemons} // Добавленная строка
-        handleCheckboxChange={handleCheckboxChange} // Добавленная строка
+        handleCheckboxChange={handleCheckboxChange} 
+        showDropdown = {showDropdown}
+        setShowDropdown = {setShowDropdown}
       />
      <Pagination
   currentPage={currentPage}
