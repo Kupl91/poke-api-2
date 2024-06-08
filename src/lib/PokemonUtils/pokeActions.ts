@@ -18,7 +18,10 @@ export const usePokemonActions = () => {
   const [selectedPokemons, setSelectedPokemons] = useState<number[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
   
-
+  useEffect(() => {
+    console.log('Selected Pokemons:', selectedPokemons);
+    setShowDropdown(selectedPokemons.length > 0);
+  }, [selectedPokemons]);
 
   const handleCheckboxChange = (id: number) => {
     console.log(id); // Добавленная строка
@@ -128,22 +131,21 @@ export const usePokemonActions = () => {
    }
   };
 
-  const handleDeleteClick = async (id: number) => {
+  const handleDeleteClick = async (ids: number | number[]) => {
+    const idsArray = Array.isArray(ids) ? ids : [ids];
+    
     try {
-      const response = await fetch(`/api/pokemon/delete?id=${id}`, {
-        method: 'DELETE',
-      });
-
-      if (response.ok) {
-        setPokemons(pokemons.filter((pokemon) => pokemon.id !== id));
-      } else {
-        throw new Error('Не удалось удалить покемона');
+      for (let id of idsArray) {
+        const response = await fetch(`/api/pokemon/delete?id=${id}`, { method: 'DELETE' });
+        
+        if (!response.ok) throw new Error('Не удалось удалить покемона с ID: ' + id);
       }
+      
+      setPokemons(pokemons.filter((pokemon) => !idsArray.includes(pokemon.id)));
     } catch (error) {
       console.error("Ошибка при удалении покемона:", error);
     }
-};
-
+  };
 
  const handleSubmitClick = async () => {
   try {
