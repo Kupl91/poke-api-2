@@ -56,7 +56,7 @@ const PokemonList: React.FC<PokemonListProps> = ({
 }) => {
   return (
     <div className="bg-gray-300">
-      {selectedPokemons.length > 0 && (
+      {selectedPokemons.length > 1 && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
           <Button
@@ -73,7 +73,9 @@ const PokemonList: React.FC<PokemonListProps> = ({
      Массовое удаление
    </Button>
 </DropdownMenuItem>
-              <DropdownMenuItem><Button variant="outline">Массовое обновление параметра</Button></DropdownMenuItem>
+              <DropdownMenuItem>
+                <Button variant="outline">Массовое обновление параметра</Button>
+                </DropdownMenuItem>
             </DropdownMenuContent>
           )}
         </DropdownMenu>
