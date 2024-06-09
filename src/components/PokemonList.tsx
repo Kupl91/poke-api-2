@@ -21,7 +21,7 @@ import { Checkbox } from './ui/checkbox'; // импортируйте Checkbox
 
 interface PokemonListProps {
   pokemons: Pokemon[];
-  handleDeleteClick: (id: number, ids?: number[]) => void
+  handleDeleteClick: (id: number) => void;
   handleDetailsClick: (id: number) => void;
   handleUpdateSubmit: () => void;
   handleUpdateClick: (id: number) => void;
@@ -34,6 +34,7 @@ interface PokemonListProps {
   handleCheckboxChange: (id: number) => void;
   setShowDropdown: (show: boolean) => void;
   showDropdown: boolean;
+  handleBulkDeleteClick: (ids: number[]) => void;
 }
 
 const PokemonList: React.FC<PokemonListProps> = ({
@@ -51,6 +52,7 @@ const PokemonList: React.FC<PokemonListProps> = ({
   handleCheckboxChange,
   showDropdown,
   setShowDropdown,
+  handleBulkDeleteClick ,
 }) => {
   return (
     <div className="bg-gray-300">
@@ -66,13 +68,10 @@ const PokemonList: React.FC<PokemonListProps> = ({
           </DropdownMenuTrigger>
           {showDropdown && (
             <DropdownMenuContent sideOffset={4} className="p-1 bg-white shadow-md">
-              <DropdownMenuItem>
-              <Button 
-                    variant="outline" 
-                    onClick={() => handleDeleteClick(selectedPokemons)}
-                  >
-                     Массовое удаление
-                </Button>
+             <DropdownMenuItem>
+  <Button variant="outline" onClick={() => handleBulkDeleteClick(selectedPokemons)}>
+     Массовое удаление
+   </Button>
 </DropdownMenuItem>
               <DropdownMenuItem><Button variant="outline">Массовое обновление параметра</Button></DropdownMenuItem>
             </DropdownMenuContent>

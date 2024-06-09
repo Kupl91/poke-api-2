@@ -44,6 +44,31 @@ export const usePokemonActions = () => {
     fetchPokemons();
   }, []);
 
+  const handleBulkDeleteClick = async (ids: number[]) => {
+    try {
+      // Используем Promise.all для параллельного выполнения запросов
+      const responses = await Promise.all(
+        ids.map((id) =>
+          fetch(`/api/pokemon/delete?id=${id}`, {
+            method: 'DELETE',
+          })
+        )
+      );
+  
+      // Проверяем все ли запросы успешны
+      const allOk = responses.every(response => response.ok);
+      
+      if (allOk) {
+        setPokemons(pokemons.filter((pokemon) => !ids.includes(pokemon.id)));
+        setSelectedPokemons([]); // очищаем selectedPokemons
+      } else {
+        throw new Error('Не удалось удалить некоторых покемонов');
+      }
+    } catch (error) {
+      console.error("Ошибка при массовом удалении покемонов:", error);
+    }
+  };
+
   const fetchPokemons = async () => {
     try {
       const response = await fetch('/api/pokemons');
@@ -131,21 +156,25 @@ export const usePokemonActions = () => {
    }
   };
 
-  const handleDeleteClick = async (ids: number | number[]) => {
-    const idsArray = Array.isArray(ids) ? ids : [ids];
-    
+  const handleDeleteClick = async (id: number) => {
+
+
     try {
-      for (let id of idsArray) {
-        const response = await fetch(`/api/pokemon/delete?id=${id}`, { method: 'DELETE' });
-        
-        if (!response.ok) throw new Error('Не удалось удалить покемона с ID: ' + id);
+      const response = await fetch(`/api/pokemon/delete?id=${id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        setPokemons(pokemons.filter((pokemon) => pokemon.id !== id));
+      } else {
+        throw new Error('Не удалось удалить покемона');
       }
-      
-      setPokemons(pokemons.filter((pokemon) => !idsArray.includes(pokemon.id)));
+
+
     } catch (error) {
       console.error("Ошибка при удалении покемона:", error);
     }
-  };
+};
 
  const handleSubmitClick = async () => {
   try {
@@ -273,6 +302,7 @@ const handleUpdateInputChange= (event : React.ChangeEvent<HTMLInputElement>)=>{
     selectedPokemons, 
     handleCheckboxChange,
     showDropdown,
-    setShowDropdown, 
+    setShowDropdown,
+    handleBulkDeleteClick,
   };
 };
