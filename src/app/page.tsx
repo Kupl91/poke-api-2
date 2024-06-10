@@ -5,6 +5,7 @@ import FilterAndSort from '@/components/FilterAndSort';
 import Pagination from '@/components/Pagination';
 import PokemonList from '@/components/PokemonList';
 import PokemonForm from '@/components/PokemonForm';
+import { usePokemonUI } from '@/lib/PokemonUtils/pokeUiPlusMassactions';
 import { usePokemonActions } from '@/lib/PokemonUtils/pokeActions';
 import { usePokemonPagination } from '@/lib/PokemonUtils/pokePagination';
 import { usePokemonFilterAndSort } from '@/lib/PokemonUtils/pokeFilterAndSort';
@@ -22,19 +23,22 @@ const PokemonsPage = () => {
     handleSubmitClick,
     handleUpdateSubmit,
     handleUpdateInputChange,
+    handleUpdateClick,
+  } = usePokemonActions();
+
+  const {
     showForm, 
     handleCreateClick,
     handleInputChange,
-    handleUpdateClick,
-    selectedPokemons, 
-    handleCheckboxChange,
     showDropdown,
     setShowDropdown,
+    selectedPokemons, 
+    handleCheckboxChange,
     handleBulkDeleteClick,
     selectedCharacteristic,
     setSelectedCharacteristic,
     handleMassUpdateSubmit,
-  } = usePokemonActions();
+  } = usePokemonUI();
 
   const {
     sortType, 

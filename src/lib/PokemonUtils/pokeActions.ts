@@ -213,5 +213,6 @@ const handleUpdateInputChange= (event : React.ChangeEvent<HTMLInputElement>)=>{
     handleUpdateClick,
     setPokemons,
     setUpdatingPokemon,
+    updateFormOpen,
   };
 };

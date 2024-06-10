@@ -143,5 +143,7 @@ const handleCreateClick = () => {
     handleMassUpdateClick,
     updatingPokemons,
     setUpdatingPokemons,
+    selectedCharacteristic,
+    setSelectedCharacteristic,
   };
 };
