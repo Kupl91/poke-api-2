@@ -1,4 +1,4 @@
-import React,{ useState }  from 'react';
+import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Drawer, DrawerTrigger, DrawerContent, DrawerClose, DrawerHeader } from "@/components/ui/drawer";
@@ -6,7 +6,10 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuItem
+  DropdownMenuItem,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
 } from './ui/dropdown-menu';
 import {
   Table,
@@ -35,7 +38,10 @@ interface PokemonListProps {
   setShowDropdown: (show: boolean) => void;
   showDropdown: boolean;
   handleBulkDeleteClick: (ids: number[]) => void;
+  selectedCharacteristic: string | null; // добавьте это
+  setSelectedCharacteristic: (value: string | null) => void; // добавьте это
 }
+
 
 const PokemonList: React.FC<PokemonListProps> = ({
   pokemons,
@@ -52,114 +58,135 @@ const PokemonList: React.FC<PokemonListProps> = ({
   handleCheckboxChange,
   showDropdown,
   setShowDropdown,
-  handleBulkDeleteClick ,
+  handleBulkDeleteClick,
+  selectedCharacteristic,
+  setSelectedCharacteristic,
 }) => {
   return (
     <div className="bg-gray-300">
       {selectedPokemons.length > 1 && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-          <Button
-  variant="outline"
-  className="bg-gray-200"
-  style={{ position: 'absolute', left: '0px', top: '565px' }}
-  onClick={() => setShowDropdown(!showDropdown)}
->...</Button>
+            <Button
+              variant="outline"
+              className="bg-gray-200"
+              style={{ position: 'absolute', left: '0px', top: '565px' }}
+              onClick={() => setShowDropdown(!showDropdown)}
+            >...</Button>
           </DropdownMenuTrigger>
           {showDropdown && (
             <DropdownMenuContent sideOffset={4} className="p-1 bg-white shadow-md">
-             <DropdownMenuItem>
-  <Button variant="outline" onClick={() => handleBulkDeleteClick(selectedPokemons)}>
-     Массовое удаление
-   </Button>
-</DropdownMenuItem>
               <DropdownMenuItem>
-                <Button variant="outline">Массовое обновление параметра</Button>
-                </DropdownMenuItem>
+                <Button variant="outline" onClick={() => handleBulkDeleteClick(selectedPokemons)}>Массовое удаление</Button>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+  <DropdownMenu>
+    <DropdownMenuTrigger asChild>
+      <Button variant="outline">Массовое обновление параметра</Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent>
+    <DropdownMenuItem>
+  <Button variant="outline">Имя</Button>
+</DropdownMenuItem>
+<DropdownMenuItem>
+  <Button variant="outline">Вес</Button>
+</DropdownMenuItem>
+<DropdownMenuItem>
+  <Button variant="outline">Высота</Button>
+</DropdownMenuItem>
+<DropdownMenuItem>
+  <Button variant="outline">Вид</Button>
+</DropdownMenuItem>
+<DropdownMenuItem>
+  <Button variant="outline">Опыт</Button>
+</DropdownMenuItem>
+    </DropdownMenuContent>
+  </DropdownMenu>
+</DropdownMenuItem>
             </DropdownMenuContent>
           )}
         </DropdownMenu>
       )}
       <Table>
-       <TableBody>
-        {pokemons.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map(pokemon => (
-          <TableRow key={pokemon.id} onClick={() => handleCheckboxChange(pokemon.id)}>
-          <TableCell>
-            <Checkbox 
-              onChange={(e) => {
-                e.stopPropagation();
-                handleCheckboxChange(pokemon.id);
-              }}
-            />
-          </TableCell>
-            <TableCell>{pokemon.name}</TableCell>
-            <TableCell>{pokemon.weight}</TableCell>
-            <TableCell>{pokemon.height}</TableCell>
-            <TableCell>{pokemon.species}</TableCell>
-            <TableCell>{pokemon.experience}</TableCell>
-            <TableCell>
-              <div>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="bg-gray-200">...</Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent sideOffset={4} className="p-1 bg-white shadow-md">
-                    <DropdownMenuItem>
-                    <Button variant="destructive" onClick={() => handleDeleteClick(pokemon.id)} className="bg-red-600">Удалить</Button>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="outline" onMouseOver={() => handleDetailsClick(pokemon.id)} className="bg-gray-200">Детали</Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent sideOffset={4} className="p-1 bg-white shadow-md">
-                          {selectedDetail && selectedDetail.id === pokemon.id && (
-                            <>
-                              <DropdownMenuItem>{`ID: ${selectedDetail.id}`}</DropdownMenuItem>
-                              {selectedDetail.abilities && selectedDetail.abilities.map((ability) => (
-                                <DropdownMenuItem key={ability.ability.name}>{`Способность: ${ability.ability.name}`}</DropdownMenuItem>
-                              ))}
-                            </>
-                          )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Drawer>
-                        <DrawerTrigger asChild>
-                          <Button variant="outline" onClick={(event) => { event.stopPropagation(); handleUpdateClick(pokemon.id); }} className="bg-blue-500">Обновить</Button>
-                        </DrawerTrigger>
-                        <DrawerContent className="bg-black text-gray-200 w-1/3" onClick={(e) => e.stopPropagation()}>
-                          <DrawerClose />
-                          <DrawerHeader>Обновление Покемона</DrawerHeader>
-                          {updatingPokemon && updatingPokemon.id === pokemon.id && (
-                            <>
-                              <label>Имя:</label>
-                              <Input type="text" name="name" value={updatingPokemon.name || ''} onChange={handleUpdateInputChange} placeholder="Имя" className="bg-gray-200" />
-                              <label>Вес:</label>
-                              <Input type="number" name="weight" value={updatingPokemon.weight || ''} onChange={handleUpdateInputChange} placeholder="Вес" className="bg-gray-200" />
-                              <label>Высота:</label>
-                              <Input type="number" name='height' value={updatingPokemon.height || ''} onChange={handleUpdateInputChange} placeholder='Высота' className="bg-gray-200" />
-                              <label>Вид:</label>
-                              <Input type="text" name="species" value={updatingPokemon.species || ''} onChange={handleUpdateInputChange} placeholder="Вид" className="bg-gray-200" />
-                              <label>Опыт:</label>
-                              <Input type="number" name="experience" value={updatingPokemon.experience || ''} onChange={handleUpdateInputChange} placeholder="Опыт" className="bg-gray-200" />
-                              <Button variant="outline" onClick={handleUpdateSubmit} className="bg-blue-500">Отправить</Button>
-                            </>
-                          )}
-                        </DrawerContent>
-                      </Drawer>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </TableCell>
-          </TableRow>
-        ))}
+        <TableBody>
+          {pokemons.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map(pokemon => (
+            <TableRow key={pokemon.id} onClick={() => handleCheckboxChange(pokemon.id)}>
+              <TableCell>
+                <Checkbox 
+                  onChange={(e) => {
+                    e.stopPropagation();
+                    handleCheckboxChange(pokemon.id);
+                  }}
+                />
+              </TableCell>
+              <TableCell>{pokemon.name}</TableCell>
+              <TableCell>{pokemon.weight}</TableCell>
+              <TableCell>{pokemon.height}</TableCell>
+              <TableCell>{pokemon.species}</TableCell>
+              <TableCell>{pokemon.experience}</TableCell>
+              <TableCell>
+                <div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" className="bg-gray-200">...</Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent sideOffset={4} className="p-1 bg-white shadow-md">
+                      <DropdownMenuItem>
+                        <Button variant="destructive" onClick={() => handleDeleteClick(pokemon.id)} className="bg-red-600">Удалить</Button>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="outline" onMouseOver={() => handleDetailsClick(pokemon.id)} className="bg-gray-200">Детали</Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent sideOffset={4} className="p-1 bg-white shadow-md">
+                            {selectedDetail && selectedDetail.id === pokemon.id && (
+                              <>
+                                <DropdownMenuItem>{`ID: ${selectedDetail.id}`}</DropdownMenuItem>
+                                {selectedDetail.abilities && selectedDetail.abilities.map((ability) => (
+                                  <DropdownMenuItem key={ability.ability.name}>{`Способность: ${ability.ability.name}`}</DropdownMenuItem>
+                                ))}
+                              </>
+                            )}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Drawer>
+                          <DrawerTrigger asChild>
+                            <Button variant="outline" onClick={(event) => { event.stopPropagation(); handleUpdateClick(pokemon.id); }} className="bg-blue-500">Обновить</Button>
+                          </DrawerTrigger>
+                          <DrawerContent className="bg-black text-gray-200 w-1/3" onClick={(e) => e.stopPropagation()}>
+                            <DrawerClose />
+                            <DrawerHeader>Обновление Покемона</DrawerHeader>
+                            {updatingPokemon && updatingPokemon.id === pokemon.id && (
+                              <>
+                                <label>Имя:</label>
+                                <Input type="text" name="name" value={updatingPokemon.name || ''} onChange={handleUpdateInputChange} placeholder="Имя" className="bg-gray-200" />
+                                <label>Вес:</label>
+                                <Input type="number" name="weight" value={updatingPokemon.weight || ''} onChange={handleUpdateInputChange} placeholder="Вес" className="bg-gray-200" />
+                                <label>Высота:</label>
+                                <Input type="number" name='height' value={updatingPokemon.height || ''} onChange={handleUpdateInputChange} placeholder='Высота' className="bg-gray-200" />
+                                <label>Вид:</label>
+                                <Input type="text" name="species" value={updatingPokemon.species || ''} onChange={handleUpdateInputChange} placeholder="Вид" className="bg-gray-200" />
+                                <label>Опыт:</label>
+                                <Input type="number" name="experience" value={updatingPokemon.experience || ''} onChange={handleUpdateInputChange} placeholder="Опыт" className="bg-gray-200" />
+                                <Button variant="outline" onClick={handleUpdateSubmit} className="bg-blue-500">Отправить</Button>
+                              </>
+                            )}
+                          </DrawerContent>
+                        </Drawer>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
-    </Table>
-  </div>
-);
+      </Table>
+    </div>
+  );
 };
 
 export default PokemonList;

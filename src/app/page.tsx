@@ -30,7 +30,9 @@ const PokemonsPage = () => {
     handleCheckboxChange,
     showDropdown,
     setShowDropdown,
-    handleBulkDeleteClick, 
+    handleBulkDeleteClick,
+    selectedCharacteristic,
+    setSelectedCharacteristic,
   } = usePokemonActions();
 
   const {
@@ -78,7 +80,9 @@ const PokemonsPage = () => {
         handleCheckboxChange={handleCheckboxChange} 
         showDropdown = {showDropdown}
         setShowDropdown = {setShowDropdown}
-        handleBulkDeleteClick = {handleBulkDeleteClick }
+        handleBulkDeleteClick = {handleBulkDeleteClick}
+        selectedCharacteristic = {selectedCharacteristic}
+      setSelectedCharacteristic = {setSelectedCharacteristic}
       />
      <Pagination
   currentPage={currentPage}

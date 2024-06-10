@@ -17,6 +17,7 @@ export const usePokemonActions = () => {
   const [updateFormOpen, setUpdateFormOpen] = useState(false);
   const [selectedPokemons, setSelectedPokemons] = useState<number[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedCharacteristic, setSelectedCharacteristic] = useState<string | null>(null);
   
   useEffect(() => {
     console.log('Selected Pokemons:', selectedPokemons);
@@ -157,8 +158,6 @@ export const usePokemonActions = () => {
   };
 
   const handleDeleteClick = async (id: number) => {
-
-
     try {
       const response = await fetch(`/api/pokemon/delete?id=${id}`, {
         method: 'DELETE',
@@ -223,7 +222,6 @@ const handleUpdateSubmit = async () => {
     console.error("Нет покемона для обновления");
     return;
   }
-
   try {
     const response = await fetch('/api/pokemon/update', {
       method: 'PUT',
@@ -304,5 +302,7 @@ const handleUpdateInputChange= (event : React.ChangeEvent<HTMLInputElement>)=>{
     showDropdown,
     setShowDropdown,
     handleBulkDeleteClick,
+    selectedCharacteristic,
+    setSelectedCharacteristic,
   };
 };
