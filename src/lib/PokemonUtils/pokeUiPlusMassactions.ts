@@ -20,6 +20,14 @@ const [newPokemon, setNewPokemon] = useState({
 const [selectedPokemons, setSelectedPokemons] = useState<number[]>([]);
 const [updatingPokemons, setUpdatingPokemons] = useState<Pokemon[]>([]);
 const [selectedCharacteristic, setSelectedCharacteristic] = useState<string | null>(null);
+const [massUpdateValue, setMassUpdateValue] = useState<string | number>('');
+const [pokemonInputs, setPokemonInputs] = useState<{ [key: number]: string }>({});
+
+
+
+const handleMassUpdateInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  setMassUpdateValue(event.target.value);
+};
 
 const handleCreateClick = () => {
     setShowForm((prevShowForm) => !prevShowForm);
@@ -31,6 +39,15 @@ const handleCreateClick = () => {
       [event.target.name]: event.target.value,
     });
   };
+
+  const handleMassInputChange = (event: React.ChangeEvent<HTMLInputElement>, id: number) => {
+    console.log("handleMassInputChange called with id:", id);
+    setUpdatingPokemons(prevUpdatingPokemons =>
+      prevUpdatingPokemons.map(pokemon =>
+        pokemon.id === id ? { ...pokemon, name: event.target.value } : pokemon
+      )
+    );
+  };;
 
   useEffect(() => {
     console.log('Selected Pokemons:', selectedPokemons);
@@ -78,7 +95,7 @@ const handleCreateClick = () => {
   };
 
   const handleMassUpdateSubmit = async () => {
-    if (!selectedCharacteristic || selectedPokemons.length === 0 || !updatingPokemon) {
+    if (!selectedCharacteristic || selectedPokemons.length === 0) {
       console.error("Нет выбранных покемонов или характеристик для обновления");
       return;
     }
@@ -93,7 +110,7 @@ const handleCreateClick = () => {
             },
             body: JSON.stringify({
               id: pokemonId,
-              [selectedCharacteristic]: updatingPokemon[selectedCharacteristic as keyof Pokemon],
+              [selectedCharacteristic]: massUpdateValue, // 
             }),
           })
         )
@@ -128,22 +145,37 @@ const handleCreateClick = () => {
     }
   };
 
+  const handleInputTempChange = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
+    const value = e.target.value;
+    setPokemonInputs({
+      ...pokemonInputs, 
+      [id]: value
+    });
+};
+
   
-  return {
-    showForm, 
-    handleCreateClick,
-    handleInputChange,
-    showDropdown,
-    setShowDropdown,
-    selectedPokemons,
-    setSelectedPokemons,
-    handleCheckboxChange,
-    handleBulkDeleteClick,
-    handleMassUpdateSubmit,
-    handleMassUpdateClick,
-    updatingPokemons,
-    setUpdatingPokemons,
-    selectedCharacteristic,
-    setSelectedCharacteristic,
-  };
+return {
+  showForm, 
+  handleCreateClick,
+  handleInputChange,
+  showDropdown,
+  setShowDropdown,
+  selectedPokemons,
+  setSelectedPokemons,
+  handleCheckboxChange,
+  handleBulkDeleteClick,
+  handleMassUpdateSubmit,
+  handleMassUpdateClick,
+  updatingPokemons,
+  setUpdatingPokemons,
+  selectedCharacteristic,
+  setSelectedCharacteristic,
+  massUpdateValue,
+  setMassUpdateValue,
+  handleMassUpdateInputChange,
+  handleMassInputChange,
+  setShowForm,
+  handleInputTempChange, 
+  pokemonInputs,
+};
 };

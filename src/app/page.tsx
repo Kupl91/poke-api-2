@@ -38,6 +38,13 @@ const PokemonsPage = () => {
     selectedCharacteristic,
     setSelectedCharacteristic,
     handleMassUpdateSubmit,
+    massUpdateValue,
+    setMassUpdateValue,
+    handleMassUpdateInputChange,
+    handleMassInputChange,
+    setShowForm,
+    handleInputTempChange, 
+    pokemonInputs,
   } = usePokemonUI();
 
   const {
@@ -81,14 +88,23 @@ const PokemonsPage = () => {
         updatingPokemon={updatingPokemon}
         currentPage={currentPage}
         itemsPerPage={itemsPerPage}
-        selectedPokemons={selectedPokemons} // Добавленная строка
+        selectedPokemons={selectedPokemons} 
         handleCheckboxChange={handleCheckboxChange} 
         showDropdown = {showDropdown}
         setShowDropdown = {setShowDropdown}
         handleBulkDeleteClick = {handleBulkDeleteClick}
         selectedCharacteristic = {selectedCharacteristic}
-      setSelectedCharacteristic = {setSelectedCharacteristic}
-      handleMassUpdateSubmit = {handleMassUpdateSubmit }
+       setSelectedCharacteristic = {setSelectedCharacteristic}
+       handleMassUpdateSubmit = {handleMassUpdateSubmit }
+       massUpdateValue = {massUpdateValue}
+       setMassUpdateValue = {setMassUpdateValue}
+       showForm={showForm}
+        setShowForm={setShowForm}
+       handleMassInputChange = {handleMassInputChange}
+       handleMassUpdateInputChange={handleMassUpdateInputChange}
+       handleInputTempChange = {handleInputTempChange}
+       pokemonInputs = {pokemonInputs}
+
       />
      <Pagination
   currentPage={currentPage}

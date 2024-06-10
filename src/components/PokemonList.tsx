@@ -1,3 +1,4 @@
+// C:\Users\pavel.kuplensky\Documents\GitHub\poke-api-2\src\components\PokemonList.tsx
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -10,6 +11,7 @@ import {
   DropdownMenuSub,
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
+  DropdownMenuLabel,
 } from './ui/dropdown-menu';
 import {
   Table,
@@ -41,6 +43,14 @@ interface PokemonListProps {
   selectedCharacteristic: string | null; // добавьте это
   setSelectedCharacteristic: (value: string | null) => void;
   handleMassUpdateSubmit: () => void;
+  massUpdateValue: string | number;
+  setMassUpdateValue: React.Dispatch<React.SetStateAction<string | number>>;
+  handleMassUpdateInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  showForm: boolean; // добавьте это
+  setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
+  handleMassInputChange: (event: React.ChangeEvent<HTMLInputElement>, id: number) => void;
+  pokemonInputs: { [key: number]: string };
+  handleInputTempChange: (e: React.ChangeEvent<HTMLInputElement>, id: number) => void; 
 }
 
 
@@ -63,6 +73,13 @@ const PokemonList: React.FC<PokemonListProps> = ({
   selectedCharacteristic,
   setSelectedCharacteristic,
   handleMassUpdateSubmit,
+  massUpdateValue,
+  setMassUpdateValue,
+  handleMassUpdateInputChange,
+  showForm,
+  handleInputTempChange,
+  pokemonInputs,
+  handleMassInputChange
 }) => {
   return (
     <div className="bg-gray-300">
@@ -77,7 +94,7 @@ const PokemonList: React.FC<PokemonListProps> = ({
             >...</Button>
           </DropdownMenuTrigger>
           {showDropdown && (
-            <DropdownMenuContent sideOffset={4} className="p-1 bg-white shadow-md">
+            <DropdownMenuContent sideOffset={4} className="p-1 bg-white shadow-md" onMouseDown={(e) => e.stopPropagation()}>
               <DropdownMenuItem>
                 <Button variant="outline" onClick={() => handleBulkDeleteClick(selectedPokemons)}>Массовое удаление</Button>
               </DropdownMenuItem>
@@ -88,19 +105,19 @@ const PokemonList: React.FC<PokemonListProps> = ({
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuItem>
-                      <Button variant="outline" onClick={() => setSelectedCharacteristic('name')}>Имя</Button>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Button variant="outline" onClick={() => setSelectedCharacteristic('weight')}>Вес</Button>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Button variant="outline" onClick={() => setSelectedCharacteristic('height')}>Высота</Button>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Button variant="outline" onClick={() => setSelectedCharacteristic('species')}>Вид</Button>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Button variant="outline" onClick={() => setSelectedCharacteristic('experience')}>Опыт</Button>
+                      <DropdownMenuLabel>Массовое обновление имени</DropdownMenuLabel>
+                      <>
+                        {selectedPokemons.map((id) => {
+                          const pokemon = pokemons.find((pokemon) => pokemon.id === id);
+                          return (
+                            <div key={id}>
+                              <label>{pokemon?.name}</label>
+                              <Input type="text" value={pokemonInputs[id] || ''} onChange={(e) => {handleMassInputChange(e,id);handleInputTempChange(e,id);}} placeholder="Имя" className="bg-gray-200" />
+                            </div>
+                          );
+                        })}
+                        <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleMassUpdateSubmit(); }} className="bg-blue-500">Отправить</Button>
+                      </>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -112,6 +129,9 @@ const PokemonList: React.FC<PokemonListProps> = ({
       <Table>
         <TableBody>
           {pokemons.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map(pokemon => (
+
+
+
             <TableRow key={pokemon.id} onClick={() => handleCheckboxChange(pokemon.id)}>
               <TableCell>
                 <Checkbox 
