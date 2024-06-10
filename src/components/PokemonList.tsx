@@ -83,48 +83,48 @@ const PokemonList: React.FC<PokemonListProps> = ({
 }) => {
   return (
     <div className="bg-gray-300">
-      {selectedPokemons.length > 1 && (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              className="bg-gray-200"
-              style={{ position: 'absolute', left: '0px', top: '565px' }}
-              onClick={() => setShowDropdown(!showDropdown)}
-            >...</Button>
-          </DropdownMenuTrigger>
-          {showDropdown && (
-            <DropdownMenuContent sideOffset={4} className="p-1 bg-white shadow-md" onMouseDown={(e) => e.stopPropagation()}>
-              <DropdownMenuItem>
-                <Button variant="outline" onClick={() => handleBulkDeleteClick(selectedPokemons)}>Массовое удаление</Button>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline">Массовое обновление параметра</Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem>
-                      <DropdownMenuLabel>Массовое обновление имени</DropdownMenuLabel>
-                      <>
-                        {selectedPokemons.map((id) => {
-                          const pokemon = pokemons.find((pokemon) => pokemon.id === id);
-                          return (
-                            <div key={id}>
-                              <label>{pokemon?.name}</label>
-                              <Input type="text" value={pokemonInputs[id] || ''} onChange={(e) => {handleMassInputChange(e,id);handleInputTempChange(e,id);}} placeholder="Имя" className="bg-gray-200" />
-                            </div>
-                          );
-                        })}
-                        <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleMassUpdateSubmit(); }} className="bg-blue-500">Отправить</Button>
-                      </>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          )}
-        </DropdownMenu>
+        {selectedPokemons.length > 1 && (
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button
+                        variant="outline"
+                        className="bg-gray-200"
+                        style={{ position: 'absolute', left: '0px', top: '565px' }}
+                        onClick={(e) => { e.stopPropagation(); setShowDropdown(!showDropdown); }}
+                    >...</Button>
+                </DropdownMenuTrigger>
+                {showDropdown && (
+                    <DropdownMenuContent sideOffset={4} className="p-1 bg-white shadow-md" onMouseDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
+                        <DropdownMenuItem onMouseDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
+                            <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleBulkDeleteClick(selectedPokemons); }}>Массовое удаление</Button>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onMouseDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
+                            <DropdownMenu >
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="outline" onClick={(e) => e.stopPropagation()}>Массовое обновление параметра</Button>
+                                    </DropdownMenuTrigger>
+<DropdownMenuContent onMouseDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
+    <DropdownMenuItem onMouseDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
+        <DropdownMenuLabel>Массовое обновление имени</DropdownMenuLabel>
+        <>
+            {selectedPokemons.map((id) => {
+                const pokemon = pokemons.find((pokemon) => pokemon.id === id);
+                return (
+                    <div key={id} onMouseDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
+                        <label>{pokemon?.name}</label>
+                            <Input type="text" value={pokemonInputs[id] || ''} onChange={(e) => { handleMassInputChange(e, id); handleInputTempChange(e, id); }} placeholder="Имя" className="bg-gray-200" />
+                          </div>
+                        );
+                      })}
+                      <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleMassUpdateSubmit(); }} className="bg-blue-500">Отправить</Button>
+                    </>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        )}
+      </DropdownMenu>
       )}
       <Table>
         <TableBody>
