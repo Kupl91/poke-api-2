@@ -39,7 +39,8 @@ interface PokemonListProps {
   showDropdown: boolean;
   handleBulkDeleteClick: (ids: number[]) => void;
   selectedCharacteristic: string | null; // добавьте это
-  setSelectedCharacteristic: (value: string | null) => void; // добавьте это
+  setSelectedCharacteristic: (value: string | null) => void;
+  handleMassUpdateSubmit: () => void;
 }
 
 
@@ -61,6 +62,7 @@ const PokemonList: React.FC<PokemonListProps> = ({
   handleBulkDeleteClick,
   selectedCharacteristic,
   setSelectedCharacteristic,
+  handleMassUpdateSubmit,
 }) => {
   return (
     <div className="bg-gray-300">
@@ -80,29 +82,29 @@ const PokemonList: React.FC<PokemonListProps> = ({
                 <Button variant="outline" onClick={() => handleBulkDeleteClick(selectedPokemons)}>Массовое удаление</Button>
               </DropdownMenuItem>
               <DropdownMenuItem>
-  <DropdownMenu>
-    <DropdownMenuTrigger asChild>
-      <Button variant="outline">Массовое обновление параметра</Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent>
-    <DropdownMenuItem>
-  <Button variant="outline">Имя</Button>
-</DropdownMenuItem>
-<DropdownMenuItem>
-  <Button variant="outline">Вес</Button>
-</DropdownMenuItem>
-<DropdownMenuItem>
-  <Button variant="outline">Высота</Button>
-</DropdownMenuItem>
-<DropdownMenuItem>
-  <Button variant="outline">Вид</Button>
-</DropdownMenuItem>
-<DropdownMenuItem>
-  <Button variant="outline">Опыт</Button>
-</DropdownMenuItem>
-    </DropdownMenuContent>
-  </DropdownMenu>
-</DropdownMenuItem>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline">Массовое обновление параметра</Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem>
+                      <Button variant="outline" onClick={() => setSelectedCharacteristic('name')}>Имя</Button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Button variant="outline" onClick={() => setSelectedCharacteristic('weight')}>Вес</Button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Button variant="outline" onClick={() => setSelectedCharacteristic('height')}>Высота</Button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Button variant="outline" onClick={() => setSelectedCharacteristic('species')}>Вид</Button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Button variant="outline" onClick={() => setSelectedCharacteristic('experience')}>Опыт</Button>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           )}
         </DropdownMenu>

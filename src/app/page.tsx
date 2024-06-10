@@ -33,6 +33,7 @@ const PokemonsPage = () => {
     handleBulkDeleteClick,
     selectedCharacteristic,
     setSelectedCharacteristic,
+    handleMassUpdateSubmit,
   } = usePokemonActions();
 
   const {
@@ -83,6 +84,7 @@ const PokemonsPage = () => {
         handleBulkDeleteClick = {handleBulkDeleteClick}
         selectedCharacteristic = {selectedCharacteristic}
       setSelectedCharacteristic = {setSelectedCharacteristic}
+      handleMassUpdateSubmit = {handleMassUpdateSubmit }
       />
      <Pagination
   currentPage={currentPage}

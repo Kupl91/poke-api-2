@@ -1,11 +1,12 @@
 // C:\Users\Pavel\poke-api-2\src\lib\PokemonUtils\pokeActions.ts
 import { useState, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
-import { Pokemon } from '@/lib/types';
+import { Pokemon, PokemonDetail, initialPokemonState } from '@/lib/types';
 
 export const usePokemonActions = () => {
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]); // надо импортировать в PokemonUI.ts
   const [selectedDetail, setSelectedDetail] = useState<PokemonDetail | null>(null)
+  const [updateFormOpen, setUpdateFormOpen] = useState(false);
   const [newPokemon, setNewPokemon] = useState({
     name: '',
     weight: 0,
@@ -13,62 +14,11 @@ export const usePokemonActions = () => {
     species: '',
     experience: 0,
   });
-  const [showForm, setShowForm] = useState(false);
-  const [updateFormOpen, setUpdateFormOpen] = useState(false);
-  const [selectedPokemons, setSelectedPokemons] = useState<number[]>([]);
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedCharacteristic, setSelectedCharacteristic] = useState<string | null>(null);
-  
-  useEffect(() => {
-    console.log('Selected Pokemons:', selectedPokemons);
-    setShowDropdown(selectedPokemons.length > 0);
-  }, [selectedPokemons]);
-
-  const handleCheckboxChange = (id: number) => {
-    console.log(id); // Добавленная строка
-    setSelectedPokemons(prevState =>
-      prevState.includes(id)
-        ? prevState.filter(pokemonId => pokemonId !== id)
-        : [...prevState, id]
-    );
-  };
-  
-  useEffect(() => {
-    if (selectedPokemons.length > 0) {
-      setShowDropdown(true);
-    } else {
-      setShowDropdown(false);
-    }
-  }, [selectedPokemons]);
+;
 
   useEffect(() => {
     fetchPokemons();
   }, []);
-
-  const handleBulkDeleteClick = async (ids: number[]) => {
-    try {
-      // Используем Promise.all для параллельного выполнения запросов
-      const responses = await Promise.all(
-        ids.map((id) =>
-          fetch(`/api/pokemon/delete?id=${id}`, {
-            method: 'DELETE',
-          })
-        )
-      );
-  
-      // Проверяем все ли запросы успешны
-      const allOk = responses.every(response => response.ok);
-      
-      if (allOk) {
-        setPokemons(pokemons.filter((pokemon) => !ids.includes(pokemon.id)));
-        setSelectedPokemons([]); // очищаем selectedPokemons
-      } else {
-        throw new Error('Не удалось удалить некоторых покемонов');
-      }
-    } catch (error) {
-      console.error("Ошибка при массовом удалении покемонов:", error);
-    }
-  };
 
   const fetchPokemons = async () => {
     try {
@@ -91,27 +41,6 @@ export const usePokemonActions = () => {
     }
   };
 
-  interface PokemonDetail {
-    id: number;
-    name: string;
-    weight: number;
-    height: number;
-    species: string;
-    experience: number;
-    abilities: { ability: { name: string } }[];
-  }
-  
-
-  const initialPokemonState = {
-    id: -1,
-    name: '',
-    weight: -1,
-    height: -1,
-    species:'',
-    experience:-1,
-     abilities:[]
-  }
-
   const [updatingPokemon, setUpdatingPokemon] = useState<Pokemon | null>(initialPokemonState);
 
   const handleDetailsClick = async (id: number) => {
@@ -131,7 +60,6 @@ export const usePokemonActions = () => {
   
       const pokemonData = await response.json();
   
-      // Корректное получение валидных способностей
       const abilities = Array.isArray(pokemonData.abilities)
                         ? pokemonData.abilities.map((pa: { ability?: { name?: string } }, index: number) => ({
                             ability: { 
@@ -140,7 +68,6 @@ export const usePokemonActions = () => {
                           }))
                         : [];
   
-     // Задание типа для выбранного Покемона
      const detail: PokemonDetail = {
        id: pokemonData.id,
        name: pokemonData.name,
@@ -205,7 +132,7 @@ export const usePokemonActions = () => {
    throw new Error('Не удалось создать покемона');
     }
   } catch (err) { 
- const error = err as Error; // Приведение типа ошибки
+ const error = err as Error;
 
  console.error("Ошибка при создании покемона:", error.message);
 
@@ -246,7 +173,6 @@ const handleUpdateSubmit = async () => {
       throw new Error('Не удалось обновить покемона');
     }
   } catch (err) { 
-     // Приведение типа ошибки
      const error = err as Error; 
 
      console.error("Ошибка при обновлении покемона:", error.message);
@@ -259,17 +185,6 @@ const handleUpdateInputChange= (event : React.ChangeEvent<HTMLInputElement>)=>{
       [event.target.name]: event.target.value}))
 }
 
-  const handleCreateClick = () => {
-    setShowForm((prevShowForm) => !prevShowForm);
-  };
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewPokemon({
-      ...newPokemon,
-      [event.target.name]: event.target.value,
-    });
-  };
-  
   const handleUpdateClick = (id: number) => {
     if (updatingPokemon && updatingPokemon.id === id) {
       setUpdatingPokemon(null);
@@ -280,12 +195,14 @@ const handleUpdateInputChange= (event : React.ChangeEvent<HTMLInputElement>)=>{
       setUpdateFormOpen(true); 
     }
   };
-  
 
+  
+  
   return {
     pokemons,
     selectedDetail,
     newPokemon,
+    setNewPokemon,
     updatingPokemon,
     fetchPokemons,
     handleDetailsClick,
@@ -293,16 +210,8 @@ const handleUpdateInputChange= (event : React.ChangeEvent<HTMLInputElement>)=>{
     handleSubmitClick,
     handleUpdateSubmit,
     handleUpdateInputChange,
-    showForm, 
-    handleCreateClick,
-    handleInputChange,
     handleUpdateClick,
-    selectedPokemons, 
-    handleCheckboxChange,
-    showDropdown,
-    setShowDropdown,
-    handleBulkDeleteClick,
-    selectedCharacteristic,
-    setSelectedCharacteristic,
+    setPokemons,
+    setUpdatingPokemon,
   };
 };
