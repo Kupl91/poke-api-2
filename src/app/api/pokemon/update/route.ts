@@ -1,3 +1,4 @@
+// C:\Users\pavel.kuplensky\Documents\GitHub\poke-api-2\src\app\api\pokemon\update\route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 
