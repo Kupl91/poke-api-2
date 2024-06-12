@@ -196,6 +196,13 @@ const handleUpdateInputChange= (event : React.ChangeEvent<HTMLInputElement>)=>{
     }
   };
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewPokemon({
+      ...newPokemon,
+      [event.target.name]: event.target.value,
+    });
+  };
+
   
   
   return {
@@ -214,5 +221,6 @@ const handleUpdateInputChange= (event : React.ChangeEvent<HTMLInputElement>)=>{
     setPokemons,
     setUpdatingPokemon,
     updateFormOpen,
+    handleInputChange
   };
 };

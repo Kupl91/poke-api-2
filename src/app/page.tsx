@@ -24,12 +24,12 @@ const PokemonsPage = () => {
     handleUpdateSubmit,
     handleUpdateInputChange,
     handleUpdateClick,
+    handleInputChange,
   } = usePokemonActions();
 
   const {
     showForm, 
     handleCreateClick,
-    handleInputChange,
     showDropdown,
     setShowDropdown,
     selectedPokemons, 
@@ -45,6 +45,7 @@ const PokemonsPage = () => {
     setShowForm,
     handleInputTempChange, 
     pokemonInputs,
+    handleMassUpdateClick,
   } = usePokemonUI();
 
   const {
@@ -77,7 +78,7 @@ const PokemonsPage = () => {
   sortDirection={sortOrder} // новое свойство
 />
 
-      <PokemonList 
+<PokemonList 
         pokemons={sortedAndFilteredPokemons}
         handleDeleteClick={handleDeleteClick}
         handleDetailsClick={handleDetailsClick}
@@ -104,6 +105,7 @@ const PokemonsPage = () => {
        handleMassUpdateInputChange={handleMassUpdateInputChange}
        handleInputTempChange = {handleInputTempChange}
        pokemonInputs = {pokemonInputs}
+       handleMassUpdateClick = {handleMassUpdateClick }
 
       />
      <Pagination

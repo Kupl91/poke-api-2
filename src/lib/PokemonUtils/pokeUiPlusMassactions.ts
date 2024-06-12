@@ -25,29 +25,27 @@ const [pokemonInputs, setPokemonInputs] = useState<{ [key: number]: string }>({}
 
 
 
-const handleMassUpdateInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  setMassUpdateValue(event.target.value);
+
+
+const handleMassUpdateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { value } = e.target;
+  
+  console.log(`Изменение массового обновления ввода на: ${value}`);
+  
+  setMassUpdateValue(value);
 };
 
 const handleCreateClick = () => {
     setShowForm((prevShowForm) => !prevShowForm);
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewPokemon({
-      ...newPokemon,
-      [event.target.name]: event.target.value,
-    });
+  const handleMassInputChange = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
+    const value = e.target.value;
+    setPokemonInputs(prevState => ({
+      ...prevState,
+      [id]: value
+    }));
   };
-
-  const handleMassInputChange = (event: React.ChangeEvent<HTMLInputElement>, id: number) => {
-    console.log("handleMassInputChange called with id:", id);
-    setUpdatingPokemons(prevUpdatingPokemons =>
-      prevUpdatingPokemons.map(pokemon =>
-        pokemon.id === id ? { ...pokemon, name: event.target.value } : pokemon
-      )
-    );
-  };;
 
   useEffect(() => {
     console.log('Selected Pokemons:', selectedPokemons);
@@ -95,56 +93,74 @@ const handleCreateClick = () => {
   };
 
   const handleMassUpdateSubmit = async () => {
-    if (!selectedCharacteristic || selectedPokemons.length === 0) {
-      console.error("Нет выбранных покемонов или характеристик для обновления");
-      return;
-    }
+    const updatedPokemons = pokemons.map(pokemon => {
+      if (selectedPokemons.includes(pokemon.id)) {
+        return { ...pokemon, name: massUpdateValue as string };
+      } else {
+        console.warn(`Не найдено новое имя для Pokemon ID: ${pokemon.id}`);
+        return pokemon;
+      }
+    });
   
     try {
-      const responses = await Promise.all(
-        selectedPokemons.map((pokemonId) =>
-          fetch('/api/pokemon/update', {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              id: pokemonId,
-              [selectedCharacteristic]: massUpdateValue, // 
-            }),
-          })
-        )
-      );
+      const responses = await Promise.all(selectedPokemons.map(async (id) => {
+        const pokemonToUpdate = updatedPokemons.find(pokemon => pokemon.id === id);
+        
+        if (!id || !massUpdateValue) throw new Error(`Неправильные данные для Pokemon ID: ${id}`);
+        
+        const response = await fetch(`/api/pokemon/update?id=${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: pokemonToUpdate!.name })
+        });
+        
+        if (!response.ok) throw new Error('Bad Request');
   
-      const allOk = responses.every(response => response.ok);
+        return response;
+      }));
   
-      if (allOk) {
-        const updatedPokemons = await Promise.all(responses.map(response => response.json()));
-        setPokemons(pokemons.map((pokemon) => {
-          const updatedPokemon = updatedPokemons.find(updatedPokemon => updatedPokemon.id === pokemon.id);
-          return updatedPokemon ? updatedPokemon : pokemon;
-        }));
-        setSelectedPokemons([]);
-        setSelectedCharacteristic(null);
-      } else {
-        throw new Error('Не удалось обновить некоторых покемонов');
-      }
+      setPokemons(updatedPokemons);
+  
     } catch (error) {
       console.error("Ошибка при массовом обновлении покемонов:", error);
     }
   };
 
-  const handleMassUpdateClick = (id: number) => {
-    if (selectedPokemons.includes(id)) {
-      setUpdatingPokemons(prevUpdatingPokemons => prevUpdatingPokemons.filter(pokemon => pokemon.id !== id));
+  useEffect(() => {
+    if (selectedCharacteristic === 'name') {
+      handleMassUpdateSubmit();
+    }
+  }, [selectedCharacteristic]);
+  
+  const handleMassUpdateClick = (id: number | string) => {
+    console.log(`валидация пользовательского ввода c id: ${id}`);
+    
+    const numericId = Number(id);
+    const selectedPokemon = pokemons.find(pokemon => pokemon.id === numericId);
+  
+    if (!selectedPokemon) {
+      console.warn(`Покемон с id:${numericId} не найден`);
+      return;
+    }
+  
+    if (selectedPokemons.includes(numericId)) {
+      console.log(`Если клиент с id: ${numericId} уже выбран для обновления`);
+      
+      setUpdatingPokemons(prevUpdatingPokemons =>
+        prevUpdatingPokemons.filter(pokemon => pokemon.id !== numericId)
+      );
+      
+      setSelectedPokemons(prevSelected =>
+        prevSelected.filter(selectedId => selectedId !== numericId)
+      );
+      
     } else {
-      const pokemonToUpdate = pokemons.find((pokemon) => pokemon.id === id);
-      if (pokemonToUpdate) {
-        setUpdatingPokemons(prevUpdatingPokemons => [...prevUpdatingPokemons, pokemonToUpdate]);
-      }
+      setUpdatingPokemons([...updatingPokemons, selectedPokemon]);
+      
+      setSelectedPokemons([...selectedPokemons, numericId]);
     }
   };
-
+  
   const handleInputTempChange = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
     const value = e.target.value;
     setPokemonInputs({
@@ -157,7 +173,6 @@ const handleCreateClick = () => {
 return {
   showForm, 
   handleCreateClick,
-  handleInputChange,
   showDropdown,
   setShowDropdown,
   selectedPokemons,
