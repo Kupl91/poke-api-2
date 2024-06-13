@@ -129,34 +129,28 @@ const PokemonList: React.FC<PokemonListProps> = ({
   </DropdownMenuTrigger>
         <DropdownMenuContent onClick={(e) => e.stopPropagation()}>
           <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-            <DropdownMenuLabel onClick={(e) => e.stopPropagation()}>Массовое обновление имени</DropdownMenuLabel>
-            <>
-              {selectedPokemons.map((id) => {
-                const pokemon = pokemons.find((pokemon) => pokemon.id === id);
-                return (
-                  <div key={id}>
-                    <label>{pokemon?.name}</label>
-                    <Input 
-  type="text" 
-  value={pokemonInputs[id] || ''} 
-  onChange={(e) => {handleMassInputChange(e,id);handleInputTempChange(e,id);}} 
-  onClick={(e) => e.stopPropagation()} 
-  placeholder="Имя" 
-  className="bg-gray-200" 
-/>
-                  </div>
-                );
-              })}
-              <Button 
-  variant="outline" 
-  onClick={(e) => { 
-    e.stopPropagation(); 
-    handleMassUpdateSubmit();
-  }} 
-  className="bg-blue-500"
->
-  Отправить
-</Button>
+          <DropdownMenuLabel onClick={(e) => e.stopPropagation()}>Массовое обновление имени</DropdownMenuLabel>
+<>
+{selectedPokemons.map((id:number)=>{
+
+ const pokemon=pokemons.find(pokemon=>pokemon.id===id);
+
+return(
+<div key={id}>
+<label>{pokemon?.name}</label>
+<Input
+type="text"
+value={pokemonInputs[id]||''}
+onChange={(e)=>handleMassInputChange(e,id)}
+onClick={(e)=>e.stopPropagation()}
+placeholder="Имя"
+className="bg-gray-200"/>
+</div>);
+})}
+<Button variant ="outline" onClick={(e)=>{
+  e.stopPropagation();
+  handleMassUpdateSubmit(); 
+}} className="bg-blue-500">Отправить</Button>
             </>
           </DropdownMenuItem>
         </DropdownMenuContent>

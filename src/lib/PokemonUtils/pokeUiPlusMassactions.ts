@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { usePokemonActions } from '@/lib/PokemonUtils/pokeActions';
 import { Pokemon, PokemonDetail, initialPokemonState } from '@/lib/types';
+import { ChangeEvent } from 'react';
 
 
 export const usePokemonUI = () => {
@@ -23,7 +24,10 @@ const [selectedCharacteristic, setSelectedCharacteristic] = useState<string | nu
 const [massUpdateValue, setMassUpdateValue] = useState<string | number>('');
 const [pokemonInputs, setPokemonInputs] = useState<{ [key: number]: string }>({});
 
-
+const data = [
+  { id: 63, name: "Bulbasaurrr" },
+  { id: 62, name: "Ivysaurrr" }
+];
 
 
 
@@ -39,13 +43,14 @@ const handleCreateClick = () => {
     setShowForm((prevShowForm) => !prevShowForm);
   };
 
-  const handleMassInputChange = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
-    const value = e.target.value;
-    setPokemonInputs(prevState => ({
-      ...prevState,
-      [id]: value
+  const handleMassInputChange = (e: ChangeEvent<HTMLInputElement>, id: number) => {
+    console.log(`Изменение input для Pokemon ID ${id}: ${e.target.value}`);
+    
+    setPokemonInputs((prevInputs) => ({
+        ...prevInputs,
+        [id]: e.target.value,
     }));
-  };
+};
 
   useEffect(() => {
     console.log('Selected Pokemons:', selectedPokemons);
@@ -93,38 +98,54 @@ const handleCreateClick = () => {
   };
 
   const handleMassUpdateSubmit = async () => {
-    const updatedPokemons = pokemons.map(pokemon => {
-      if (selectedPokemons.includes(pokemon.id)) {
-        return { ...pokemon, name: massUpdateValue as string };
-      } else {
-        console.warn(`Не найдено новое имя для Pokemon ID: ${pokemon.id}`);
-        return pokemon;
-      }
+    const massUpdates=selectedPokemons.map((id)=>({
+         id,
+         name:pokemonInputs[id]?.trim()
+    }));
+
+    let anyEmpty=false;
+
+    massUpdates.forEach(update=>{
+        if(!update.name){
+           console.warn(`Не найдено новое имя для Pokemon ID:${update.id}`);
+        anyEmpty=true;
+        }
     });
-  
-    try {
-      const responses = await Promise.all(selectedPokemons.map(async (id) => {
-        const pokemonToUpdate = updatedPokemons.find(pokemon => pokemon.id === id);
-        
-        if (!id || !massUpdateValue) throw new Error(`Неправильные данные для Pokemon ID: ${id}`);
-        
-        const response = await fetch(`/api/pokemon/update?id=${id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: pokemonToUpdate!.name })
-        });
-        
-        if (!response.ok) throw new Error('Bad Request');
-  
-        return response;
-      }));
-  
-      setPokemons(updatedPokemons);
-  
-    } catch (error) {
-      console.error("Ошибка при массовом обновлении покемонов:", error);
-    }
-  };
+
+if(anyEmpty)return;
+
+try{
+const responses=await Promise.all(
+selectedPokemons.map(async(id:number)=>{
+       const update=pokemonInputs[id]?.trim();
+
+    // Проверка на пустое имя до отправки запроса
+ if(!update){
+  console.warn(`Имя не найдено для Pokemon ID:${id}`);
+  throw new Error('Bad Request');
+ }
+
+ const response=await fetch(`/api/pokemon/update?id=${id}`,{
+  method:'PUT',
+  headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({name:update})
+});
+
+if(!response.ok){
+    throw new Error('Bad Request');
+   }
+return response;
+
+  }));
+
+ console.log("Массовое обновление успешно выполнено");
+setPokemonInputs({});
+setPokemons(updatingPokemons);
+}catch(error){
+
+console.error("Ошибка при массовом обновлении покемонов:",error);
+}
+};
 
   useEffect(() => {
     if (selectedCharacteristic === 'name') {
