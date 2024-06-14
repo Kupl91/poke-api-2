@@ -22,7 +22,9 @@ import {
   TableCell
 } from './ui/table'; 
 import { Pokemon } from '@/lib/types';
-import { Checkbox } from './ui/checkbox'; // импортируйте Checkbox
+import { Checkbox } from './ui/checkbox';
+import { inputTypes } from '@/lib/types';
+
 
 interface PokemonListProps {
   pokemons: Pokemon[];
@@ -55,6 +57,25 @@ interface PokemonListProps {
   handleMassUpdateClick: (id: number | string) => void;
 }
 
+interface UpdateButtonProps {
+  characteristic: string;
+  handleMassUpdateClick: (id: number | string) => void;
+}
+
+const UpdateButton: React.FC<UpdateButtonProps> = ({ characteristic, handleMassUpdateClick }) => (
+  <DropdownMenuTrigger asChild>
+    <Button 
+      variant="outline" 
+      onClick={(e) => { 
+        e.stopPropagation(); 
+        handleMassUpdateClick(characteristic); 
+      }}
+    >
+      {characteristic}
+    </Button>
+  </DropdownMenuTrigger>
+);
+
 
 const PokemonList: React.FC<PokemonListProps> = ({
   pokemons,
@@ -84,99 +105,46 @@ const PokemonList: React.FC<PokemonListProps> = ({
   handleMassInputChange,
   handleMassUpdateClick,
 }) => {
+  const inputType = selectedCharacteristic ? inputTypes[selectedCharacteristic] : 'text';
   return (
     <div className="bg-gray-300">
-        {selectedPokemons.length > 1 && (
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                <Button
-    variant="outline"
-    className="bg-gray-200"
-    style={{ position: 'absolute', left: '0px', top: '565px' }}
-    onClick={(e) => { 
-      e.stopPropagation(); 
-      selectedPokemons.forEach((pokemonId: number) => {
-        handleMassUpdateClick(pokemonId);
-      });
-      setShowDropdown(!showDropdown); 
-    }}
-  >...</Button>
-                </DropdownMenuTrigger>
-                {showDropdown && (
-                    <DropdownMenuContent sideOffset={4} className="p-1 bg-white shadow-md" onClick={(e) => e.stopPropagation()}>
-                        <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-                            <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleBulkDeleteClick(selectedPokemons); }}>Массовое удаление</Button>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-                        <DropdownMenu>
-  <DropdownMenuTrigger asChild>
-    <Button variant="outline" onClick={(e) => e.stopPropagation()}>Массовое обновление параметра</Button>
-  </DropdownMenuTrigger>
-  <DropdownMenuContent onClick={(e) => e.stopPropagation()}>
-    <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-    <DropdownMenu>
-  <DropdownMenuTrigger asChild>
-    
-  <Button 
-  variant="outline" 
-  onClick={(e) => { 
-    e.stopPropagation(); 
-    handleMassUpdateClick('name'); 
-  }}
->
-  Имя
-</Button>
-  </DropdownMenuTrigger>
-  <DropdownMenuTrigger asChild>
-  <Button 
-    variant="outline" 
-    onClick={(e) => { 
-      e.stopPropagation(); 
-      handleMassUpdateClick('weight'); 
-    }}
-  >
-    Вес
-  </Button>
-</DropdownMenuTrigger>
-
-<DropdownMenuTrigger asChild>
-  <Button 
-    variant="outline" 
-    onClick={(e) => { 
-      e.stopPropagation(); 
-      handleMassUpdateClick('height'); 
-    }}
-  >
-    Высота
-  </Button>
-</DropdownMenuTrigger>
-
-<DropdownMenuTrigger asChild>
-  <Button 
-    variant="outline" 
-    onClick={(e) => { 
-      e.stopPropagation(); 
-      handleMassUpdateClick('species'); 
-    }}
-  >
-    Вид
-  </Button>
-</DropdownMenuTrigger>
-
-<DropdownMenuTrigger asChild>
-  <Button 
-    variant="outline" 
-    onClick={(e) => { 
-      e.stopPropagation(); 
-      handleMassUpdateClick('experience'); 
-    }}
-  >
-    Опыт
-  </Button>
-</DropdownMenuTrigger>
+      {selectedPokemons.length > 1 && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              className="bg-gray-200"
+              style={{ position: 'absolute', left: '0px', top: '565px' }}
+              onClick={(e) => { 
+                e.stopPropagation(); 
+                selectedPokemons.forEach((pokemonId: number) => {
+                  handleMassUpdateClick(pokemonId);
+                });
+                setShowDropdown(!showDropdown); 
+              }}
+            >...</Button>
+          </DropdownMenuTrigger>
+          {showDropdown && (
+            <DropdownMenuContent sideOffset={4} className="p-1 bg-white shadow-md" onClick={(e) => e.stopPropagation()}>
+              <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
+                <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleBulkDeleteClick(selectedPokemons); }}>Массовое удаление</Button>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" onClick={(e) => e.stopPropagation()}>Массовое обновление параметра</Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent onClick={(e) => e.stopPropagation()}>
+                    <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
+                      <DropdownMenu>
+                        <UpdateButton characteristic='Имя' handleMassUpdateClick={handleMassUpdateClick} />
+                        <UpdateButton characteristic='Вес' handleMassUpdateClick={handleMassUpdateClick} />
+                        <UpdateButton characteristic='Высота' handleMassUpdateClick={handleMassUpdateClick} />
+                        <UpdateButton characteristic='Вид' handleMassUpdateClick={handleMassUpdateClick} />
+                        <UpdateButton characteristic='Опыт' handleMassUpdateClick={handleMassUpdateClick} />
         <DropdownMenuContent onClick={(e) => e.stopPropagation()}>
           <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-          <DropdownMenuLabel onClick={(e) => e.stopPropagation()}>Массовое обновление имени</DropdownMenuLabel>
+          <DropdownMenuLabel onClick={(e) => e.stopPropagation()}>Массовое обновление {selectedCharacteristic || ''}</DropdownMenuLabel>
 <>
 {selectedPokemons.map((id:number)=>{
 
@@ -186,11 +154,11 @@ return(
 <div key={id}>
 <label>{pokemon?.name}</label>
 <Input
-type="text"
+type={inputType}
 value={pokemonInputs[id]||''}
 onChange={(e)=>handleMassInputChange(e,id)}
 onClick={(e)=>e.stopPropagation()}
-placeholder="Имя"
+placeholder={selectedCharacteristic || ''}
 className="bg-gray-200"/>
 </div>);
 })}

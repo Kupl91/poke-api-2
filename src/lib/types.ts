@@ -1,5 +1,7 @@
 // C:\Users\pavel.kuplensky\Documents\GitHub\poke-api-2\src\lib\types.ts
 
+// C:\Users\pavel.kuplensky\Documents\GitHub\poke-api-2\src\lib\types.ts
+
 export interface Pokemon {
   id: number;
   name: string;
@@ -29,3 +31,20 @@ export const initialPokemonState = {
   experience:-1,
   abilities:[]
 }
+
+export interface InputTypes {
+  [key: string]: string;
+  'Имя': string;
+  'Вес': string;
+  'Высота': string;
+  'Вид': string;
+  'Опыт': string;
+}
+
+export const inputTypes: InputTypes = {
+  'Имя': 'text',
+  'Вес': 'number',
+  'Высота': 'number',
+  'Вид': 'text',
+  'Опыт': 'number'
+};
