@@ -14,7 +14,7 @@ import { Pokemon } from '@/lib/types';
 
 const PokemonsPage = () => {
   const {
-    pokemons,
+    pokemons: PokemonActions,
     selectedDetail,
     newPokemon,
     updatingPokemon,
@@ -28,6 +28,7 @@ const PokemonsPage = () => {
   } = usePokemonActions();
 
   const {
+    pokemons: pokemonsUI,
     showForm, 
     handleCreateClick,
     showDropdown,
@@ -58,7 +59,7 @@ const PokemonsPage = () => {
     sortedAndFilteredPokemons,
     handleSortDirectionChange,
     sortOrder,
-  } = usePokemonFilterAndSort(pokemons);
+  } = usePokemonFilterAndSort(PokemonActions);
 
   const { currentPage, 
     itemsPerPage,

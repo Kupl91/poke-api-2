@@ -7,7 +7,6 @@ import { ChangeEvent } from 'react';
 
 export const usePokemonUI = () => {
     const { pokemons, setPokemons } = usePokemonActions();
-    const { updatingPokemon, setUpdatingPokemon } = usePokemonActions();
 const [showForm, setShowForm] = useState(false);
 const [showDropdown, setShowDropdown] = useState(false);
 const [newPokemon, setNewPokemon] = useState({
@@ -122,7 +121,8 @@ const handleCreateClick = () => {
         });
         if (response.ok) {
           const updatedPokemon = await response.json();
-          setPokemons(pokemons.map((pokemon) => pokemon.id === updatedPokemon.id ? updatedPokemon : pokemon));
+          // Обновляем состояние pokemons с помощью функции обратного вызова
+          setPokemons(prevPokemons => prevPokemons.map(pokemon => pokemon.id === updatedPokemon.id ? updatedPokemon : pokemon));
         } else {
           throw new Error('Не удалось обновить покемона');
         }
@@ -200,5 +200,7 @@ return {
   setShowForm,
   handleInputTempChange, 
   pokemonInputs,
+  pokemons,
+  setPokemons,
 };
 };

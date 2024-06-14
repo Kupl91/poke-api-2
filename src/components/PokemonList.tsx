@@ -127,6 +127,53 @@ const PokemonList: React.FC<PokemonListProps> = ({
   Имя
 </Button>
   </DropdownMenuTrigger>
+  <DropdownMenuTrigger asChild>
+  <Button 
+    variant="outline" 
+    onClick={(e) => { 
+      e.stopPropagation(); 
+      handleMassUpdateClick('weight'); 
+    }}
+  >
+    Вес
+  </Button>
+</DropdownMenuTrigger>
+
+<DropdownMenuTrigger asChild>
+  <Button 
+    variant="outline" 
+    onClick={(e) => { 
+      e.stopPropagation(); 
+      handleMassUpdateClick('height'); 
+    }}
+  >
+    Высота
+  </Button>
+</DropdownMenuTrigger>
+
+<DropdownMenuTrigger asChild>
+  <Button 
+    variant="outline" 
+    onClick={(e) => { 
+      e.stopPropagation(); 
+      handleMassUpdateClick('species'); 
+    }}
+  >
+    Вид
+  </Button>
+</DropdownMenuTrigger>
+
+<DropdownMenuTrigger asChild>
+  <Button 
+    variant="outline" 
+    onClick={(e) => { 
+      e.stopPropagation(); 
+      handleMassUpdateClick('experience'); 
+    }}
+  >
+    Опыт
+  </Button>
+</DropdownMenuTrigger>
         <DropdownMenuContent onClick={(e) => e.stopPropagation()}>
           <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
           <DropdownMenuLabel onClick={(e) => e.stopPropagation()}>Массовое обновление имени</DropdownMenuLabel>
