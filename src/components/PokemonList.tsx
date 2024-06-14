@@ -89,44 +89,79 @@ const PokemonList: React.FC<PokemonListProps> = ({
                             <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleBulkDeleteClick(selectedPokemons); }}>Массовое удаление</Button>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
+                        
                         <DropdownMenu>
   <DropdownMenuTrigger asChild>
     <Button variant="outline" onClick={(e) => e.stopPropagation()}>Массовое обновление параметра</Button>
   </DropdownMenuTrigger>
   <DropdownMenuContent onClick={(e) => e.stopPropagation()}>
     <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-    <DropdownMenu>
-  <DropdownMenuTrigger asChild>
-  <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleMassUpdateClick('name'); }}>Имя</Button>
-  </DropdownMenuTrigger>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleMassUpdateClick('name'); }}>Имя</Button>
+        </DropdownMenuTrigger>
         <DropdownMenuContent onClick={(e) => e.stopPropagation()}>
           <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-          <DropdownMenuLabel onClick={(e) => e.stopPropagation()}>Массовое обновление имени</DropdownMenuLabel>
-          <>
-{selectedPokemons.map((id:number)=>{
-
- const pokemon=pokemons.find(pokemon=>pokemon.id===id);
-
-return(
-<div key={id}>
-<label>{pokemon?.name}</label>
-<Input
-type="text"
-value={pokemonInputs[id]||''}
-onChange={(e)=>handleMassInputChange(e,id)}
-onClick={(e)=>e.stopPropagation()}
-placeholder="Имя"
-className="bg-gray-200"/>
-</div>);
-})}
-<Button variant="outline" onClick={(e) => { e.stopPropagation(); handleMassUpdateSubmit(); }} className="bg-blue-500">Отправить</Button>
+            <DropdownMenuLabel onClick={(e) => e.stopPropagation()}>Массовое обновление имени</DropdownMenuLabel>
+            <>
+              {selectedPokemons.map((id:number) => {
+                const pokemon = pokemons.find(pokemon => pokemon.id === id);
+                return (
+                  <div key={id}>
+                    <label>{pokemon?.name}</label>
+                    <Input
+                      type="text"
+                      value={pokemonInputs[id] || ''}
+                      onChange={(e) => handleMassInputChange(e, id)}
+                      onClick={(e) => e.stopPropagation()}
+                      placeholder="Имя"
+                      className="bg-gray-200"
+                    />
+                  </div>
+                );
+              })}
+              <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleMassUpdateSubmit(); }} className="bg-blue-500">Отправить</Button>
             </>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </DropdownMenuItem>
+    <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleMassUpdateClick('weight'); }}>Вес</Button>
+        </DropdownMenuTrigger>
+        {/* Ваш код для обновления веса */}
+      </DropdownMenu>
+    </DropdownMenuItem>
+    <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleMassUpdateClick('height'); }}>Высота</Button>
+        </DropdownMenuTrigger>
+        {/* Ваш код для обновления высоты */}
+      </DropdownMenu>
+    </DropdownMenuItem>
+    <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleMassUpdateClick('species'); }}>Вид</Button>
+        </DropdownMenuTrigger>
+        {/* Ваш код для обновления вида */}
+      </DropdownMenu>
+    </DropdownMenuItem>
+    <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleMassUpdateClick('experience'); }}>Опыт</Button>
+        </DropdownMenuTrigger>
+        {/* Ваш код для обновления опыта */}
+      </DropdownMenu>
+    </DropdownMenuItem>
   </DropdownMenuContent>
 </DropdownMenu>
+
+
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 )}

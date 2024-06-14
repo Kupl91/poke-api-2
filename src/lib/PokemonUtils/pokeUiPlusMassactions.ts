@@ -28,16 +28,6 @@ const data = [
   { id: 62, name: "Ivysaurrr" }
 ];
 
-
-
-const handleMassUpdateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const { value } = e.target;
-  
-  console.log(`Изменение массового обновления ввода на: ${value}`);
-  
-  setMassUpdateValue(value);
-};
-
 const handleCreateClick = () => {
     setShowForm((prevShowForm) => !prevShowForm);
   };
@@ -167,6 +157,14 @@ const handleCreateClick = () => {
       
       setSelectedPokemons([...selectedPokemons, numericId]);
     }
+  };
+  
+  const handleMassUpdateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    
+    console.log(`Изменение массового обновления ввода на: ${value}`);
+    
+    setMassUpdateValue(value);
   };
   
   const handleInputTempChange = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
