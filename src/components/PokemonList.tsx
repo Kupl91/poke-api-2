@@ -107,29 +107,58 @@ const PokemonList: React.FC<PokemonListProps> = ({
                         <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
                             <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleBulkDeleteClick(selectedPokemons); }}>Массовое удаление</Button>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onMouseDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
-                            <DropdownMenu >
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="outline" onClick={(e) => e.stopPropagation()}>Массовое обновление параметра</Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent onMouseDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
-                                    <DropdownMenuItem onMouseDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
-                                    <DropdownMenuLabel onClick={(e) => e.stopPropagation()}>Массовое обновление имени</DropdownMenuLabel>
-                                        <>
-                                            {selectedPokemons.map((id) => {
-                                                const pokemon = pokemons.find((pokemon) => pokemon.id === id);
-                                                return (
-                                                    <div key={id} onMouseDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
-                                                        <label>{pokemon?.name}</label>
-                                                        <Input type="text" value={pokemonInputs[id] || ''} onChange={(e) => { handleMassInputChange(e, id); handleInputTempChange(e, id); }} placeholder="Имя" className="bg-gray-200" />
-                                                    </div>
-                                                );
-                                            })}
-                                            <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleMassUpdateSubmit(); }} className="bg-blue-500">Отправить</Button>
-                                        </>
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
+                        <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
+                        <DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline" onClick={(e) => e.stopPropagation()}>Массовое обновление параметра</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent onClick={(e) => e.stopPropagation()}>
+    <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
+    <DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    
+  <Button 
+  variant="outline" 
+  onClick={(e) => { 
+    e.stopPropagation(); 
+    handleMassUpdateClick('name'); 
+  }}
+>
+  Имя
+</Button>
+  </DropdownMenuTrigger>
+        <DropdownMenuContent onClick={(e) => e.stopPropagation()}>
+          <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
+          <DropdownMenuLabel onClick={(e) => e.stopPropagation()}>Массовое обновление имени</DropdownMenuLabel>
+<>
+{selectedPokemons.map((id:number)=>{
+
+ const pokemon=pokemons.find(pokemon=>pokemon.id===id);
+
+return(
+<div key={id}>
+<label>{pokemon?.name}</label>
+<Input
+type="text"
+value={pokemonInputs[id]||''}
+onChange={(e)=>handleMassInputChange(e,id)}
+onClick={(e)=>e.stopPropagation()}
+placeholder="Имя"
+className="bg-gray-200"/>
+</div>);
+})}
+<Button variant ="outline" onClick={(e)=>{
+  e.stopPropagation();
+  handleMassUpdateSubmit(); 
+}} className="bg-blue-500">Отправить</Button>
+            </>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 )}

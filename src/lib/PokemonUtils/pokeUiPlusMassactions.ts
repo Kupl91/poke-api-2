@@ -98,54 +98,41 @@ const handleCreateClick = () => {
   };
 
   const handleMassUpdateSubmit = async () => {
-    const massUpdates=selectedPokemons.map((id)=>({
-         id,
-         name:pokemonInputs[id]?.trim()
-    }));
-
-    let anyEmpty=false;
-
-    massUpdates.forEach(update=>{
-        if(!update.name){
-           console.warn(`Не найдено новое имя для Pokemon ID:${update.id}`);
-        anyEmpty=true;
+    // Обходим каждого покемона в массиве selectedPokemons
+    for (const id of selectedPokemons) {
+      // Получаем новое имя для покемона
+      const newName = pokemonInputs[id];
+      // Если имя не задано, пропускаем этого покемона
+      if (!newName) continue;
+      // Находим покемона, которого нужно обновить
+      const pokemonToUpdate = pokemons.find(pokemon => pokemon.id === id);
+      // Если покемон не найден, пропускаем этого покемона
+      if (!pokemonToUpdate) continue;
+      // Обновляем покемона с новым именем
+      try {
+        const response = await fetch('/api/pokemon/update', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...pokemonToUpdate,
+            name: newName,
+          }),
+        });
+        if (response.ok) {
+          const updatedPokemon = await response.json();
+          setPokemons(pokemons.map((pokemon) => pokemon.id === updatedPokemon.id ? updatedPokemon : pokemon));
+        } else {
+          throw new Error('Не удалось обновить покемона');
         }
-    });
-
-if(anyEmpty)return;
-
-try{
-const responses=await Promise.all(
-selectedPokemons.map(async(id:number)=>{
-       const update=pokemonInputs[id]?.trim();
-
-    // Проверка на пустое имя до отправки запроса
- if(!update){
-  console.warn(`Имя не найдено для Pokemon ID:${id}`);
-  throw new Error('Bad Request');
- }
-
- const response=await fetch(`/api/pokemon/update?id=${id}`,{
-  method:'PUT',
-  headers:{'Content-Type':'application/json'},
-  body:JSON.stringify({name:update})
-});
-
-if(!response.ok){
-    throw new Error('Bad Request');
-   }
-return response;
-
-  }));
-
- console.log("Массовое обновление успешно выполнено");
-setPokemonInputs({});
-setPokemons(updatingPokemons);
-}catch(error){
-
-console.error("Ошибка при массовом обновлении покемонов:",error);
-}
-};
+      } catch (err) {
+        const error = err as Error;
+        console.error(`Ошибка при обновлении покемона с ID ${id}:`, error.message);
+      }
+    }
+  };
+  
 
   useEffect(() => {
     if (selectedCharacteristic === 'name') {
