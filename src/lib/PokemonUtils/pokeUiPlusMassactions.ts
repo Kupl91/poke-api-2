@@ -32,15 +32,6 @@ const handleCreateClick = () => {
     setShowForm((prevShowForm) => !prevShowForm);
   };
 
-  const handleMassInputChange = (e: ChangeEvent<HTMLInputElement>, id: number) => {
-    console.log(`Изменение input для Pokemon ID ${id}: ${e.target.value}`);
-    
-    setPokemonInputs((prevInputs) => ({
-        ...prevInputs,
-        [id]: e.target.value,
-    }));
-};
-
   useEffect(() => {
     console.log('Selected Pokemons:', selectedPokemons);
     setShowDropdown(selectedPokemons.length > 0);
@@ -54,14 +45,16 @@ const handleCreateClick = () => {
     }
   }, [selectedPokemons]);
 
-  const handleCheckboxChange = (id: number) => {
-    console.log(id);
-    setSelectedPokemons(prevState =>
-      prevState.includes(id)
-        ? prevState.filter(pokemonId => pokemonId !== id)
-        : [...prevState, id]
-    );
+  const handleCheckboxChange = (id:number) => {
+    setSelectedPokemons(prevSelectedPokemons => {
+      if (prevSelectedPokemons.includes(id)) {
+        return prevSelectedPokemons.filter(pokemonId => pokemonId !== id);
+      } else {
+        return [...prevSelectedPokemons, id];
+      }
+    });
   };
+  
 
   const handleBulkDeleteClick = async (ids: number[]) => {
     try {
@@ -123,41 +116,59 @@ const handleCreateClick = () => {
     }
   };
   
-
-  useEffect(() => {
-    if (selectedCharacteristic === 'name') {
-      handleMassUpdateSubmit();
-    }
-  }, [selectedCharacteristic]);
-  
   const handleMassUpdateClick = (id: number | string) => {
     console.log(`валидация пользовательского ввода c id: ${id}`);
     
-    const numericId = Number(id);
-    const selectedPokemon = pokemons.find(pokemon => pokemon.id === numericId);
-  
-    if (!selectedPokemon) {
-      console.warn(`Покемон с id:${numericId} не найден`);
-      return;
-    }
-  
-    if (selectedPokemons.includes(numericId)) {
-      console.log(`Если клиент с id: ${numericId} уже выбран для обновления`);
-      
-      setUpdatingPokemons(prevUpdatingPokemons =>
-        prevUpdatingPokemons.filter(pokemon => pokemon.id !== numericId)
-      );
-      
-      setSelectedPokemons(prevSelected =>
-        prevSelected.filter(selectedId => selectedId !== numericId)
-      );
-      
+    if (typeof id === 'string') {
+      // Если id является строкой, устанавливаем selectedCharacteristic
+      setSelectedCharacteristic(id);
     } else {
-      setUpdatingPokemons([...updatingPokemons, selectedPokemon]);
+      // Если id является числом, обрабатываем его как id покемона
+      const numericId = Number(id);
+      const selectedPokemon = pokemons.find(pokemon => pokemon.id === numericId);
+  
+      if (!selectedPokemon) {
+        console.warn(`Покемон с id:${numericId} не найден`);
+        return;
+      }
+  
+      if (selectedPokemons.includes(numericId)) {
+        console.log(`Если клиент с id: ${numericId} уже выбран для обновления`);
       
-      setSelectedPokemons([...selectedPokemons, numericId]);
+        setUpdatingPokemons(prevUpdatingPokemons =>
+          prevUpdatingPokemons.filter(pokemon => pokemon.id !== numericId)
+        );
+      
+        setSelectedPokemons(prevSelected =>
+          prevSelected.filter(selectedId => selectedId !== numericId)
+        );
+      
+      } else {
+        setUpdatingPokemons([...updatingPokemons, selectedPokemon]);
+      
+        setSelectedPokemons([...selectedPokemons, numericId]);
+      }
+  
+      // Устанавливаем selectedCharacteristic в 'name'
+      setSelectedCharacteristic('name');
     }
-  };
+    
+    console.log(`selectedCharacteristic: ${selectedCharacteristic}`);
+};
+
+useEffect(() => {
+  console.log(`selectedCharacteristic: ${selectedCharacteristic}`);
+}, [selectedCharacteristic]);
+  
+  
+  const handleMassInputChange = (e: ChangeEvent<HTMLInputElement>, id: number) => {
+    console.log(`Изменение input для Pokemon ID ${id}: ${e.target.value}`);
+    
+    setPokemonInputs((prevInputs) => ({
+        ...prevInputs,
+        [id]: e.target.value,
+    }));
+};
   
   const handleMassUpdateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
