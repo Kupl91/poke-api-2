@@ -89,7 +89,6 @@ const PokemonList: React.FC<PokemonListProps> = ({
                             <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleBulkDeleteClick(selectedPokemons); }}>Массовое удаление</Button>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-                        
                         <DropdownMenu>
   <DropdownMenuTrigger asChild>
     <Button variant="outline" onClick={(e) => e.stopPropagation()}>Массовое обновление параметра</Button>
@@ -131,7 +130,30 @@ const PokemonList: React.FC<PokemonListProps> = ({
         <DropdownMenuTrigger asChild>
           <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleMassUpdateClick('weight'); }}>Вес</Button>
         </DropdownMenuTrigger>
-        {/* Ваш код для обновления веса */}
+        <DropdownMenuContent onClick={(e) => e.stopPropagation()}>
+      <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
+        <DropdownMenuLabel onClick={(e) => e.stopPropagation()}>Массовое обновление веса</DropdownMenuLabel>
+        <>
+          {selectedPokemons.map((id: number) => {
+            const pokemon = pokemons.find(pokemon => pokemon.id === id);
+            return (
+              <div key={id}>
+                 <label>{pokemon?.name} - Вес: {pokemon?.weight}</label>
+                <Input
+                  type="number"
+                  value={pokemonInputs[id] || ''}
+                  onChange={(e) => handleMassInputChange(e, id)}
+                  onClick={(e) => e.stopPropagation()}
+                  placeholder="Вес"
+                  className="bg-gray-200"
+                />
+              </div>
+            );
+          })}
+          <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleMassUpdateSubmit(); }} className="bg-blue-500">Обновить</Button>
+        </>
+      </DropdownMenuItem>
+    </DropdownMenuContent>
       </DropdownMenu>
     </DropdownMenuItem>
     <DropdownMenuItem onClick={(e) => e.stopPropagation()}>

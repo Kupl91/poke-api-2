@@ -1,7 +1,5 @@
 // C:\Users\pavel.kuplensky\Documents\GitHub\poke-api-2\src\lib\types.ts
 
-// C:\Users\pavel.kuplensky\Documents\GitHub\poke-api-2\src\lib\types.ts
-
 export interface Pokemon {
   id: number;
   name: string;
