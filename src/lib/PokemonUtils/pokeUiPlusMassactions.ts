@@ -23,11 +23,6 @@ const [selectedCharacteristic, setSelectedCharacteristic] = useState<string | nu
 const [massUpdateValue, setMassUpdateValue] = useState<string | number>('');
 const [pokemonInputs, setPokemonInputs] = useState<{ [key: number]: string }>({});
 
-const data = [
-  { id: 63, name: "Bulbasaurrr" },
-  { id: 62, name: "Ivysaurrr" }
-];
-
 const handleCreateClick = () => {
     setShowForm((prevShowForm) => !prevShowForm);
   };
@@ -106,6 +101,7 @@ const handleCreateClick = () => {
           const updatedPokemon = await response.json();
           // Обновляем состояние pokemons с помощью функции обратного вызова
           setPokemons(prevPokemons => prevPokemons.map(pokemon => pokemon.id === updatedPokemon.id ? updatedPokemon : pokemon));
+          console.log(`Покемон с ID ${id} успешно обновлен`); // Логирование при успешном обновлении
         } else {
           throw new Error('Не удалось обновить покемона');
         }
@@ -115,46 +111,39 @@ const handleCreateClick = () => {
       }
     }
   };
+
   
   const handleMassUpdateClick = (id: number | string) => {
-    console.log(`валидация пользовательского ввода c id: ${id}`);
+    console.log(`Валидация пользовательского ввода c id: ${id}`);
     
-    if (typeof id === 'string') {
-      // Если id является строкой, устанавливаем selectedCharacteristic
-      setSelectedCharacteristic(id);
-    } else {
-      // Если id является числом, обрабатываем его как id покемона
-      const numericId = Number(id);
-      const selectedPokemon = pokemons.find(pokemon => pokemon.id === numericId);
-  
-      if (!selectedPokemon) {
+    // Преобразуем id в число, независимо от того, является ли он строкой или числом
+    const numericId = Number(id);
+    const selectedPokemon = pokemons.find(pokemon => pokemon.id === numericId);
+
+    if (!selectedPokemon) {
         console.warn(`Покемон с id:${numericId} не найден`);
         return;
-      }
-  
-      if (selectedPokemons.includes(numericId)) {
-        console.log(`Если клиент с id: ${numericId} уже выбран для обновления`);
-      
-        setUpdatingPokemons(prevUpdatingPokemons =>
-          prevUpdatingPokemons.filter(pokemon => pokemon.id !== numericId)
-        );
-      
-        setSelectedPokemons(prevSelected =>
-          prevSelected.filter(selectedId => selectedId !== numericId)
-        );
-      
-      } else {
-        setUpdatingPokemons([...updatingPokemons, selectedPokemon]);
-      
-        setSelectedPokemons([...selectedPokemons, numericId]);
-      }
-  
-      // Устанавливаем selectedCharacteristic в 'name'
-      setSelectedCharacteristic('name');
     }
-    
-    console.log(`selectedCharacteristic: ${selectedCharacteristic}`);
+
+    if (selectedPokemons.includes(numericId)) {
+        console.log(`Если клиент с id: ${numericId} уже выбран для обновления`);
+
+        setUpdatingPokemons(prevUpdatingPokemons =>
+            prevUpdatingPokemons.filter(pokemon => pokemon.id !== numericId)
+        );
+
+        setSelectedPokemons(prevSelected =>
+            prevSelected.filter(selectedId => selectedId !== numericId)
+        );
+
+    } else {
+        setUpdatingPokemons([...updatingPokemons, selectedPokemon]);
+
+        setSelectedPokemons([...selectedPokemons, numericId]);
+    }
 };
+
+
 
 useEffect(() => {
   console.log(`selectedCharacteristic: ${selectedCharacteristic}`);

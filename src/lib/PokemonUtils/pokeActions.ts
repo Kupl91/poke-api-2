@@ -4,7 +4,7 @@ import { toast } from '@/components/ui/use-toast';
 import { Pokemon, PokemonDetail, initialPokemonState } from '@/lib/types';
 
 export const usePokemonActions = () => {
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]); // надо импортировать в PokemonUI.ts
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]); 
   const [selectedDetail, setSelectedDetail] = useState<PokemonDetail | null>(null)
   const [updateFormOpen, setUpdateFormOpen] = useState(false);
   const [newPokemon, setNewPokemon] = useState({
