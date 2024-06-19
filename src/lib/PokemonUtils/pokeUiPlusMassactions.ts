@@ -151,7 +151,12 @@ useEffect(() => {
   
   
 const handleMassInputChange = (e: ChangeEvent<HTMLInputElement>, id: number, field: string) => {
-  const value = e.target.value;
+  let value: string | number = e.target.value;
+
+  // Если поле является числовым, преобразуем ввод в число
+  if (field === 'weight' || field === 'height' || field === 'experience') {
+    value = Number(value);
+  }
 
   setPokemonInputs((prevInputs) => ({
     ...prevInputs,
@@ -161,6 +166,7 @@ const handleMassInputChange = (e: ChangeEvent<HTMLInputElement>, id: number, fie
     },
   }));
 };
+
 
   
   const handleMassUpdateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -172,7 +178,13 @@ const handleMassInputChange = (e: ChangeEvent<HTMLInputElement>, id: number, fie
   };
   
   const handleInputTempChange = (e: React.ChangeEvent<HTMLInputElement>, id: number, field: string) => {
-    const value = e.target.value;
+    let value: string | number = e.target.value;
+  
+    // Если поле является числовым, преобразуем ввод в число
+    if (field === 'weight' || field === 'height' || field === 'experience') {
+      value = Number(value);
+    }
+  
     setPokemonInputs({
       ...pokemonInputs, 
       [id]: {
@@ -181,6 +193,7 @@ const handleMassInputChange = (e: ChangeEvent<HTMLInputElement>, id: number, fie
       }
     });
   };
+  
   
 
   

@@ -45,7 +45,7 @@ interface PokemonListProps {
   showForm: boolean; 
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
   handleMassInputChange: (event: React.ChangeEvent<HTMLInputElement>, id: number) => void;
-  pokemonInputs: { [key: number]: string };
+  pokemonInputs: { [key: number]: { [field: string]: string | number } };
   handleInputTempChange: (e: React.ChangeEvent<HTMLInputElement>, id: number) => void; 
   handleSelectCharacteristic?: (characteristic: string | number) => void;
   handleMassUpdateClick: (id: number | string) => void;
