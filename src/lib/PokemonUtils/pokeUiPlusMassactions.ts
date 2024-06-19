@@ -21,7 +21,7 @@ const [selectedPokemons, setSelectedPokemons] = useState<number[]>([]);
 const [updatingPokemons, setUpdatingPokemons] = useState<Pokemon[]>([]);
 const [selectedCharacteristic, setSelectedCharacteristic] = useState<string | null>(null);
 const [massUpdateValue, setMassUpdateValue] = useState<string | number>('');
-const [pokemonInputs, setPokemonInputs] = useState<{ [key: number]: string }>({});
+const [pokemonInputs, setPokemonInputs] = useState<{ [key: number]: { [field: string]: string | number } }>({});
 
 const handleCreateClick = () => {
     setShowForm((prevShowForm) => !prevShowForm);
@@ -77,15 +77,15 @@ const handleCreateClick = () => {
   const handleMassUpdateSubmit = async () => {
     // Обходим каждого покемона в массиве selectedPokemons
     for (const id of selectedPokemons) {
-      // Получаем новое имя для покемона
-      const newName = pokemonInputs[id];
-      // Если имя не задано, пропускаем этого покемона
-      if (!newName) continue;
+      // Получаем новые данные для покемона
+      const newPokemonData = pokemonInputs[id];
+      // Если данные не заданы, пропускаем этого покемона
+      if (!newPokemonData) continue;
       // Находим покемона, которого нужно обновить
       const pokemonToUpdate = pokemons.find(pokemon => pokemon.id === id);
       // Если покемон не найден, пропускаем этого покемона
       if (!pokemonToUpdate) continue;
-      // Обновляем покемона с новым именем
+      // Обновляем покемона с новыми данными
       try {
         const response = await fetch('/api/pokemon/update', {
           method: 'PUT',
@@ -94,7 +94,7 @@ const handleCreateClick = () => {
           },
           body: JSON.stringify({
             ...pokemonToUpdate,
-            name: newName,
+            ...newPokemonData,
           }),
         });
         if (response.ok) {
@@ -150,14 +150,18 @@ useEffect(() => {
 }, [selectedCharacteristic]);
   
   
-  const handleMassInputChange = (e: ChangeEvent<HTMLInputElement>, id: number) => {
-    console.log(`Изменение input для Pokemon ID ${id}: ${e.target.value}`);
-    
-    setPokemonInputs((prevInputs) => ({
-        ...prevInputs,
-        [id]: e.target.value,
-    }));
+const handleMassInputChange = (e: ChangeEvent<HTMLInputElement>, id: number, field: string) => {
+  const value = e.target.value;
+
+  setPokemonInputs((prevInputs) => ({
+    ...prevInputs,
+    [id]: {
+      ...(prevInputs[id] || {}),
+      [field]: value,
+    },
+  }));
 };
+
   
   const handleMassUpdateInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -167,13 +171,17 @@ useEffect(() => {
     setMassUpdateValue(value);
   };
   
-  const handleInputTempChange = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
+  const handleInputTempChange = (e: React.ChangeEvent<HTMLInputElement>, id: number, field: string) => {
     const value = e.target.value;
     setPokemonInputs({
       ...pokemonInputs, 
-      [id]: value
+      [id]: {
+        ...(pokemonInputs[id] || {}),
+        [field]: value
+      }
     });
-};
+  };
+  
 
   
 return {

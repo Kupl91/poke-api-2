@@ -21,10 +21,11 @@ interface PokemonDropdownMenuProps {
   handleMassUpdateSubmit: () => void;
   massUpdateValue: string | number;
   setMassUpdateValue: React.Dispatch<React.SetStateAction<string | number>>;
-  handleMassUpdateInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleMassInputChange: (event: React.ChangeEvent<HTMLInputElement>, id: number) => void;
-  pokemonInputs: { [key: number]: string };
+  handleMassUpdateInputChange: (event: React.ChangeEvent<HTMLInputElement>, id: number, field: string) => void;
+  handleMassInputChange: (event: React.ChangeEvent<HTMLInputElement>, id: number, field: string) => void;
+  pokemonInputs: { [key: number]: { [field: string]: string | number } };
 }
+
 
 const PokemonDropdownMenu: React.FC<PokemonDropdownMenuProps> = ({
   selectedPokemons,
@@ -71,13 +72,13 @@ const PokemonDropdownMenu: React.FC<PokemonDropdownMenuProps> = ({
                                   <div key={id}>
                                     <label>{pokemon?.name}</label>
                                     <Input
-                                      type="text"
-                                      value={pokemonInputs[id] || ''}
-                                      onChange={(e) => handleMassInputChange(e, id)}
-                                      onClick={(e) => e.stopPropagation()}
-                                      placeholder="Имя"
-                                      className="bg-gray-200"
-                                    />
+  type="text"
+  value={pokemonInputs[id]?.name || ''}
+  onChange={(e) => handleMassInputChange(e, id, 'name')}
+  onClick={(e) => e.stopPropagation()}
+  placeholder="Имя"
+  className="bg-gray-200"
+/>
                                   </div>
                                 );
                               })}
@@ -88,31 +89,31 @@ const PokemonDropdownMenu: React.FC<PokemonDropdownMenuProps> = ({
                       </DropdownMenu>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleMassUpdateClick('weight'); }}>Вес</Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent onClick={(e) => e.stopPropagation()}>
-                          <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
-                            <DropdownMenuLabel onClick={(e) => e.stopPropagation()}>Массовое обновление веса</DropdownMenuLabel>
-                            <>
-                              {selectedPokemons.map((id: number) => {
-                                const pokemon = pokemons.find(pokemon => pokemon.id === id);
-                                return (
-                                  <div key={id}>
-                                    <label>{pokemon?.name} - Вес: {pokemon?.weight}</label>
-                                    <Input
-                                      type="number"
-                                      value={pokemonInputs[id] || ''}
-                                      onChange={(e) => handleMassInputChange(e, id)}
-                                      onClick={(e) => e.stopPropagation()}
-                                      placeholder="Вес"
-                                      className="bg-gray-200"
-                                    />
-                                  </div>
-                                );
-                              })}
-                              <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleMassUpdateSubmit(); }} className="bg-blue-500">Обновить</Button>
+                    <DropdownMenu>
+    <DropdownMenuTrigger asChild>
+      <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleMassUpdateClick('weight'); }}>Вес</Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent onClick={(e) => e.stopPropagation()}>
+      <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
+        <DropdownMenuLabel onClick={(e) => e.stopPropagation()}>Массовое обновление веса</DropdownMenuLabel>
+        <>
+          {selectedPokemons.map((id: number) => {
+            const pokemon = pokemons.find(pokemon => pokemon.id === id);
+            return (
+              <div key={id}>
+                <label>{pokemon?.name} - Вес: {pokemon?.weight}</label>
+                <Input
+                  type="number"
+                  value={pokemonInputs[id]?.weight || ''}
+                  onChange={(e) => handleMassInputChange(e, id, 'weight')}
+                  onClick={(e) => e.stopPropagation()}
+                  placeholder="Вес"
+                  className="bg-gray-200"
+                />
+              </div>
+            );
+          })}
+          <Button variant="outline" onClick={(e) => { e.stopPropagation(); handleMassUpdateSubmit(); }} className="bg-blue-500">Обновить</Button>
                             </>
                           </DropdownMenuItem>
                         </DropdownMenuContent>
