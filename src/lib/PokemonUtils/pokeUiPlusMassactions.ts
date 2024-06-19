@@ -88,53 +88,54 @@ const handleCreateClick = () => {
 
   const handleMassUpdateSubmit = async () => {
  
-  for (const id of selectedPokemons) {
-    
-    const newPokemonData = pokemonInputs[id];
-    
-    if (!newPokemonData) continue;
-    
-    const pokemonToUpdate = pokemons.find(pokemon => pokemon.id === id);
-    
-    if (!pokemonToUpdate) continue;
-    
-    try {
-      const response = await fetch('/api/pokemon/update', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...pokemonToUpdate,
-          ...newPokemonData,
-        }),
-      });
-      if (response.ok) {
-        const updatedPokemon = await response.json();
-       
-        setPokemons(prevPokemons => prevPokemons.map(pokemon => pokemon.id === updatedPokemon.id ? updatedPokemon : pokemon));
-        console.log(`Покемон с ID ${id} успешно обновлен`); и
-
-        toast({
-          title: "Успех!",
-          description: `Покемон с ID ${id} успешно обновлен!`,
-          variant: "default",
+    for (const id of selectedPokemons) {
+      
+      const newPokemonData = pokemonInputs[id];
+      
+      if (!newPokemonData) continue;
+      
+      const pokemonToUpdate = pokemons.find(pokemon => pokemon.id === id);
+      
+      if (!pokemonToUpdate) continue;
+      
+      try {
+        const response = await fetch('/api/pokemon/update', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...pokemonToUpdate,
+            ...newPokemonData,
+          }),
         });
-      } else {
-        throw new Error('Не удалось обновить покемона');
+        if (response.ok) {
+          const updatedPokemon = await response.json();
+         
+          setPokemons(prevPokemons => prevPokemons.map(pokemon => pokemon.id === updatedPokemon.id ? updatedPokemon : pokemon));
+          console.log(`Покемон с ID ${id} успешно обновлен`);
+  
+          toast({
+            title: "Успех!",
+            description: `Покемон с ID ${id} успешно обновлен!`,
+            variant: "default",
+          });
+        } else {
+          throw new Error('Не удалось обновить покемона');
+        }
+      } catch (err) {
+        const error = err as Error;
+        console.error(`Ошибка при обновлении покемона с ID ${id}:`, error.message);
+  
+        toast({
+          title:"Ошибка!", 
+          description:`Ошибка при обновлении покемона с ID ${id}: ${error.message}`,
+          variant:"destructive",
+        });
       }
-    } catch (err) {
-      const error = err as Error;
-      console.error(`Ошибка при обновлении покемона с ID ${id}:`, error.message);
-
-      toast({
-        title:"Ошибка!", 
-        description:`Ошибка при обновлении покемона с ID ${id}: ${error.message}`,
-        variant:"destructive",
-      });
     }
-  }
-};
+  };
+  
 
   
   const handleMassUpdateClick = (id: number | string) => {
