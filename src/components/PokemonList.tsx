@@ -44,9 +44,9 @@ interface PokemonListProps {
   handleMassUpdateInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   showForm: boolean; 
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
-  handleMassInputChange: (event: React.ChangeEvent<HTMLInputElement>, id: number) => void;
+  handleMassInputChange: (event: React.ChangeEvent<HTMLInputElement>, id: number, field: string) => void;
   pokemonInputs: { [key: number]: { [field: string]: string | number } };
-  handleInputTempChange: (e: React.ChangeEvent<HTMLInputElement>, id: number) => void; 
+  handleInputTempChange: (event: React.ChangeEvent<HTMLInputElement>, id: number, field: string) => void; 
   handleSelectCharacteristic?: (characteristic: string | number) => void;
   handleMassUpdateClick: (id: number | string) => void;
 }
