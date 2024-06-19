@@ -169,6 +169,12 @@ const handleUpdateSubmit = async () => {
       const updatedPokemon = await response.json();
       setPokemons(pokemons.map((pokemon) => pokemon.id === updatedPokemon.id ? updatedPokemon : pokemon));
       setUpdatingPokemon(null);
+
+      toast({
+        title: "Успех!",
+        description: 'Покемон успешно обновлен!',
+        variant: "default",
+      });
     } else {
       throw new Error('Не удалось обновить покемона');
     }
@@ -176,8 +182,15 @@ const handleUpdateSubmit = async () => {
      const error = err as Error; 
 
      console.error("Ошибка при обновлении покемона:", error.message);
+
+     toast({
+       title:"Ошибка!", 
+       description:'Не удалось обновить покемона.',
+       variant:"destructive",
+     });
   }
 };
+
 
 const handleUpdateInputChange= (event : React.ChangeEvent<HTMLInputElement>)=>{
   setUpdatingPokemon((prev)=>({

@@ -19,6 +19,7 @@ import {
 } from './ui/table'; 
 import { Pokemon } from '@/lib/types';
 import { Checkbox } from './ui/checkbox';
+import { Toaster } from '@/components/ui/toaster';
 
 interface PokemonListProps {
   pokemons: Pokemon[];
@@ -173,6 +174,7 @@ const PokemonList: React.FC<PokemonListProps> = ({
           ))}
         </TableBody>
       </Table>
+      <Toaster />
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { usePokemonActions } from '@/lib/PokemonUtils/pokeActions';
 import { Pokemon, PokemonDetail, initialPokemonState } from '@/lib/types';
 import { ChangeEvent } from 'react';
-
+import { toast } from '@/components/ui/use-toast';
 
 export const usePokemonUI = () => {
     const { pokemons, setPokemons } = usePokemonActions();
@@ -66,51 +66,75 @@ const handleCreateClick = () => {
       if (allOk) {
         setPokemons(pokemons.filter((pokemon) => !ids.includes(pokemon.id)));
         setSelectedPokemons([]); 
+  
+        toast({
+          title: "Успех!",
+          description: 'Покемоны успешно удалены!',
+          variant: "default",
+        });
       } else {
         throw new Error('Не удалось удалить некоторых покемонов');
       }
     } catch (error) {
       console.error("Ошибка при массовом удалении покемонов:", error);
+  
+      toast({
+        title:"Ошибка!", 
+        description:'Не удалось удалить некоторых покемонов.',
+        variant:"destructive",
+      });
     }
   };
 
   const handleMassUpdateSubmit = async () => {
-    // Обходим каждого покемона в массиве selectedPokemons
-    for (const id of selectedPokemons) {
-      // Получаем новые данные для покемона
-      const newPokemonData = pokemonInputs[id];
-      // Если данные не заданы, пропускаем этого покемона
-      if (!newPokemonData) continue;
-      // Находим покемона, которого нужно обновить
-      const pokemonToUpdate = pokemons.find(pokemon => pokemon.id === id);
-      // Если покемон не найден, пропускаем этого покемона
-      if (!pokemonToUpdate) continue;
-      // Обновляем покемона с новыми данными
-      try {
-        const response = await fetch('/api/pokemon/update', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            ...pokemonToUpdate,
-            ...newPokemonData,
-          }),
+ 
+  for (const id of selectedPokemons) {
+    
+    const newPokemonData = pokemonInputs[id];
+    
+    if (!newPokemonData) continue;
+    
+    const pokemonToUpdate = pokemons.find(pokemon => pokemon.id === id);
+    
+    if (!pokemonToUpdate) continue;
+    
+    try {
+      const response = await fetch('/api/pokemon/update', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...pokemonToUpdate,
+          ...newPokemonData,
+        }),
+      });
+      if (response.ok) {
+        const updatedPokemon = await response.json();
+       
+        setPokemons(prevPokemons => prevPokemons.map(pokemon => pokemon.id === updatedPokemon.id ? updatedPokemon : pokemon));
+        console.log(`Покемон с ID ${id} успешно обновлен`); и
+
+        toast({
+          title: "Успех!",
+          description: `Покемон с ID ${id} успешно обновлен!`,
+          variant: "default",
         });
-        if (response.ok) {
-          const updatedPokemon = await response.json();
-          // Обновляем состояние pokemons с помощью функции обратного вызова
-          setPokemons(prevPokemons => prevPokemons.map(pokemon => pokemon.id === updatedPokemon.id ? updatedPokemon : pokemon));
-          console.log(`Покемон с ID ${id} успешно обновлен`); // Логирование при успешном обновлении
-        } else {
-          throw new Error('Не удалось обновить покемона');
-        }
-      } catch (err) {
-        const error = err as Error;
-        console.error(`Ошибка при обновлении покемона с ID ${id}:`, error.message);
+      } else {
+        throw new Error('Не удалось обновить покемона');
       }
+    } catch (err) {
+      const error = err as Error;
+      console.error(`Ошибка при обновлении покемона с ID ${id}:`, error.message);
+
+      toast({
+        title:"Ошибка!", 
+        description:`Ошибка при обновлении покемона с ID ${id}: ${error.message}`,
+        variant:"destructive",
+      });
     }
-  };
+  }
+};
 
   
   const handleMassUpdateClick = (id: number | string) => {
