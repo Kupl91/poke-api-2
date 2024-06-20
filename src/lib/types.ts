@@ -47,7 +47,6 @@ export const inputTypes: InputTypes = {
   'Опыт': 'number'
 };
 
-// Добавленные интерфейсы
 export interface IndexedPokemon {
   [key: string]: string | number | undefined; // добавили этот индексный интерфейс
   name: string;
@@ -63,6 +62,37 @@ export interface PokemonFormProps {
   handleCreateClick: () => void;
   showForm: boolean;
   newPokemon: IndexedPokemon; // обновили здесь
+}
+
+export interface PokemonListProps {
+  pokemons: Pokemon[];
+  handleDeleteClick: (id: number) => void;
+  handleDetailsClick: (id: number) => void;
+  handleUpdateSubmit: () => void;
+  handleUpdateClick: (id: number) => void;
+  handleUpdateInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  selectedDetail: Pokemon | null;
+  updatingPokemon: Pokemon | null;
+  currentPage: number;
+  itemsPerPage: number;
+  selectedPokemons: number[];
+  handleCheckboxChange: (id: number) => void;
+  showDropdown: boolean;
+  setShowDropdown: (show: boolean) => void;
+  handleBulkDeleteClick: (ids: number[]) => void;
+  selectedCharacteristic: string | null;
+  setSelectedCharacteristic: (value: string | null) => void;
+  handleMassUpdateSubmit: () => void;
+  massUpdateValue: string | number;
+  setMassUpdateValue: React.Dispatch<React.SetStateAction<string | number>>;
+  handleMassUpdateInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  showForm: boolean; 
+  setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
+  handleMassInputChange: (event: React.ChangeEvent<HTMLInputElement>, id: number, field: string) => void;
+  pokemonInputs: { [key: number]: { [field: string]: string | number } };
+  handleInputTempChange: (event: React.ChangeEvent<HTMLInputElement>, id: number, field: string) => void; 
+  handleSelectCharacteristic?: (characteristic: string | number) => void;
+  handleMassUpdateClick: (id: number | string) => void;
 }
 
 export interface PokemonDropdownMenuProps {
