@@ -46,8 +46,25 @@ const PokemonDropdownMenu: React.FC<PokemonDropdownMenuProps> = ({
 
   return (
     <DropdownMenu>
+      
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="bg-gray-200" style={{ position: 'absolute', left: '0px', top: '565px' }} onClick={(e) => { e.stopPropagation(); selectedPokemons.forEach((pokemonId: number) => { handleMassUpdateClick(pokemonId); }); setShowDropdown(!showDropdown); }}>...</Button>
+      {selectedPokemons.length >= 2 && (
+  <Button 
+    variant="outline" 
+    className="bg-gray-200" 
+    style={{ position: 'absolute', left: '0px', top: '565px' }} 
+    onClick={(e) => { 
+      e.stopPropagation(); 
+      selectedPokemons.forEach((pokemonId: number) => { 
+        handleMassUpdateClick(pokemonId); 
+      }); 
+      setShowDropdown(!showDropdown); 
+    }}
+  >
+    ...
+  </Button>
+)}
+
       </DropdownMenuTrigger>
       {showDropdown && (
         <DropdownMenuContent sideOffset={4} className="p-1 bg-white shadow-md" onClick={(e) => e.stopPropagation()}>

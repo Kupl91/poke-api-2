@@ -4,18 +4,8 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import PokemonDropdownMenu from './PokemonDropdownMenu';
 import { Drawer, DrawerTrigger, DrawerContent, DrawerClose, DrawerHeader } from "@/components/ui/drawer";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from './ui/dropdown-menu';
-import {
-  Table,
-  TableBody,
-  TableRow,
-  TableCell
-} from './ui/table'; 
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, } from './ui/dropdown-menu';
+import { Table, TableBody, TableRow, TableCell } from './ui/table'; 
 import { Pokemon } from '@/lib/types';
 import { Checkbox } from './ui/checkbox';
 import { Toaster } from '@/components/ui/toaster';
