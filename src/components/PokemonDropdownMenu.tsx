@@ -36,7 +36,7 @@ const PokemonDropdownMenu: React.FC<PokemonDropdownMenuProps> = ({
   <Button 
     variant="outline" 
     className="bg-gray-200" 
-    style={{ position: 'absolute', left: '0px', top: '565px' }} 
+    style={{ position: 'absolute', left: '0px', top: '525px' }} 
     onClick={(e) => { 
       e.stopPropagation(); 
       selectedPokemons.forEach((pokemonId: number) => { 
