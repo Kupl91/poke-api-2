@@ -75,8 +75,8 @@ const PokemonsPage = () => {
   handleSortChange={handleSortChange} 
   handleFilterTypeChange={handleFilterTypeChange}
   handleFilterValueChange={handleFilterValueChange}
-  handleSortDirectionChange={handleSortDirectionChange} // новый обработчик
-  sortDirection={sortOrder} // новое свойство
+  handleSortDirectionChange={handleSortDirectionChange} 
+  sortDirection={sortOrder} 
 />
 
 <PokemonList 
@@ -117,7 +117,7 @@ const PokemonsPage = () => {
   handleChange={handleChange}
   handleItemsPerChange={handleItemsPerChange}
   itemsPerPage={itemsPerPage}
-  pageNumbers={pageNumbers} // добавьте это
+  pageNumbers={pageNumbers} 
 />
       <PokemonForm
        handleSubmitClick={handleSubmitClick}

@@ -1,5 +1,4 @@
-// C:\Users\pavel.kuplensky\Documents\GitHub\poke-api-2\src\components\PokemonList.tsx
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import PokemonDropdownMenu from './PokemonDropdownMenu';
@@ -39,6 +38,8 @@ const PokemonList: React.FC<PokemonListProps> = ({
   handleMassInputChange,
   handleMassUpdateClick,
 }) => {
+  const emptyRows = new Array(5 - pokemons.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).length).fill(null);
+
   return (
     <div className="bg-gray-300">
       <PokemonDropdownMenu
@@ -59,19 +60,19 @@ const PokemonList: React.FC<PokemonListProps> = ({
         <TableBody>
           {pokemons.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map(pokemon => (
             <TableRow key={pokemon.id} onClick={() => handleCheckboxChange(pokemon.id)}>
-              <TableCell>
+              <TableCell className="flex justify-start space-x-4">
                 <Checkbox 
                   onChange={(e) => {
                     e.stopPropagation();
                     handleCheckboxChange(pokemon.id);
                   }}
                 />
+                <span>{pokemon.name}</span>
               </TableCell>
-              <TableCell>{pokemon.name}</TableCell>
-              <TableCell>{pokemon.weight}</TableCell>
-              <TableCell>{pokemon.height}</TableCell>
-              <TableCell>{pokemon.species}</TableCell>
-              <TableCell>{pokemon.experience}</TableCell>
+              <TableCell className="text-left">{pokemon.weight}</TableCell>
+              <TableCell className="text-left">{pokemon.height}</TableCell>
+              <TableCell className="text-left">{pokemon.species}</TableCell>
+              <TableCell className="text-left">{pokemon.experience}</TableCell>
               <TableCell>
                 <div>
                   <DropdownMenu>
@@ -131,6 +132,11 @@ const PokemonList: React.FC<PokemonListProps> = ({
               </TableCell>
             </TableRow>
           ))}
+          {emptyRows.map((_, index) => (
+  <TableRow key={`empty-${index}`}>
+    <TableCell colSpan={6} style={{ height: '73px' }}>&nbsp;</TableCell>
+  </TableRow>
+))}
         </TableBody>
       </Table>
       <Toaster />

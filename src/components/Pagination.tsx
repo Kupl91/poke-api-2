@@ -9,21 +9,10 @@ const CustomPagination = ({
   nextPage,
   previousPage,
   handleChange,
-  handleItemsPerChange,
-  itemsPerPage,
   pageNumbers,
 }: PaginationProps) => {
   return (
     <>
-      <div className="mb-2">
-        {"Rows per page:"}
-        <select value={itemsPerPage} onChange={handleItemsPerChange}>
-          {[5, 10, 15].map((item) => (
-            <option key={item} value={item}>{item}</option>
-          ))}
-        </select>
-      </div>
-  
       <PaginationUI className="bg-gray-300 rounded-lg p-2">
         <PaginationContent>
           <PaginationItem>

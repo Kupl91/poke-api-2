@@ -49,12 +49,12 @@ const FilterAndSort: React.FC<FilterAndSortProps> = ({
          <TableRow>
            {
              sortAttributes.map((attribute, idx) => (
-              <TableHead key={`sort-${attribute.key}`}>
-                <button onClick={() => handleSortChange(attribute.key)} style={{ display: 'flex', alignItems: 'center' }}>
-                  {`${attribute.label} `}
-                  {sortDirection === 'asc' ? <FaArrowUp size={15} /> : <FaArrowDown size={15} />}
-                </button>
-               </TableHead>
+              <TableHead className="text-center" key={`sort-${attribute.key}`}>
+  <button onClick={() => handleSortChange(attribute.key)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    {`${attribute.label} `}
+    {sortDirection === 'asc' ? <FaArrowUp size={15} /> : <FaArrowDown size={15} />}
+  </button>
+</TableHead>
              ))
            }
            <TableHead>Действия</TableHead>
