@@ -10,23 +10,7 @@ import {
   DropdownMenuLabel,
 } from './ui/dropdown-menu';
 import { Toaster } from '@/components/ui/toaster';
-import { Pokemon } from '@/lib/types';
-
-interface PokemonDropdownMenuProps {
-  selectedPokemons: number[];
-  pokemons: Pokemon[];
-  handleMassUpdateClick: (id: number | string) => void;
-  setShowDropdown: (show: boolean) => void;
-  showDropdown: boolean;
-  handleBulkDeleteClick: (ids: number[]) => void;
-  handleMassUpdateSubmit: () => void;
-  massUpdateValue: string | number;
-  setMassUpdateValue: React.Dispatch<React.SetStateAction<string | number>>;
-  handleMassUpdateInputChange: (event: React.ChangeEvent<HTMLInputElement>, id: number, field: string) => void;
-  handleMassInputChange: (event: React.ChangeEvent<HTMLInputElement>, id: number, field: string) => void;
-  pokemonInputs: { [key: number]: { [field: string]: string | number } };
-}
-
+import { Pokemon, PokemonDropdownMenuProps } from '@/lib/types';
 
 const PokemonDropdownMenu: React.FC<PokemonDropdownMenuProps> = ({
   selectedPokemons,
