@@ -6,11 +6,11 @@ export const usePokemonPagination = (totalPages: number) => {
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const nextPage = () => {
-    setCurrentPage((prev) => prev + 1);
+    setCurrentPage((prev) => prev < totalPages ? prev + 1 : prev);
   };
-
+  
   const previousPage = () => {
-    setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev));
+    setCurrentPage((prev) => prev > 1 ? prev - 1 : prev);
   };
   
  const handleChange = (pageNumber: number) =>{
