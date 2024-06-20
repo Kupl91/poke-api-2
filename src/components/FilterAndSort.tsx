@@ -1,17 +1,9 @@
 import React from 'react';
 import { Input } from './ui/input';
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from './ui/select'; 
-import { Pokemon } from '@/lib/types';
+import { Pokemon, FilterAndSortProps } from '@/lib/types';
 import { Table, TableHeader, TableRow, TableHead, TableCell, TableBody } from './ui/table';
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
-
-interface FilterAndSortProps {
-  handleSortChange: (value: keyof Pokemon) => void;
-  handleSortDirectionChange: () => void;
-  handleFilterTypeChange: (value: keyof Pokemon) => void;
-  handleFilterValueChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  sortDirection: 'asc' | 'desc';
-}
 
 const FilterAndSort: React.FC<FilterAndSortProps> = ({
   handleSortChange,
