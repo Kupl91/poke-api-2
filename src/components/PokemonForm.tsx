@@ -3,34 +3,8 @@ import React from 'react';
 import { Button,} from './ui/button';
 import { Input } from './ui/input';
 import { Toaster } from '@/components/ui/toaster';
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger
-} from "@/components/ui/drawer";
-
-interface PokemonFormProps {
- handleSubmitClick: () => void;
- handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
- handleCreateClick: () => void;
- showForm: boolean;
- newPokemon: IndexedPokemon; // обновили здесь
-}
-
-interface IndexedPokemon {
- [key: string]: string | number | undefined; // добавили этот индексный интерфейс
- name: string;
- weight:number;
- height:number;
- species:string ;
- experience:number ;
-}
-
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
+import { PokemonFormProps, IndexedPokemon } from '@/lib/types';
 
 const PokemonForm: React.FC<PokemonFormProps> = ({ handleSubmitClick, handleInputChange, handleCreateClick, showForm, newPokemon }) => {
   return (
