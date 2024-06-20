@@ -1,24 +1,7 @@
 import React from 'react';
-import {
-  Pagination as PaginationUI,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from './ui/pagination';
+import {Pagination as PaginationUI, PaginationContent, PaginationEllipsis, PaginationItem, PaginationNext, PaginationPrevious, } from './ui/pagination';
 import { Button } from './ui/button';
-
-interface PaginationProps {
-  currentPage: number;
-  totalPages: number;
-  nextPage(): void;
-  previousPage(): void;
-  handleChange(pageNumber: number): void;
-  handleItemsPerChange(event: any): void;
-  itemsPerPage: number;
-  pageNumbers: number[];
-}
+import { PaginationProps } from '@/lib/types';
 
 const CustomPagination = ({ 
   currentPage, 
