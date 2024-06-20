@@ -42,13 +42,13 @@ const PokemonDropdownMenu: React.FC<PokemonDropdownMenuProps> = ({
   handleMassInputChange,
   pokemonInputs,
 }) => {
-  const parameters = ['name', 'weight', 'height', 'species', 'experience']; // Добавьте здесь другие параметры для массового обновления
+  const parameters = ['name', 'weight', 'height', 'species', 'experience'];
 
   return (
     <DropdownMenu>
       
       <DropdownMenuTrigger asChild>
-      {selectedPokemons.length >= 2 && (
+        {selectedPokemons.length >= 2 && (
   <Button 
     variant="outline" 
     className="bg-gray-200" 

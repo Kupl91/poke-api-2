@@ -46,3 +46,55 @@ export const inputTypes: InputTypes = {
   'Вид': 'text',
   'Опыт': 'number'
 };
+
+// Добавленные интерфейсы
+export interface IndexedPokemon {
+  [key: string]: string | number | undefined; // добавили этот индексный интерфейс
+  name: string;
+  weight:number;
+  height:number;
+  species:string ;
+  experience:number ;
+}
+
+export interface PokemonFormProps {
+  handleSubmitClick: () => void;
+  handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleCreateClick: () => void;
+  showForm: boolean;
+  newPokemon: IndexedPokemon; // обновили здесь
+}
+
+export interface PokemonDropdownMenuProps {
+  selectedPokemons: number[];
+  pokemons: Pokemon[];
+  handleMassUpdateClick: (id: number | string) => void;
+  setShowDropdown: (show: boolean) => void;
+  showDropdown: boolean;
+  handleBulkDeleteClick: (ids: number[]) => void;
+  handleMassUpdateSubmit: () => void;
+  massUpdateValue: string | number;
+  setMassUpdateValue: React.Dispatch<React.SetStateAction<string | number>>;
+  handleMassUpdateInputChange: (event: React.ChangeEvent<HTMLInputElement>, id: number, field: string) => void;
+  handleMassInputChange: (event: React.ChangeEvent<HTMLInputElement>, id: number, field: string) => void;
+  pokemonInputs: { [key: number]: { [field: string]: string | number } };
+}
+
+export interface FilterAndSortProps {
+  handleSortChange: (value: keyof Pokemon) => void;
+  handleSortDirectionChange: () => void;
+  handleFilterTypeChange: (value: keyof Pokemon) => void;
+  handleFilterValueChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface PaginationProps {
+  currentPage: number;
+  totalPages: number;
+  nextPage(): void;
+  previousPage(): void;
+  handleChange(pageNumber: number): void;
+  handleItemsPerChange(event: any): void;
+  itemsPerPage: number;
+  pageNumbers: number[];
+}
