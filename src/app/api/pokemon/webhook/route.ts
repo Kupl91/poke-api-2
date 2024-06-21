@@ -1,4 +1,3 @@
-//C:\Users\pavel.kuplensky\Documents\GitHub\poke-api-2\src\app\api\pokemon\webhook\route.ts
 // C:\Users\pavel.kuplensky\Documents\GitHub\poke-api-2\src\app\api\pokemon\webhook\route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
@@ -6,7 +5,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 // Создайте кэш данных вне функции POST
-let pokemonCache = {};
+let pokemonCache: { [key: number]: any } = {};
 
 export async function POST(req: NextRequest) {
   try {
