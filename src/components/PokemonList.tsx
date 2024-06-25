@@ -1,3 +1,4 @@
+// C:\Users\pavel.kuplensky\Documents\GitHub\poke-api-2\src\components\PokemonList.tsx
 import React from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';

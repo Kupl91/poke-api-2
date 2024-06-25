@@ -1,7 +1,6 @@
 // C:\Users\Pavel\poke-api-2\src\app\pokemons\page.tsx
 "use client"
 
-export const dynamic = 'force-dynamic';
 
 import React, { useEffect, useState } from 'react';
 import FilterAndSort from '@/components/FilterAndSort';
