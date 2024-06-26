@@ -1,18 +1,16 @@
 // C:\Users\Pavel\poke-api-2\src\app\pokemons\page.tsx
-"use client"
+'use client'
 
-
-import React, { useEffect, useState } from 'react';
-import FilterAndSort from '@/components/FilterAndSort';
-import Pagination from '@/components/Pagination';
-import PokemonList from '@/components/PokemonList';
-import PokemonForm from '@/components/PokemonForm';
-import { usePokemonUI } from '@/lib/PokemonUtils/pokeUiPlusMassactions';
-import { usePokemonActions } from '@/lib/PokemonUtils/pokeActions';
-import { usePokemonPagination } from '@/lib/PokemonUtils/pokePagination';
-import { usePokemonFilterAndSort } from '@/lib/PokemonUtils/pokeFilterAndSort';
-import { Pokemon } from '@/lib/types';
-
+import React, { useEffect, useState } from 'react'
+import FilterAndSort from '@/components/FilterAndSort'
+import Pagination from '@/components/Pagination'
+import PokemonList from '@/components/PokemonList'
+import PokemonForm from '@/components/PokemonForm'
+import { usePokemonUI } from '@/lib/PokemonUtils/pokeUiPlusMassactions'
+import { usePokemonActions } from '@/lib/PokemonUtils/pokeActions'
+import { usePokemonPagination } from '@/lib/PokemonUtils/pokePagination'
+import { usePokemonFilterAndSort } from '@/lib/PokemonUtils/pokeFilterAndSort'
+import { Pokemon } from '@/lib/types'
 
 const PokemonsPage = () => {
   const {
@@ -27,15 +25,15 @@ const PokemonsPage = () => {
     handleUpdateInputChange,
     handleUpdateClick,
     handleInputChange,
-  } = usePokemonActions();
+  } = usePokemonActions()
 
   const {
     pokemons: pokemonsUI,
-    showForm, 
+    showForm,
     handleCreateClick,
     showDropdown,
     setShowDropdown,
-    selectedPokemons, 
+    selectedPokemons,
     handleCheckboxChange,
     handleBulkDeleteClick,
     selectedCharacteristic,
@@ -46,42 +44,45 @@ const PokemonsPage = () => {
     handleMassUpdateInputChange,
     handleMassInputChange,
     setShowForm,
-    handleInputTempChange, 
+    handleInputTempChange,
     pokemonInputs,
     handleMassUpdateClick,
-  } = usePokemonUI();
+  } = usePokemonUI()
 
   const {
-    sortType, 
-    filterType, 
-    filterValue, 
-    handleSortChange, 
-    handleFilterTypeChange, 
-    handleFilterValueChange, 
+    sortType,
+    filterType,
+    filterValue,
+    handleSortChange,
+    handleFilterTypeChange,
+    handleFilterValueChange,
     sortedAndFilteredPokemons,
     handleSortDirectionChange,
     sortOrder,
-  } = usePokemonFilterAndSort(PokemonActions);
+  } = usePokemonFilterAndSort(PokemonActions)
 
-  const { currentPage, 
+  const {
+    currentPage,
     itemsPerPage,
     setItemsPerPage,
     nextPage,
     previousPage,
-   handleChange,
-   handleItemsPerChange,pageNumbers } = usePokemonPagination(Math.ceil(sortedAndFilteredPokemons.length / 5));
+    handleChange,
+    handleItemsPerChange,
+    pageNumbers,
+  } = usePokemonPagination(Math.ceil(sortedAndFilteredPokemons.length / 5))
 
   return (
     <div className="space-y-4 bg-gray-300">
-     <FilterAndSort 
-  handleSortChange={handleSortChange} 
-  handleFilterTypeChange={handleFilterTypeChange}
-  handleFilterValueChange={handleFilterValueChange}
-  handleSortDirectionChange={handleSortDirectionChange} 
-  sortDirection={sortOrder} 
-/>
+      <FilterAndSort
+        handleSortChange={handleSortChange}
+        handleFilterTypeChange={handleFilterTypeChange}
+        handleFilterValueChange={handleFilterValueChange}
+        handleSortDirectionChange={handleSortDirectionChange}
+        sortDirection={sortOrder}
+      />
 
-<PokemonList 
+      <PokemonList
         pokemons={sortedAndFilteredPokemons}
         handleDeleteClick={handleDeleteClick}
         handleDetailsClick={handleDetailsClick}
@@ -92,44 +93,43 @@ const PokemonsPage = () => {
         updatingPokemon={updatingPokemon}
         currentPage={currentPage}
         itemsPerPage={itemsPerPage}
-        selectedPokemons={selectedPokemons} 
-        handleCheckboxChange={handleCheckboxChange} 
-        showDropdown = {showDropdown}
-        setShowDropdown = {setShowDropdown}
-        handleBulkDeleteClick = {handleBulkDeleteClick}
-        selectedCharacteristic = {selectedCharacteristic}
-       setSelectedCharacteristic = {setSelectedCharacteristic}
-       handleMassUpdateSubmit = {handleMassUpdateSubmit }
-       massUpdateValue = {massUpdateValue}
-       setMassUpdateValue = {setMassUpdateValue}
-       showForm={showForm}
+        selectedPokemons={selectedPokemons}
+        handleCheckboxChange={handleCheckboxChange}
+        showDropdown={showDropdown}
+        setShowDropdown={setShowDropdown}
+        handleBulkDeleteClick={handleBulkDeleteClick}
+        selectedCharacteristic={selectedCharacteristic}
+        setSelectedCharacteristic={setSelectedCharacteristic}
+        handleMassUpdateSubmit={handleMassUpdateSubmit}
+        massUpdateValue={massUpdateValue}
+        setMassUpdateValue={setMassUpdateValue}
+        showForm={showForm}
         setShowForm={setShowForm}
-       handleMassInputChange = {handleMassInputChange}
-       handleMassUpdateInputChange={handleMassUpdateInputChange}
-       handleInputTempChange = {handleInputTempChange}
-       pokemonInputs = {pokemonInputs}
-       handleMassUpdateClick = {handleMassUpdateClick }
-
+        handleMassInputChange={handleMassInputChange}
+        handleMassUpdateInputChange={handleMassUpdateInputChange}
+        handleInputTempChange={handleInputTempChange}
+        pokemonInputs={pokemonInputs}
+        handleMassUpdateClick={handleMassUpdateClick}
       />
-     <Pagination
-  currentPage={currentPage}
-  totalPages={Math.ceil(sortedAndFilteredPokemons.length / itemsPerPage)}
-  nextPage={nextPage}
-  previousPage={previousPage}
-  handleChange={handleChange}
-  handleItemsPerChange={handleItemsPerChange}
-  itemsPerPage={itemsPerPage}
-  pageNumbers={pageNumbers} 
-/>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={Math.ceil(sortedAndFilteredPokemons.length / itemsPerPage)}
+        nextPage={nextPage}
+        previousPage={previousPage}
+        handleChange={handleChange}
+        handleItemsPerChange={handleItemsPerChange}
+        itemsPerPage={itemsPerPage}
+        pageNumbers={pageNumbers}
+      />
       <PokemonForm
-       handleSubmitClick={handleSubmitClick}
-       handleInputChange={handleInputChange}
-       handleCreateClick={handleCreateClick}
-       newPokemon={newPokemon}
-       showForm={showForm} 
+        handleSubmitClick={handleSubmitClick}
+        handleInputChange={handleInputChange}
+        handleCreateClick={handleCreateClick}
+        newPokemon={newPokemon}
+        showForm={showForm}
       />
     </div>
-  );
-};
+  )
+}
 
-export default PokemonsPage;
+export default PokemonsPage

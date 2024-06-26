@@ -3,12 +3,12 @@
 const nextConfig = {
   async rewrites() {
     return [
-        {
-          source: '/api/pokemon/:path*',
-          destination: '/src/app/api/pokemon/:path*'
-        }
-    ];
+      {
+        source: '/api/pokemon/:path*',
+        destination: '/src/app/api/pokemon/:path*',
+      },
+    ]
   },
-};
+}
 
-export default nextConfig;
+export default nextConfig

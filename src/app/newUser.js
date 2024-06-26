@@ -1,6 +1,6 @@
 // C:\Users\Pavel\poke-api-2\src\app\newUser.js
 import { PrismaClient } from '@prisma/client'
-import 'dotenv/config';
+import 'dotenv/config'
 
 const prisma = new PrismaClient()
 
@@ -16,7 +16,7 @@ async function main() {
 }
 
 main()
-  .catch((e) => {
+  .catch(e => {
     throw e
   })
   .finally(async () => {
