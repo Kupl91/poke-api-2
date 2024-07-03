@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')
 
-    if (!id) return new Response(JSON.stringify({ message: 'ID не указан' }), { status: 400 })
+    if (!id) return new NextResponse(JSON.stringify({ message: 'ID не указан' }), { status: 400 })
 
     const pokemon = await prisma.pokemon.findUnique({
       where: {
@@ -24,9 +24,9 @@ export async function GET(request: NextRequest) {
       },
     })
 
-    if (!pokemon) return new Response(JSON.stringify({ message: 'Покемон не найден' }), { status: 404 })
+    if (!pokemon) return new NextResponse(JSON.stringify({ message: 'Покемон не найден' }), { status: 404 })
 
-    // Форматируем данные для возвращаемого ответа
+    
     const responseData = {
       id: pokemon.id,
       name: pokemon.name,

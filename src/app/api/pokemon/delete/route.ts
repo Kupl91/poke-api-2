@@ -9,7 +9,6 @@ export async function DELETE(req: NextRequest) {
   const id = searchParams.get('id')
 
   if (!id) {
-    // Если ID не указан, возвращаем ошибку
     return NextResponse.json({ error: 'ID не указан' }, { status: 400 })
   }
   try {
