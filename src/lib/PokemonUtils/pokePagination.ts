@@ -17,6 +17,7 @@ export const usePokemonPagination = (totalPages: number) => {
     setCurrentPage(pageNumber)
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleItemsPerChange = (event: any) => {
     setItemsPerPage(Number(event.target.value))
   }

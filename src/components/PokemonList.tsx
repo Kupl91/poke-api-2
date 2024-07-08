@@ -6,9 +6,9 @@ import PokemonDropdownMenu from './PokemonDropdownMenu'
 import { Drawer, DrawerTrigger, DrawerContent, DrawerClose, DrawerHeader } from '@/components/ui/drawer'
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from './ui/dropdown-menu'
 import { Table, TableBody, TableRow, TableCell } from './ui/table'
-import { Pokemon } from '@/lib/types'
 import { Checkbox } from './ui/checkbox'
 import { Toaster } from '@/components/ui/toaster'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { PokemonListProps, PokemonDropdownMenuProps } from '@/lib/types'
 
 const PokemonList: React.FC<PokemonListProps> = ({
@@ -27,13 +27,17 @@ const PokemonList: React.FC<PokemonListProps> = ({
   showDropdown,
   setShowDropdown,
   handleBulkDeleteClick,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   selectedCharacteristic,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setSelectedCharacteristic,
   handleMassUpdateSubmit,
   massUpdateValue,
   setMassUpdateValue,
   handleMassUpdateInputChange,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   showForm,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handleInputTempChange,
   pokemonInputs,
   handleMassInputChange,

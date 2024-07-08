@@ -1,9 +1,0 @@
-./src/app/api/pokemons/route.ts
-./src/app/page.tsx
-./src/app/[id]/page.tsx
-./src/components/FilterAndSort.tsx
-./src/components/PokemonDropdownMenu.tsx
-./src/components/PokemonForm.tsx
-./src/lib/PokemonUtils/pokePagination.ts
-./src/components/PokemonList.tsx
-./src/lib/PokemonUtils/pokeUiPlusMassactions.ts 

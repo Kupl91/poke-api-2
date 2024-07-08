@@ -1,13 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
 import { Input } from './ui/input'
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from './ui/select'
 import { Pokemon, FilterAndSortProps } from '@/lib/types'
-import { Table, TableHeader, TableRow, TableHead, TableCell, TableBody } from './ui/table'
+import { Table, TableHeader, TableRow, TableHead, TableBody } from './ui/table'
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa'
 
 const FilterAndSort: React.FC<FilterAndSortProps> = ({
   handleSortChange,
-  handleSortDirectionChange,
   handleFilterTypeChange,
   handleFilterValueChange,
   sortDirection,

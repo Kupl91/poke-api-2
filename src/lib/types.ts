@@ -124,6 +124,7 @@ export interface PaginationProps {
   nextPage(): void
   previousPage(): void
   handleChange(pageNumber: number): void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleItemsPerChange(event: any): void
   itemsPerPage: number
   pageNumbers: number[]

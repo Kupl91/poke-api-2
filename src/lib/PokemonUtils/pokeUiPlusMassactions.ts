@@ -1,7 +1,7 @@
 //C:\Users\pavel.kuplensky\Documents\GitHub\poke-api-2\src\lib\PokemonUtils\pokeUiPlusMassactions.ts
 import { useState, useEffect } from 'react'
 import { usePokemonActions } from '@/lib/PokemonUtils/pokeActions'
-import { Pokemon, PokemonDetail, initialPokemonState } from '@/lib/types'
+import { Pokemon, } from '@/lib/types'
 import { ChangeEvent } from 'react'
 import { toast } from '@/components/ui/use-toast'
 
@@ -9,6 +9,7 @@ export const usePokemonUI = () => {
   const { pokemons, setPokemons } = usePokemonActions()
   const [showForm, setShowForm] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [newPokemon, setNewPokemon] = useState({
     name: '',
     weight: 0,

@@ -7,12 +7,10 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
-  DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { PokemonFormProps, IndexedPokemon } from '@/lib/types'
 
 const PokemonForm: React.FC<PokemonFormProps> = ({

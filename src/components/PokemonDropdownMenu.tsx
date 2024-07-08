@@ -9,8 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
 } from './ui/dropdown-menu'
-import { Toaster } from '@/components/ui/toaster'
-import { Pokemon, PokemonDropdownMenuProps } from '@/lib/types'
+import { PokemonDropdownMenuProps } from '@/lib/types'
 
 const PokemonDropdownMenu: React.FC<PokemonDropdownMenuProps> = ({
   selectedPokemons,
@@ -20,8 +19,11 @@ const PokemonDropdownMenu: React.FC<PokemonDropdownMenuProps> = ({
   showDropdown,
   handleBulkDeleteClick,
   handleMassUpdateSubmit,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   massUpdateValue,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setMassUpdateValue,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handleMassUpdateInputChange,
   handleMassInputChange,
   pokemonInputs,

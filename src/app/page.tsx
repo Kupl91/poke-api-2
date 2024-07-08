@@ -1,7 +1,7 @@
 // C:\Users\Pavel\poke-api-2\src\app\pokemons\page.tsx
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import FilterAndSort from '@/components/FilterAndSort'
 import Pagination from '@/components/Pagination'
 import PokemonList from '@/components/PokemonList'
@@ -10,7 +10,6 @@ import { usePokemonUI } from '@/lib/PokemonUtils/pokeUiPlusMassactions'
 import { usePokemonActions } from '@/lib/PokemonUtils/pokeActions'
 import { usePokemonPagination } from '@/lib/PokemonUtils/pokePagination'
 import { usePokemonFilterAndSort } from '@/lib/PokemonUtils/pokeFilterAndSort'
-import { Pokemon } from '@/lib/types'
 
 const PokemonsPage = () => {
   const {
@@ -28,6 +27,7 @@ const PokemonsPage = () => {
   } = usePokemonActions()
 
   const {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     pokemons: pokemonsUI,
     showForm,
     handleCreateClick,
@@ -50,9 +50,6 @@ const PokemonsPage = () => {
   } = usePokemonUI()
 
   const {
-    sortType,
-    filterType,
-    filterValue,
     handleSortChange,
     handleFilterTypeChange,
     handleFilterValueChange,
@@ -64,7 +61,6 @@ const PokemonsPage = () => {
   const {
     currentPage,
     itemsPerPage,
-    setItemsPerPage,
     nextPage,
     previousPage,
     handleChange,
